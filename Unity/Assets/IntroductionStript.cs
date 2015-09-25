@@ -102,9 +102,9 @@ public class IntroductionStript : MonoBehaviour
 
         //GUI.DrawTexture(menuRect, menuBackground);
 
-        var tests = Dispatcher.loader.Levels["Demo"]["Test"]().Logic.Tests.Keys;
+        var tests = Dispatcher.loader.Levels[ASSEMBLY_NAME]["Test"]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
         LoadingData data = new LoadingData();
-        data.AssemblyName = "Demo";
+        data.AssemblyName = ASSEMBLY_NAME;
         data.Level = "Test";
 
         if (!folderIsLoad)
@@ -242,8 +242,9 @@ public class IntroductionStript : MonoBehaviour
         {
             foreach (var e in Files)
             {
-                if (name == ((Folder)e).Name)
-                    return e;
+                if (e is Folder)
+                    if (name == ((Folder)e).Name)
+                        return e;
             }
             return null;
         }
