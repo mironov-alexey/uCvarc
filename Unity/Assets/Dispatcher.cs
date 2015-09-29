@@ -158,7 +158,7 @@ class Dispatcher
     }
 
 
-    static void Exited()
+    public static void Exited()
     {
         Application.LoadLevel("Intro");
         Debugger.Log(DebuggerMessageType.Unity,"local exit");
