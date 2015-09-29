@@ -52,6 +52,7 @@ namespace Assets
             light.AddComponent<Light>();
             light.GetComponent<Light>().type = LightType.Point;
             light.GetComponent<Light>().range = 1000;
+            light.GetComponent<Light>().intensity = 2;
             light.transform.position = new Vector3(0, 200, 0);
 
             RemoveObject("Point light");
@@ -112,8 +113,6 @@ namespace Assets
             popcorn.GetComponent<Renderer>().material.color = Color.white;
 
             popcorn.AddComponent<Rigidbody>();
-            popcorn.AddComponent<MeshCollider>();
-            
             popcorn.GetComponent<Rigidbody>().drag = popcorn.GetComponent<Rigidbody>().angularDrag = 4;
             popcorn.GetComponent<Rigidbody>().useGravity = true;
             popcorn.GetComponent<Rigidbody>().mass = 0.2f;
@@ -176,8 +175,6 @@ namespace Assets
             stand.GetComponent<Renderer>().material.color = UnityColor[color];
 
             stand.AddComponent<Rigidbody>();
-            stand.AddComponent<MeshCollider>();
-
             stand.GetComponent<Rigidbody>().drag = stand.GetComponent<Rigidbody>().angularDrag = 4;
             stand.GetComponent<Rigidbody>().useGravity = true;
             stand.GetComponent<Rigidbody>().mass = 0.3f;

@@ -39,7 +39,9 @@ namespace Assets
             actorBody.GetComponent<Rigidbody>().mass = robotMass;
             actorBody.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ |
                                               RigidbodyConstraints.FreezePositionY;
+            
             actorBody.AddComponent<MeshCollider>();
+            actorBody.GetComponent<MeshCollider>().convex = true;
 
             actorBody.AddComponent<OnCollisionScript>();
             actorBody.name = Actor.ObjectId;
