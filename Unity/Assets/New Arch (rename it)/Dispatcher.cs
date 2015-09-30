@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CVARC.V2;
 using RoboMovies;
 using UnityEngine;
 
 namespace Assets.Temp
 {
+    //todo: добавить локи на очередь везде.
     public static class Dispatcher
     {
         public static Loader Loader { get; private set; }
-        public static readonly Queue<IRunner> Queue = new Queue<IRunner>(); // не уверен, не зло ли я посадил?
+        public static readonly Queue<IRunner> Queue = new Queue<IRunner>();
+        public static bool IsGameOver;
         static PercistentTCPServer server;
-        static IRunner currentRunner;
+        public static IRunner currentRunner { get; private set; }
 
         public static void Start()
         {
@@ -21,7 +24,7 @@ namespace Assets.Temp
             Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
             Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
             Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
-            Debugger.Logger = s => Debug.Log(s);
+            Debugger.Logger = Debug.Log;
 
             Loader = new Loader();
             Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
@@ -33,29 +36,56 @@ namespace Assets.Temp
             server.StartThread();
         }
 
-        static void ClientConnected(CvarcClient client)//это можно засунуть прямо в ТСП сервер!
+        static void ClientConnected(CvarcClient client)
         {
+            //временно. тут нужно бы определить, какой раннер создавать.
+            //или, если тсп сервер используется только для создания нетворкРаннера, 
+            //запихать это прямо туд и отказаться от использования события.
             Queue.Enqueue(new NetworkRunner(client));
         }
 
-        static public void IntroductionTick()
+        public static void IntroductionTick()
         {
-            if (Queue.Count != 0 && (currentRunner == null || currentRunner.CanInterrupt))
+            if (Queue.Count != 0)
             {
-
+                Application.LoadLevel("Round");
             }
         }
 
-        static public void RoundTick()
+        public static void RoundTick()
         {
+            // конец игры
+            if (IsGameOver && currentRunner != null)
+            {
+                currentRunner.Dispose();
+                currentRunner = null;
+            }
 
+            if (currentRunner == null)
+            {
+                // начало игры
+                if (Queue.Count != 0)
+                {
+                    currentRunner = Queue.Dequeue();
+                    IsGameOver = false;
+                    currentRunner.CreateWorld(); // Посмотреть, будет ли где-то использоваться эта функция как не void
+                }
+                // возврат
+                else
+                    Application.LoadLevel("Intro");
+            }
         }
 
-        public static void Exited()
+        // самый ГЛОБАЛЬНЫЙ выход, из всей юнити. Юзать один раз, как и Start
+        public static void OnDispose()
         {
-            //Application.LoadLevel("Intro"); добавить ее как только положим в нужный неймспейс?
-            Debugger.Log(DebuggerMessageType.Unity, "local exit");
             server.RequestExit();
+            if (currentRunner != null)
+                currentRunner.Dispose();
+            foreach (var runner in Queue)
+                runner.Dispose();
+
+            TestDispatcher.OnDispose();
         }
     }
 }

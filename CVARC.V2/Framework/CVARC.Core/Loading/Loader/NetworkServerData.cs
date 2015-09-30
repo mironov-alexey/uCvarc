@@ -56,6 +56,10 @@ namespace CVARC.V2
 		/// </summary>
 		public Action StopServer { get; set; }
 
+        /// <summary>
+        /// External action to wait server.
+        /// </summary>
+        public Action<NetworkServerData> WaitServer { get; set; }
 
 		/// <summary>
 		/// Closes the client-server connection from client side.
@@ -73,6 +77,8 @@ namespace CVARC.V2
 		/// </summary>
 		public void WaitForServer()
 		{
+		    if (WaitServer != null)
+		        WaitServer(this);
 			while (!ServerLoaded) Thread.Sleep(1);
 		}
 
