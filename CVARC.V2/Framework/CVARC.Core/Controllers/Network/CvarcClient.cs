@@ -12,7 +12,7 @@ namespace CVARC.V2
 
 		public bool EnableDebug { get; set; }
         const byte EndLine = (byte)'\n';
-        TcpClient client;
+        public readonly TcpClient client;
         public CvarcClient(TcpClient client)
         {
             this.client = client;
