@@ -16,7 +16,7 @@ namespace Assets
             var test = Dispatcher.Loader.GetTest(data, testName);
             var asserter = new UnityAsserter(testName);
 
-            var testThread = new Thread(() => ExecuteTest(testName, test, asserter, MakeServerInfo(data)));
+            var testThread = new Thread(() => ExecuteTest(testName, test, asserter, MakeServerInfo(data))) { IsBackground = true };
             runnedTests.Add(testThread);
             testThread.Start();
         }
@@ -26,7 +26,7 @@ namespace Assets
             var competitions = Dispatcher.Loader.GetCompetitions(data);
             var testsNames = competitions.Logic.Tests.Keys;
 
-            var testThread = new Thread(() => ExecuteTests(testsNames, data));
+            var testThread = new Thread(() => ExecuteTests(testsNames, data)) {IsBackground = true};
             runnedTests.Add(testThread);
             testThread.Start();
         }
@@ -35,7 +35,8 @@ namespace Assets
         {
             foreach (var thread in runnedTests)
                 if (thread.IsAlive)
-                    thread.Abort(); // зависания. Мне кажется проблема в том, что test.Run создает еще треды...
+                    thread.Abort(); // зависания. Проблема в тестах, они не умирают по этой команде.
+            //CvarcClient!!!
         }
 
         static void ExecuteTests(IEnumerable<string> testNames, LoadingData data)

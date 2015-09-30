@@ -55,7 +55,7 @@ public static class Dispatcher
 
     public static void IntroductionTick()
     {
-        if (Queue.Count != 0)
+        if (Queue.Count != 0) // && can start!!!
             SwitchScene("Round");
     }
 

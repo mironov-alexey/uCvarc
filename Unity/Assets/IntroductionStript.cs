@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Assets;
 
+
 public class IntroductionStript : MonoBehaviour
 {
     const string ASSEMBLY_NAME = "RoboMovies";
@@ -18,7 +19,6 @@ public class IntroductionStript : MonoBehaviour
             Server();
             serverIsRunned = true;
         }
-
     }
 
     void Update()
@@ -143,6 +143,8 @@ public class IntroductionStript : MonoBehaviour
         MenuButton(button, "Tests", Color.white, () => { isPressedTests = !isPressedTests; });
         GUILayout.Space(10);
         MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
+        GUILayout.Space(10);
+        MenuButton(button, "TUTORIAL", Color.blue, () => Dispatcher.Queue.Enqueue(new TutorialRunner(new LoadingData() { AssemblyName = "RoboMovies", Level = "Test" })));
 
         GUI.color = preColor;
         GUILayout.EndVertical();
