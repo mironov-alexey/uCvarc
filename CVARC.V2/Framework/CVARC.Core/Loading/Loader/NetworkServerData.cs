@@ -59,7 +59,7 @@ namespace CVARC.V2
         /// <summary>
         /// External action to wait server.
         /// </summary>
-        public Action<NetworkServerData> WaitServer { get; set; }
+        public Action<NetworkServerData> WaitWorld { get; set; }
 
 		/// <summary>
 		/// Closes the client-server connection from client side.
@@ -77,8 +77,6 @@ namespace CVARC.V2
 		/// </summary>
 		public void WaitForServer()
 		{
-		    if (WaitServer != null)
-		        WaitServer(this);
 			while (!ServerLoaded) Thread.Sleep(1);
 		}
 
@@ -88,6 +86,8 @@ namespace CVARC.V2
 		/// <returns></returns>
 		public IWorld WaitForWorld()
 		{
+            if (WaitWorld != null)
+                WaitWorld(this);
 			while (World == null) Thread.Sleep(1);
 			return World;
 		}

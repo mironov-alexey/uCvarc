@@ -1,6 +1,6 @@
 ﻿using CVARC.V2;
 
-namespace Assets.Temp
+namespace Assets
 {
     public class NetworkRunner : IRunner
     {
@@ -15,11 +15,10 @@ namespace Assets.Temp
         {
             this.client = client;
 
+            //code from Loader.RecieveConfiguration and Loader.InitializeWorld
             factory = new SoloNetworkControllerFactory(client);
 
-            //code from Loader.RecieveConfiguration and Loader.InitializeWorld
             var configProposal = client.Read<ConfigurationProposal>();
-
             var loadingData = configProposal.LoadingData;
             var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
             var settings = competitions.Logic.CreateDefaultSettings();
@@ -44,9 +43,9 @@ namespace Assets.Temp
             if (World != null)
                 return World;
 
-            //заменить!
             World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
             //world.Exit += вроде ничего класть не нужно
+            //World.Exit += Dispatcher.SetGameOver;
             return World;
         }
 
@@ -57,7 +56,8 @@ namespace Assets.Temp
         public void Dispose()
         {
             client.Close();
-            World.OnExit();
+            if (World != null)
+                World.OnExit();
         }
     }
 }

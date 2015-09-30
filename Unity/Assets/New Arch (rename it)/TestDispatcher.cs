@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using CVARC.V2;
 
-namespace Assets.Temp
+namespace Assets
 {
     public static class TestDispatcher
     {
@@ -67,19 +67,21 @@ namespace Assets.Temp
             }
         }
 
-        static void WaitServer(NetworkServerData data)
+        static void WaitWorld(NetworkServerData data)
         {
             var myName = data.LoadingData.AssemblyName + data.LoadingData.Level;
-            while (Dispatcher.currentRunner == null || 
-                Dispatcher.currentRunner.Name != myName || 
-                Dispatcher.currentRunner.World == null)
+            while (Dispatcher.currentRunner == null ||
+                   Dispatcher.currentRunner.Name != myName ||
+                   Dispatcher.currentRunner.World == null)
                 Thread.Sleep(5);
+            data.World = Dispatcher.currentRunner.World;
+
         }
 
         static NetworkServerData MakeServerInfo(LoadingData data)
         {
             var networkServerInfo = new NetworkServerData { Port = 14000, LoadingData = data, ServerLoaded = true };
-            networkServerInfo.WaitServer += WaitServer;
+            networkServerInfo.WaitWorld += WaitWorld;
             return networkServerInfo;
         }
     }

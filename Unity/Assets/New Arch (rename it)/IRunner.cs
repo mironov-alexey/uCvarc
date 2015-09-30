@@ -1,7 +1,7 @@
 ﻿using CVARC.V2;
 using System;
 
-namespace Assets.Temp
+namespace Assets
 {
     public interface IRunner : IDisposable
     {
