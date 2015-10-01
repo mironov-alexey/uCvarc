@@ -20,7 +20,6 @@ namespace ClientExample
         {
             var location = sensors.SelfLocation;
             Console.WriteLine("{0} {1}", location.X, location.Y);
-
         }
 
         static ClientForm form;
@@ -29,7 +28,7 @@ namespace ClientExample
         {
             var client = new Level2Client();
 			client.SensorDataReceived += sensorData => form.ShowMap(sensorData.Map);
-			client.Configurate(port, true, RoboMoviesBots.None);
+			client.Configurate(port, true, RoboMoviesBots.Stand);
 			client.Rotate(-90);
             client.Move(100);
             client.Rotate(90);
@@ -41,25 +40,14 @@ namespace ClientExample
             client.Exit();
         }
 
-        static void Run(int port, bool debug)
+        static void Run(int port)
         {
             form = new ClientForm();
 			new Thread(
 				() =>
 				{
-					if (debug)
-					{
-						Control(port);
-						return;
-					}
-					try
-					{
-						Control(port);
-					}
-					catch (Exception e)
-					{
-						Console.WriteLine(e.Message);
-					}
+					Control(port);
+					return;
 				}).Start();
             Application.Run(form);
         }
@@ -68,15 +56,7 @@ namespace ClientExample
         [STAThread]
         public static void Main(string[] args)
         {
-            if (args.Length == 0)
-            {
-				CVARC.V2.CVARCProgram.RunServerInTheSameThread(Run);
-            }
-            else
-            {
-				var port = int.Parse(args[0]);
-				Run(port, false);
-            }
+            CVARC.V2.CVARCProgram.RunServerInTheSameThread(Run);
         }
 
     }
