@@ -7,7 +7,7 @@ namespace RoboMovies
 {
     public enum RoboMoviesBots
     {
-        None,
+        Stand,
     }
 
 }
