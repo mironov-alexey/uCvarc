@@ -39,8 +39,6 @@ namespace CVARC.V2
 		public TSensorData Act(TCommand command)
 		{
 			client.Write(command);
-            while(client.client.Available == 0)
-                Thread.Sleep(1);
 			var sensorData = client.Read<TSensorData>(); // 11!!!
 			//if (sensorData == null)
 			//	Environment.Exit(0);

@@ -39,15 +39,11 @@ namespace Assets
             CanStart = true;
         }
 
-        public IWorld CreateWorld()
+        public void InitializeWorld()
         {
             if (World != null)
-                return World;
-
+                return;
             World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
-            //world.Exit += вроде ничего класть не нужно
-            //World.Exit += Dispatcher.SetGameOver;
-            return World;
         }
 
         public bool CanStart {get; private set;}

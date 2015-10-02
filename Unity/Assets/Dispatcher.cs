@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using CVARC.V2;
 using RoboMovies;
 using UnityEngine;
@@ -9,9 +8,9 @@ using Assets;
 public static class Dispatcher
 {
     public static Loader Loader { get; private set; }
-    public static readonly Queue<IRunner> Queue = new Queue<IRunner>();
-    public static IRunner currentRunner { get; private set; }
-    static bool IsGameOver;
+    static readonly RunnersQueue queue = new RunnersQueue();
+    public static IRunner CurrentRunner { get; private set; }
+    static bool isGameOver;
     static PercistentTCPServer server;
     static bool switchingScenes;
 
@@ -41,10 +40,7 @@ public static class Dispatcher
         //временно. тут нужно бы определить, какой раннер создавать.
         //или, если тсп сервер используется только для создания нетворкРаннера, 
         //запихать это прямо тудa и отказаться от использования события.
-        lock (Queue)
-        {
-            Queue.Enqueue(new NetworkRunner(client));
-        }
+        queue.EnqueueRunner(new NetworkRunner(client));
     }
 
     static void SwitchScene(string sceneName)
@@ -53,43 +49,43 @@ public static class Dispatcher
         Application.LoadLevel(sceneName);
     }
 
+    public static void AddRunner(IRunner runner)
+    {
+        queue.EnqueueRunner(runner);
+    }
+
     public static void IntroductionTick()
     {
-        if (Queue.Count != 0) // && can start!!!
+        if (queue.HasReadyRunner())
             SwitchScene("Round");
     }
 
     public static void RoundStart()
     {
-        lock (Queue)
-            currentRunner = Queue.Dequeue();
-        IsGameOver = false;
-        currentRunner.CreateWorld(); // Посмотреть, будет ли где-то использоваться эта функция как не void
+        CurrentRunner = queue.DequeueReadyRunner();
+        isGameOver = false;
+        CurrentRunner.InitializeWorld();
     }
 
     public static void RoundTick()
     {
         // конец игры
-        if (IsGameOver && currentRunner != null)
+        if (isGameOver && CurrentRunner != null)
         {
             Debug.Log("game over. disposing");
-            currentRunner.Dispose();
-            currentRunner = null;
+            CurrentRunner.Dispose();
+            CurrentRunner = null;
         }
 
-        if (currentRunner == null)
+        if (CurrentRunner == null)
         {
-            if (Queue.Count != 0)
-            {
-                // Это "очищение" сцены с помощью переключения на нее же.
-                SwitchScene("Round");
-                return;
-            }
-            // возврат
-            SwitchScene("Intro");
+            // очищение, или переход в начало
+            SwitchScene(queue.HasReadyRunner() ? "Round" : "Intro");
+            return;
         }
 
-        if (Queue.Count != 0 && currentRunner.CanInterrupt)
+        // прерывание
+        if (queue.HasReadyRunner() && CurrentRunner.CanInterrupt)
             SetGameOver();
     }
 
@@ -104,19 +100,13 @@ public static class Dispatcher
 
         Debug.Log("GLOBAL EXIT");
         server.RequestExit();
-        if (currentRunner != null)
-            currentRunner.Dispose();
-        lock (Queue)
-        {
-            foreach (var runner in Queue)
-                runner.Dispose();
-        }
-
-        TestDispatcher.OnDispose();
+        if (CurrentRunner != null)
+            CurrentRunner.Dispose();
+        queue.DisposeRunners();
     }
 
     public static void SetGameOver()
     {
-        IsGameOver = true;
+        isGameOver = true;
     }
 }

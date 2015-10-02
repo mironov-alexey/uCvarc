@@ -8,7 +8,6 @@ namespace Assets
     public static class TestDispatcher
     {
         public static readonly Dictionary<string, bool> LastTestExecution = new Dictionary<string, bool>();
-        static readonly HashSet<Thread> runnedTests = new HashSet<Thread>();
 
         public static void RunOneTest(LoadingData data, string testName)
         {
@@ -16,9 +15,8 @@ namespace Assets
             var test = Dispatcher.Loader.GetTest(data, testName);
             var asserter = new UnityAsserter(testName);
 
-            var testThread = new Thread(() => ExecuteTest(testName, test, asserter, MakeServerInfo(data))) { IsBackground = true };
-            runnedTests.Add(testThread);
-            testThread.Start();
+            Action testAction = () => ExecuteTest(testName, test, asserter, MakeServerInfo(data));
+            testAction.BeginInvoke(null, null);
         }
 
         public static void RunAllTests(LoadingData data)
@@ -26,17 +24,8 @@ namespace Assets
             var competitions = Dispatcher.Loader.GetCompetitions(data);
             var testsNames = competitions.Logic.Tests.Keys;
 
-            var testThread = new Thread(() => ExecuteTests(testsNames, data)) {IsBackground = true};
-            runnedTests.Add(testThread);
-            testThread.Start();
-        }
-
-        public static void OnDispose()
-        {
-            foreach (var thread in runnedTests)
-                if (thread.IsAlive)
-                    thread.Abort(); // зависания. Проблема в тестах, они не умирают по этой команде.
-            //CvarcClient!!!
+            Action testAction = () => ExecuteTests(testsNames, data);
+            testAction.BeginInvoke(null, null);
         }
 
         static void ExecuteTests(IEnumerable<string> testNames, LoadingData data)
@@ -51,11 +40,11 @@ namespace Assets
             }
         }
 
-        static void ExecuteTest(string testName, ICvarcTest test, UnityAsserter asserter, NetworkServerData networkServerInfo)
+        static void ExecuteTest(string testName, ICvarcTest test, UnityAsserter asserter, NetworkData networkInfo)
         {
             try
             {
-                test.Run(networkServerInfo, asserter);
+                test.Run(networkInfo, asserter);
                 asserter.DebugOkMessage();
             }
             catch (Exception e)
@@ -66,24 +55,25 @@ namespace Assets
             {
                 LastTestExecution[testName] = !asserter.Failed;
             }
+            Dispatcher.SetGameOver();
         }
 
-        static void WaitWorld(NetworkServerData data)
+        static void WaitWorld(NetworkData data)
         {
             var myName = data.LoadingData.AssemblyName + data.LoadingData.Level;
-            while (Dispatcher.currentRunner == null ||
-                   Dispatcher.currentRunner.Name != myName ||
-                   Dispatcher.currentRunner.World == null)
+            while (Dispatcher.CurrentRunner == null ||
+                   Dispatcher.CurrentRunner.Name != myName ||
+                   Dispatcher.CurrentRunner.World == null)
                 Thread.Sleep(5);
-            data.World = Dispatcher.currentRunner.World;
+            data.World = Dispatcher.CurrentRunner.World;
 
         }
 
-        static NetworkServerData MakeServerInfo(LoadingData data)
+        static NetworkData MakeServerInfo(LoadingData data)
         {
-            var networkServerInfo = new NetworkServerData { Port = 14000, LoadingData = data, ServerLoaded = true };
-            networkServerInfo.WaitWorld += WaitWorld;
-            return networkServerInfo;
+            var networkInfo = new NetworkData() { Port = 14000, LoadingData = data, WaitWorld = WaitWorld};
+            networkInfo.WaitWorld += WaitWorld;
+            return networkInfo;
         }
     }
 }

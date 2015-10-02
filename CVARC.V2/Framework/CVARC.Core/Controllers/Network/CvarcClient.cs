@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace CVARC.V2
 {
@@ -12,7 +13,7 @@ namespace CVARC.V2
 
 		public bool EnableDebug { get; set; }
         const byte EndLine = (byte)'\n';
-        public readonly TcpClient client;
+        readonly TcpClient client;
         public CvarcClient(TcpClient client)
         {
             this.client = client;
@@ -47,6 +48,8 @@ namespace CVARC.V2
             var read = new List<byte>();
             while (true)
             {
+                while (client.Available == 0)
+                    Thread.Sleep(1);
 				if (externallyClosed)
 					throw new Exception("The connection was terminated");
                 var length = client.Client.Receive(buffer);

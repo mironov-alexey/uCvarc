@@ -6,7 +6,7 @@ namespace Assets
 {
     public interface IRunner : IDisposable
     {
-        IWorld CreateWorld();
+        void InitializeWorld();
         IWorld World { get; }
         string Name { get; }
         bool CanStart { get; }

@@ -29,7 +29,7 @@ public partial class RoundScript : MonoBehaviour
         CameraCreator();
         ScoresFieldsCreator();
 
-        world = Dispatcher.currentRunner.World;
+        world = Dispatcher.CurrentRunner.World;
         if (world != null)
             Debugger.Log(DebuggerMessageType.Unity, "World loaded");
         else

@@ -38,13 +38,11 @@ namespace Assets
             CanInterrupt = true;
         }
 
-        public IWorld CreateWorld()
+        public void InitializeWorld()
         {
             if (World != null)
-                return World;
-
+                return;
             World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
-            return World;
         }
 
         public void Dispose()

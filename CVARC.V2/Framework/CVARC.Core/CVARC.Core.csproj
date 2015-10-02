@@ -90,11 +90,13 @@
     <Compile Include="Loading\Competitions\LogicPartHelper.cs" />
     <Compile Include="Loading\Configuration\IWorldState.cs" />
     <Compile Include="Loading\ControllerFactory\TournamentControllerFactory.cs" />
+    <Compile Include="Loading\Loader\INetworkData.cs" />
     <Compile Include="Loading\Loader\Loader.Levels.cs" />
     <Compile Include="Debugger.cs" />
     <Compile Include="Loading\Loader\Loader.SelfTest.cs" />
     <Compile Include="Loading\Loader\Loader.SoloNetwork.cs" />
     <Compile Include="Loading\Loader\Loader.SimpleMode.cs" />
+    <Compile Include="Loading\Loader\NetworkData.cs" />
     <Compile Include="Loading\Loader\NetworkServerData.cs" />
     <Compile Include="Client\MSAsserter.cs" />
     <Compile Include="Clocks\ControlTrigger.cs" />

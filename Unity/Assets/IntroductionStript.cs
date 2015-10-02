@@ -144,7 +144,7 @@ public class IntroductionStript : MonoBehaviour
         GUILayout.Space(10);
         MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
         GUILayout.Space(10);
-        MenuButton(button, "TUTORIAL", Color.blue, () => Dispatcher.Queue.Enqueue(new TutorialRunner(new LoadingData() { AssemblyName = "RoboMovies", Level = "Test" })));
+        MenuButton(button, "TUTORIAL", Color.blue, () => Dispatcher.AddRunner(new TutorialRunner(new LoadingData() { AssemblyName = "RoboMovies", Level = "Test" })));
 
         GUI.color = preColor;
         GUILayout.EndVertical();
