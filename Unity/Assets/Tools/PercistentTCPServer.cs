@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using CVARC.V2;
@@ -10,9 +9,7 @@ namespace Assets
     public class PercistentTCPServer
     {
         int port;
-        bool exitRequest = false;
-        public event Action<CvarcClient> ClientConnected;
-        public Action<string> Printer;
+        bool exitRequest;
 
         public PercistentTCPServer(int port)
         {
@@ -21,8 +18,7 @@ namespace Assets
 
         void Print(string str)
         {
-            if (Printer != null)
-                Printer(str);
+             Debugger.Log(DebuggerMessageType.Unity, str);
         }
 
         public void RequestExit()
@@ -45,7 +41,7 @@ namespace Assets
                         if (cvarcClient != null)
                             cvarcClient.Close();
                         listner.Stop();
-                        Print("Exited");
+                        Print("Server Exited");
                         return;
                     }
                     Thread.Sleep(1);
@@ -55,8 +51,7 @@ namespace Assets
                 if (cvarcClient != null)
                     cvarcClient.Close(); // этот метод должен внутри CvarcClient устанавливать флаг, при котором цикл внутри Read заканчивается исключением
                 cvarcClient = new CvarcClient(client);
-                if (ClientConnected != null)
-                    ClientConnected(cvarcClient);
+                Dispatcher.AddRunner(new NetworkRunner(cvarcClient));
             }
         }
     }

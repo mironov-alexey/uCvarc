@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using System;
 using CVARC.V2;
 using RoboMovies;
 using UnityEngine;
@@ -13,6 +13,7 @@ public static class Dispatcher
     static bool isGameOver;
     static PercistentTCPServer server;
     static bool switchingScenes;
+
 
     public static void Start()
     {
@@ -30,23 +31,8 @@ public static class Dispatcher
         Loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
 
         server = new PercistentTCPServer(14000);
-        server.ClientConnected += ClientConnected;
-        server.Printer = str => Debugger.Log(DebuggerMessageType.Unity, "FROM SERVER: " + str);
-        new Thread(() => server.StartThread()).Start();
-    }
-
-    static void ClientConnected(CvarcClient client)
-    {
-        //временно. тут нужно бы определить, какой раннер создавать.
-        //или, если тсп сервер используется только для создания нетворкРаннера, 
-        //запихать это прямо тудa и отказаться от использования события.
-        queue.EnqueueRunner(new NetworkRunner(client));
-    }
-
-    static void SwitchScene(string sceneName)
-    {
-        switchingScenes = true;
-        Application.LoadLevel(sceneName);
+        Action serverAction = () => server.StartThread();
+        serverAction.BeginInvoke(null, null);
     }
 
     public static void AddRunner(IRunner runner)
@@ -108,5 +94,11 @@ public static class Dispatcher
     public static void SetGameOver()
     {
         isGameOver = true;
+    }
+
+    static void SwitchScene(string sceneName)
+    {
+        switchingScenes = true;
+        Application.LoadLevel(sceneName);
     }
 }
