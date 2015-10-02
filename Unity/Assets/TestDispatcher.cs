@@ -71,8 +71,12 @@ namespace Assets
 
         static NetworkData MakeServerInfo(LoadingData data)
         {
-            var networkInfo = new NetworkData() { Port = UnityConstants.SoloNetworkPort, LoadingData = data, WaitWorld = WaitWorld};
-            networkInfo.WaitWorld += WaitWorld;
+            var networkInfo = new NetworkData
+            {
+                Port = UnityConstants.SoloNetworkPort, 
+                LoadingData = data, 
+                WaitWorld = WaitWorld
+            };
             return networkInfo;
         }
     }

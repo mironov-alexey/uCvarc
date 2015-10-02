@@ -92,7 +92,7 @@ public class IntroductionStript : MonoBehaviour
         if (Event.current.type == EventType.repaint)
         {
             GUI.color = new Color(preColor.r, preColor.g, preColor.b, 10);
-            GUI.DrawTexture(new Rect(0.0f, 0.0f, Screen.width, Screen.height), background);
+            //GUI.DrawTexture(new Rect(0.0f, 0.0f, Screen.width, Screen.height), background);
         }
         GUI.color = new Color(preColor.r, preColor.g, preColor.b, 10);
         Rect menuRect = new Rect(

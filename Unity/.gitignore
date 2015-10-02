@@ -13,6 +13,7 @@ Assets/UnityVS/*
 # ===================== #
 Assets/CVARC Assets/*
 /log.txt
+GameLogs/*
 
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
