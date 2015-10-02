@@ -47,6 +47,7 @@ public class IntroductionStript : MonoBehaviour
     private Texture background; //то, что будет на заднем фоне
     private int competitionIndex;
     private bool isPressedTests = false;
+    public string logFile;
 
     private Vector2 scrollViewVector = Vector2.zero;
 
@@ -91,7 +92,7 @@ public class IntroductionStript : MonoBehaviour
         if (Event.current.type == EventType.repaint)
         {
             GUI.color = new Color(preColor.r, preColor.g, preColor.b, 10);
-            //GUI.DrawTexture(new Rect(0.0f, 0.0f, Screen.width, Screen.height), background);
+            GUI.DrawTexture(new Rect(0.0f, 0.0f, Screen.width, Screen.height), background);
         }
         GUI.color = new Color(preColor.r, preColor.g, preColor.b, 10);
         Rect menuRect = new Rect(
@@ -101,7 +102,7 @@ public class IntroductionStript : MonoBehaviour
             kMenuHeight - 35
         );
 
-        //GUI.DrawTexture(menuRect, menuBackground);
+        GUI.DrawTexture(menuRect, menuBackground);
 
         var tests = Dispatcher.Loader.Levels[ASSEMBLY_NAME]["Test"]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
         LoadingData data = new LoadingData();
@@ -144,7 +145,12 @@ public class IntroductionStript : MonoBehaviour
         GUILayout.Space(10);
         MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
         GUILayout.Space(10);
-        MenuButton(button, "TUTORIAL", Color.blue, () => Dispatcher.AddRunner(new TutorialRunner(new LoadingData() { AssemblyName = "RoboMovies", Level = "Test" })));
+        MenuButton(button, "TUTORIAL", Color.white, () => Dispatcher.AddRunner(new TutorialRunner(data)));
+        GUILayout.Space(10);
+        logFile = TestField(logFile);
+        GUILayout.Space(10);
+        MenuButton(button, "Log play", Color.white, () => Dispatcher.AddRunner(new LogRunner(logFile)));
+
 
         GUI.color = preColor;
         GUILayout.EndVertical();
@@ -186,16 +192,23 @@ public class IntroductionStript : MonoBehaviour
                 }
                 break;
             case EventType.Repaint:
-                //                GUI.DrawTexture(rect, icon);
+                GUI.DrawTexture(rect, icon);
                 var col = GUI.color;
                 GUI.color = color;
-                GUI.TextField(rect, text);
+                GUI.Label(rect, text);
                 GUI.color = col;
                 break;
         }
 
         //GUILayout.FlexibleSpace();
        // GUILayout.EndHorizontal();
+    }
+
+    public static string TestField(string startText)
+    {
+        Rect rect = GUILayoutUtility.GetRect(kButtonWidth, kButtonHeight, GUILayout.Width(kButtonWidth), GUILayout.Height(kButtonHeight));
+
+        return GUI.TextField(rect, startText);
     }
 
     class Folder

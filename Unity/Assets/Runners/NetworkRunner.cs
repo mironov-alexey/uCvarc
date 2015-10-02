@@ -11,12 +11,13 @@ namespace Assets
         readonly IWorldState worldState;
         public string Name { get; private set; } //???
         public IWorld World { get; private set; }
+        public bool CanStart { get; private set; }
+        public bool CanInterrupt { get; private set; }
 
         public NetworkRunner(CvarcClient client)
         {
             this.client = client;
 
-            //code from Loader.RecieveConfiguration and Loader.InitializeWorld
             factory = new SoloNetworkControllerFactory(client);
 
             var configProposal = client.Read<ConfigurationProposal>();
@@ -46,9 +47,7 @@ namespace Assets
             World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
         }
 
-        public bool CanStart {get; private set;}
-
-        public bool CanInterrupt {get; private set;}
+        
 
         public void Dispose()
         {

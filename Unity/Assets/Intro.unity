@@ -125,4 +125,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuBackground: {fileID: 2800000, guid: 444507afc5146b249b5e85273201194b, type: 3}
-  button: {fileID: 2800000, guid: f5569da18632aad4b9555f97982c6fb1, type: 3}
+  button: {fileID: 2800000, guid: 54988868e5334ba45bcbcee2c2194bb4, type: 3}
+  toEdit: Enter name of log file

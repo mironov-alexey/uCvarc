@@ -8,7 +8,6 @@ namespace Assets
         readonly ControllerFactory factory;
         readonly Configuration configuration;
         readonly IWorldState worldState; // откуда?
-
         public IWorld World { get; private set; }
         public string Name { get; private set; }
         public bool CanStart { get; private set; }

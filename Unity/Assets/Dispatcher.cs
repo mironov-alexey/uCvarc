@@ -30,7 +30,7 @@ public static class Dispatcher
         Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
         Loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
 
-        server = new PercistentTCPServer(14000);
+        server = new PercistentTCPServer(UnityConstants.SoloNetworkPort);
         Action serverAction = () => server.StartThread();
         serverAction.BeginInvoke(null, null);
     }
