@@ -10,6 +10,7 @@ namespace Assets
         readonly List<CvarcClient> players;
         readonly int requiredCountOfPlayers;
         readonly Configuration configuration;
+        readonly string[] controllerIds;
         readonly IWorldState worldState;
         NetTournamentControllerFactory factory;
 
@@ -32,11 +33,12 @@ namespace Assets
                 Settings = settings
             };
 
-            Debugger.Log(DebuggerMessageType.Unity, " count of controllers: " + settings.Controllers.Count);
+            controllerIds = competitions.Logic.Actors.Keys.ToArray();
+            requiredCountOfPlayers = controllerIds.Length;
 
-            requiredCountOfPlayers = settings.Controllers.Count(c => c.Type == ControllerType.Client);
-
-            Debugger.Log(DebuggerMessageType.Unity, "created. count: " + requiredCountOfPlayers);
+            Debugger.Log(DebuggerMessageType.Unity, "t.runner created. count: " + requiredCountOfPlayers);
+            if (requiredCountOfPlayers == 0)
+                throw new Exception("requiered count of players cant be 0");
 
             Name = loadingData.AssemblyName + loadingData.Level;//"Tournament";
             CanInterrupt = false;
@@ -56,11 +58,6 @@ namespace Assets
 
         void PrepareStart()
         {
-            var controllerIds = configuration.Settings.Controllers.
-                Where(c => c.Type == ControllerType.Client).
-                Select(c => c.ControllerId).
-                ToList();
-
             var controllersMap = new Dictionary<string, IMessagingClient>();
             for (var i = 0; i < requiredCountOfPlayers; i++)
                 controllersMap.Add(controllerIds[i], players[i]);
