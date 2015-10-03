@@ -76,6 +76,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\TheBeachBots.General\TheBeachBots.General.csproj">
+      <Project>{cbe94cf5-d6f5-4d7f-a7dd-f6eeedc5f9ca}</Project>
+      <Name>TheBeachBots.General</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\TheBeachBots.KroR\TheBeachBots.KroR.csproj">
+      <Project>{63d6955c-7d95-46c0-ac3f-be69992476fa}</Project>
+      <Name>TheBeachBots.KroR</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Demo\DemoCompetitions.Kror\Demo.Kror.csproj">
       <Project>{b9aaef76-ad12-4593-b665-66db19ad03c8}</Project>
       <Name>Demo.Kror</Name>

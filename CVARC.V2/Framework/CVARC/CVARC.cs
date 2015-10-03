@@ -45,6 +45,7 @@ namespace CVARC.V2
 			loader.AddLevel("RoboMovies", "Level1", () => new RoboMovies.KroR.Level1());
 			loader.AddLevel("RoboMovies", "Level2", () => new RoboMovies.KroR.Level2());
 			loader.AddLevel("RoboMovies", "Level3", () => new RoboMovies.KroR.Level3());
+            loader.AddLevel("TheBeachBots", "TestLevel", () => new TheBeachBots.KroR.TestLevel());
 			loader.AddLevel("Demo", "Demo", () => new Demo.DemoCompetitions());
 			loader.AddLevel("Demo", "DWM", () => new Demo.DWMCompetitions());
             return loader;
