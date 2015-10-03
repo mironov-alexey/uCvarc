@@ -13,7 +13,7 @@ namespace RoboMovies
         public abstract string LevelName { get; }
 
         public TSensorData Configurate(int port, bool isOnLeftSide, 
-            RoboMoviesBots bot = RoboMoviesBots.None, int seed = 0)
+            RoboMoviesBots bot = RoboMoviesBots.Stand, int seed = 0)
         {
             var configuration = new ConfigurationProposal();
             configuration.LoadingData.AssemblyName = "RoboMovies";

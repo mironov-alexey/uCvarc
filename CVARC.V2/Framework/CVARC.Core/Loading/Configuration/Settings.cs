@@ -32,6 +32,9 @@ namespace CVARC.V2
     [Serializable]
     public class Settings : SettingsOrSettingsProposal
     {
+        [DataMember]
+        public Guid Guid { get; set; }
+
         [DataMember] 
         public double TimeLimit { get; set; }
        

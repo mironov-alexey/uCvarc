@@ -3,6 +3,8 @@ using UnityEngine;
 using CVARC.V2;
 using System;
 using System.Collections.Generic;
+using Assets;
+
 
 public class IntroductionStript : MonoBehaviour
 {
@@ -17,12 +19,11 @@ public class IntroductionStript : MonoBehaviour
             Server();
             serverIsRunned = true;
         }
-
     }
 
     void Update()
     {
-        Dispatcher.CheckNetworkClient();
+        Dispatcher.IntroductionTick();
     }
 
     void Server()
@@ -46,6 +47,7 @@ public class IntroductionStript : MonoBehaviour
     private Texture background; //то, что будет на заднем фоне
     private int competitionIndex;
     private bool isPressedTests = false;
+    public string logFile;
 
     private Vector2 scrollViewVector = Vector2.zero;
 
@@ -71,9 +73,9 @@ public class IntroductionStript : MonoBehaviour
     public static Color GetTestColor(string test)
     {
         Color color;
-        if (!Dispatcher.LastTestExecution.ContainsKey(test))
+        if (!TestDispatcher.LastTestExecution.ContainsKey(test))
             color = Color.grey;
-        else if (Dispatcher.LastTestExecution[test])
+        else if (TestDispatcher.LastTestExecution[test])
             color = Color.green;
         else
             color = Color.red;
@@ -100,9 +102,9 @@ public class IntroductionStript : MonoBehaviour
             kMenuHeight - 35
         );
 
-        //GUI.DrawTexture(menuRect, menuBackground);
+        GUI.DrawTexture(menuRect, menuBackground);
 
-        var tests = Dispatcher.loader.Levels[ASSEMBLY_NAME]["Test"]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
+        var tests = Dispatcher.Loader.Levels[ASSEMBLY_NAME]["Test"]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
         LoadingData data = new LoadingData();
         data.AssemblyName = ASSEMBLY_NAME;
         data.Level = "Test";
@@ -129,7 +131,7 @@ public class IntroductionStript : MonoBehaviour
                 }
                 if (PlayerPrefs.HasKey(test))
                 {
-                    Dispatcher.LastTestExecution[test] = PlayerPrefs.GetInt(test) != 1;
+                    TestDispatcher.LastTestExecution[test] = PlayerPrefs.GetInt(test) != 1;
                 }
                 last.Files.Add(test);
             }
@@ -141,7 +143,14 @@ public class IntroductionStript : MonoBehaviour
         GUILayout.BeginVertical();
         MenuButton(button, "Tests", Color.white, () => { isPressedTests = !isPressedTests; });
         GUILayout.Space(10);
-        MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => Dispatcher.RunOneTest(data, HardcodedTest));
+        MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
+        GUILayout.Space(10);
+        MenuButton(button, "TUTORIAL", Color.white, () => Dispatcher.AddRunner(new TutorialRunner(data)));
+        GUILayout.Space(10);
+        logFile = TestField(logFile);
+        GUILayout.Space(10);
+        MenuButton(button, "Log play", Color.white, () => Dispatcher.AddRunner(new LogRunner(logFile)));
+
 
         GUI.color = preColor;
         GUILayout.EndVertical();
@@ -151,7 +160,7 @@ public class IntroductionStript : MonoBehaviour
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            MenuButton(button, "Run all tests", Color.white, () => Dispatcher.RunAllTests(data));
+            MenuButton(button, "Run all tests", Color.white, () => TestDispatcher.RunAllTests(data));
             GUILayout.Space(20);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -183,16 +192,23 @@ public class IntroductionStript : MonoBehaviour
                 }
                 break;
             case EventType.Repaint:
-                //                GUI.DrawTexture(rect, icon);
+                GUI.DrawTexture(rect, icon);
                 var col = GUI.color;
                 GUI.color = color;
-                GUI.TextField(rect, text);
+                GUI.Label(rect, text);
                 GUI.color = col;
                 break;
         }
 
         //GUILayout.FlexibleSpace();
        // GUILayout.EndHorizontal();
+    }
+
+    public static string TestField(string startText)
+    {
+        Rect rect = GUILayoutUtility.GetRect(kButtonWidth, kButtonHeight, GUILayout.Width(kButtonWidth), GUILayout.Height(kButtonHeight));
+
+        return GUI.TextField(rect, startText);
     }
 
     class Folder
@@ -228,8 +244,8 @@ public class IntroductionStript : MonoBehaviour
                     {
                         GUILayout.BeginHorizontal();
                             GUILayout.Label("", GUILayout.Width(shift + 10));
-                            MenuButton(button, ((string)test).Split('_').Last(), GetTestColor((string)test), () => { 
-                                Dispatcher.RunOneTest(data, (string)test);
+                            MenuButton(button, ((string)test).Split('_').Last(), GetTestColor((string)test), () => {
+                                TestDispatcher.RunOneTest(data, (string)test);
                                 PlayerPrefs.SetInt((string)test, (GetTestColor((string)test) == Color.green) ? 1 : 0);
                             });
                         GUILayout.EndHorizontal();

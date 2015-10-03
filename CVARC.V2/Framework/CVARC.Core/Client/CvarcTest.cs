@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-
-namespace CVARC.V2
+﻿namespace CVARC.V2
 {
     public abstract class CvarcTest<TSensorData,TCommand,TWorld, TWorldState> : ICvarcTest
         where TSensorData : class
@@ -14,7 +8,7 @@ namespace CVARC.V2
         public abstract TWorldState GetWorldState();
         public abstract void Test(CvarcClient<TSensorData, TCommand> client, TWorld world, IAsserter asserter);
      
-        public void Run(NetworkServerData holder, IAsserter asserter)
+        public void Run(INetworkData holder, IAsserter asserter)
         {
             var client=new CvarcClient<TSensorData,TCommand>();
             var configurationProposal = new ConfigurationProposal
