@@ -8,17 +8,19 @@ namespace Assets
 {
     public class PercistentTCPServer
     {
-        int port;
+        readonly int port;
+        readonly bool tournamentMode;
         bool exitRequest;
 
-        public PercistentTCPServer(int port)
+        public PercistentTCPServer(int port, bool tournamentMode)
         {
             this.port = port;
+            this.tournamentMode = tournamentMode;
         }
 
         void Print(string str)
         {
-             Debugger.Log(DebuggerMessageType.Unity, str);
+             Debugger.Log(DebuggerMessageType.Unity, (tournamentMode ? "tournament server: " : "network server: ") + str);
         }
 
         public void RequestExit()
@@ -31,15 +33,12 @@ namespace Assets
             Print("Server started");
             var listner = new TcpListener(IPAddress.Any, port);
             listner.Start();
-            CvarcClient cvarcClient = null;
             while (true)
             {
                 while (!listner.Pending())
                 {
                     if (exitRequest)
                     {
-                        if (cvarcClient != null)
-                            cvarcClient.Close();
                         listner.Stop();
                         Print("Server Exited");
                         return;
@@ -48,10 +47,11 @@ namespace Assets
                 }
                 var client = listner.AcceptTcpClient();
                 Print("Client accepted");
-                if (cvarcClient != null)
-                    cvarcClient.Close(); // этот метод должен внутри CvarcClient устанавливать флаг, при котором цикл внутри Read заканчивается исключением
-                cvarcClient = new CvarcClient(client);
-                Dispatcher.AddRunner(new NetworkRunner(cvarcClient));
+                var cvarcClient = new CvarcClient(client);
+                if (tournamentMode)
+                    TournamentPool.AddPlayerToPool(cvarcClient);
+                else
+                    Dispatcher.AddRunner(new NetworkRunner(cvarcClient));
             }
         }
     }

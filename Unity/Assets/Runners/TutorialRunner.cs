@@ -8,6 +8,7 @@ namespace Assets
         readonly ControllerFactory factory;
         readonly Configuration configuration;
         readonly IWorldState worldState; // откуда?
+
         public IWorld World { get; private set; }
         public string Name { get; private set; }
         public bool CanStart { get; private set; }
@@ -39,14 +40,14 @@ namespace Assets
 
         public void InitializeWorld()
         {
-            if (World != null)
-                return;
-            World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
+            if (World == null)
+                World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
         }
 
         public void Dispose()
         {
-            World.OnExit();
+            if (World != null)
+                World.OnExit();
         }
     }
 }

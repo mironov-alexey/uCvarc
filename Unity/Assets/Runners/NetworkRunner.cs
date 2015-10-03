@@ -9,10 +9,12 @@ namespace Assets
         readonly Configuration configuration;
         readonly ControllerFactory factory;
         readonly IWorldState worldState;
-        public string Name { get; private set; } //???
+
+        public string Name { get; private set; }
         public IWorld World { get; private set; }
         public bool CanStart { get; private set; }
         public bool CanInterrupt { get; private set; }
+
 
         public NetworkRunner(CvarcClient client)
         {
@@ -42,12 +44,9 @@ namespace Assets
 
         public void InitializeWorld()
         {
-            if (World != null)
-                return;
-            World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
+            if (World == null)
+                World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
         }
-
-        
 
         public void Dispose()
         {
