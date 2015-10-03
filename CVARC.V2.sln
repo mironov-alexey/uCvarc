@@ -53,9 +53,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboMovies.Client", "CVARC.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TheBeachBots", "TheBeachBots", "{A1F02ECD-6E37-49F8-B662-D53981656B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBeachBots.General", "TheBeachBots.General\TheBeachBots.General.csproj", "{CBE94CF5-D6F5-4D7F-A7DD-F6EEEDC5F9CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBeachBots.General", "CVARC.V2\TheBeachBots\TheBeachBots\TheBeachBots.General.csproj", "{CBE94CF5-D6F5-4D7F-A7DD-F6EEEDC5F9CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBeachBots.KroR", "TheBeachBots.KroR\TheBeachBots.KroR.csproj", "{63D6955C-7D95-46C0-AC3F-BE69992476FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBeachBots.KroR", "CVARC.V2\TheBeachBots\TheBeachBots.KroR\TheBeachBots.KroR.csproj", "{63D6955C-7D95-46C0-AC3F-BE69992476FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

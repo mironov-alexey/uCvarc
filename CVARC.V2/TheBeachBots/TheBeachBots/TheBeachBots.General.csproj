@@ -60,7 +60,7 @@
     <Compile Include="Settings\TBBWorldState.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CVARC.V2\Framework\CVARC.Core\CVARC.Core.csproj">
+    <ProjectReference Include="..\..\Framework\CVARC.Core\CVARC.Core.csproj">
       <Project>{f7b5021f-09e8-4388-97a2-4b44b9770d03}</Project>
       <Name>CVARC.Core</Name>
     </ProjectReference>

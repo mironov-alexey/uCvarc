@@ -47,15 +47,15 @@
     <Compile Include="TBBWorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CVARC.V2\Framework\CVARC.Core\CVARC.Core.csproj">
+    <ProjectReference Include="..\..\Framework\CVARC.Core\CVARC.Core.csproj">
       <Project>{f7b5021f-09e8-4388-97a2-4b44b9770d03}</Project>
       <Name>CVARC.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CVARC.V2\Framework\CVARC.Engine.KR\CVARC.KroR.csproj">
+    <ProjectReference Include="..\..\Framework\CVARC.Engine.KR\CVARC.KroR.csproj">
       <Project>{1c435b15-949f-420b-b5d5-f433439fb69c}</Project>
       <Name>CVARC.KroR</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TheBeachBots.General\TheBeachBots.General.csproj">
+    <ProjectReference Include="..\TheBeachBots\TheBeachBots.General.csproj">
       <Project>{cbe94cf5-d6f5-4d7f-a7dd-f6eeedc5f9ca}</Project>
       <Name>TheBeachBots.General</Name>
     </ProjectReference>
