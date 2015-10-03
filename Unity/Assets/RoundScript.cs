@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Assets;
-using System;
 using CVARC.V2;
 using AIRLab;
 
@@ -14,7 +13,6 @@ public partial class RoundScript : MonoBehaviour
     GUIText scoresTextRight;
     GameObject myCamera;
     public GameObject cubePref; // Эти поля -- прототипы, к ним самим обращаться не получится.
-    bool worldRunning = true;
     bool worldPrepearedToExit;
     float curWorldTime;
     float timeOnStartSession;
@@ -23,21 +21,20 @@ public partial class RoundScript : MonoBehaviour
 
     void Start()
     {
+        Dispatcher.RoundStart();
+
         timeOnStartSession = Time.fixedTime;
         curWorldTime = 0;
         Behaviour = this;
         CameraCreator();
         ScoresFieldsCreator();
-        try
-        {
-            world = Dispatcher.InitializeWorld();
-            Debugger.Log(DebuggerMessageType.Unity,"World loaded");
-        }
-        catch(Exception e)
-        {
-            Debugger.Log(DebuggerMessageType.Unity,"Fail");
-            Debugger.Log(DebuggerMessageType.Unity,e.Message);
-        }
+
+        world = Dispatcher.CurrentRunner.World;
+        if (world != null)
+            Debugger.Log(DebuggerMessageType.Unity, "World loaded");
+        else
+            Debugger.Log(DebuggerMessageType.Unity, "Fail. World not loaded");
+
         CollisionInfo = new Tuple<string, string, int>(null, null, 0);
         Time.timeScale = 1; // вот почему так?
         //в момент повторного запуска время уже не нулевое
@@ -45,17 +42,15 @@ public partial class RoundScript : MonoBehaviour
 
     void Update()
     {
-        if (!worldRunning) return;
-        
+        Dispatcher.RoundTick();
+
         if (curWorldTime > 30)
         {
             Debugger.Log(DebuggerMessageType.Unity,"Time is Up");
-            Dispatcher.SetExpectedExit();
-            world.OnExit();
+            Dispatcher.SetGameOver();
             return;
         }
-        Dispatcher.CheckNetworkClient();
-
+        
         if (CollisionInfo.Item3 == 2)
         {
             ((UEngine)world.Engine).CollisionSender(CollisionInfo.Item1, CollisionInfo.Item2);

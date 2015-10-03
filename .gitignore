@@ -7,3 +7,5 @@ Thumbs.db
 /CVARC.sln.DotSettings.user
 /packages
 /.nuget
+
+# all unity ignores in Unity/.gitignore

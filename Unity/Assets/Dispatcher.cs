@@ -1,29 +1,19 @@
-﻿using CVARC.V2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Assets;
-using UnityEngine;
+﻿using System.Threading;
+using CVARC.V2;
 using RoboMovies;
+using UnityEngine;
+using Assets;
 
 
-class Dispatcher
+public static class Dispatcher
 {
-    public static Loader loader { get; private set; }
-    //Данные уже установленного соединения
-    static NetworkServerData loadedNetworkServerData = null;
-    //Данные соединения, которое еще не установлено. 
-    public static NetworkServerData WaitingNetworkServer { get; private set; }
-    //Делегат, который запустит мир, определенный очередным клиентом.
-    static Func<IWorld> WorldInitializer;
-    static bool ExpectedExit;
-    static public bool TestMode = false;
-    static readonly List<Thread> Threads = new List<Thread>();
+    public static Loader Loader { get; private set; }
+    static readonly RunnersQueue queue = new RunnersQueue();
+    public static IRunner CurrentRunner { get; private set; }
+    static bool isGameOver;
     static PercistentTCPServer server;
-    public static readonly Dictionary<string, bool> LastTestExecution = new Dictionary<string, bool>();
+    static bool switchingScenes;
 
-    //Этот метод нужно вызвать ровно один раз навсегда! для этого завести флаг.
     public static void Start()
     {
         Debugger.DisableByDefault = true;
@@ -33,170 +23,90 @@ class Dispatcher
         Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
         Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
         Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
-        Debugger.Logger = s => Debug.Log(s);
-        loader = new Loader();
-        loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
-        loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
+        Debugger.Logger = Debug.Log;
 
-        RenewWaitingNetworkServer();
-        //создает PercistentServer и подписываемся на его событие
+        Loader = new Loader();
+        Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
+        Loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
+
         server = new PercistentTCPServer(14000);
         server.ClientConnected += ClientConnected;
-        server.Printer = str => Debugger.Log(DebuggerMessageType.Unity,"FROM SERVER: " + str);
-        RunThread(server.StartThread, "Server");
-    }
-
-    //Запускать трэды надо не руками, а через этот метод! Это касается тестов в первую очередь.
-    public static void RunThread(Action action, string name)
-    {
-        var thread = new Thread(new ThreadStart(action)) { IsBackground = true, Name = name };
-        Threads.Add(thread);
-        thread.Start();
-    }
-
-    public static void KillThreads()
-    {
-        foreach (var thread in Threads)
-        {
-            if (thread.IsAlive)
-            {
-                Debugger.Log(DebuggerMessageType.Unity, "THREAD WARN: thread " + thread.Name + " not closed yet. I'll kill it");
-                thread.Abort();
-            }
-        }
-    }
-
-    public static void RunOneTest(LoadingData data, string testName)
-    {
-        Debugger.Log( DebuggerMessageType.Unity, "Starting test "+testName);
-        var test = loader.GetTest(data, testName);
-        var asserter = new UnityAsserter(testName);
-        WaitingNetworkServer.LoadingData = data;
-        Action action = () =>
-        {
-            ExecuteTest(testName, test, asserter);
-        };
-        RunThread(action, "test thread");
-    }
-
-    static void ExecuteTest(string testName, ICvarcTest test, UnityAsserter asserter)
-    {
-        try
-        {
-            test.Run(WaitingNetworkServer, asserter);
-        }
-        catch (Exception e)
-        {
-            asserter.Fail(e.GetType().Name + " " + e.Message);
-        }
-        asserter.DebugOkMessage();
-        lock (LastTestExecution)
-        {
-            LastTestExecution[testName] = !asserter.Failed;
-        }
-    }
-
-    public static void RunAllTests(LoadingData data)
-    {
-        var competitions = loader.GetCompetitions(data);
-        var testsNames = competitions.Logic.Tests.Keys.ToArray();
-        
-        Action runOneTest = () => 
-            {
-                Debugger.Log(DebuggerMessageType.Unity, "staring tests");
-                foreach(var testName in testsNames)
-                {
-                    var asserter = new UnityAsserter(testName);
-                    Debugger.Log(DebuggerMessageType.Unity,"Test is ready");
-                    WaitingNetworkServer.LoadingData = data;
-                    var test = loader.GetTest(data, testName);
-                    ExecuteTest(testName, test, asserter);
-                }
-            };
-        
-        RunThread(runOneTest, "test runner");
-    }
-
-    //Подготавливает диспетчер к приему нового клиента.
-    static void RenewWaitingNetworkServer()
-    {
-        WaitingNetworkServer = new NetworkServerData { Port = 14000 };
-        WaitingNetworkServer.ServerLoaded = true;
+        server.Printer = str => Debugger.Log(DebuggerMessageType.Unity, "FROM SERVER: " + str);
+        new Thread(() => server.StartThread()).Start();
     }
 
     static void ClientConnected(CvarcClient client)
     {
-        RunThread(() =>
-            {
-                WaitingNetworkServer.ClientOnServerSide = client;
-                loader.ReceiveConfiguration(WaitingNetworkServer);
-                loadedNetworkServerData = WaitingNetworkServer; // сигнал того, что мир готов к созданию.
-                RenewWaitingNetworkServer(); // а это мы делаем, чтобы следующее подключение удалось.
-                // создавать его прямо здесь нельзя, потому что другой трэд
-            }, "Connection");
+        //временно. тут нужно бы определить, какой раннер создавать.
+        //или, если тсп сервер используется только для создания нетворкРаннера, 
+        //запихать это прямо тудa и отказаться от использования события.
+        queue.EnqueueRunner(new NetworkRunner(client));
     }
 
-
-    
-    // этот метод означает, что можно создавать мир
-    public static void WorldPrepared(Func<IWorld> worldInitializer)
+    static void SwitchScene(string sceneName)
     {
-        //устанавливаем инициализатор
-        WorldInitializer = worldInitializer;
-        SetExpectedExit();
-        //переключаемся на уровень. Этот уровень в старте позовет метод InitializeWorld ...
-        Application.LoadLevel("Round");
-
+        switchingScenes = true;
+        Application.LoadLevel(sceneName);
     }
 
-    // .. и в этом методе мы завершим инициализацию
-    public static IWorld InitializeWorld()
+    public static void AddRunner(IRunner runner)
     {
-        var world = WorldInitializer();
-        world.Exit += Exited;
-        return world;
+        queue.EnqueueRunner(runner);
     }
 
-
-    static void Exited()
+    public static void IntroductionTick()
     {
-        Application.LoadLevel("Intro");
-        Debugger.Log(DebuggerMessageType.Unity,"local exit");
+        if (queue.HasReadyRunner())
+            SwitchScene("Round");
     }
 
-    //Запускать из Intro по типа таймеру
-    public static void CheckNetworkClient()
+    public static void RoundStart()
     {
+        CurrentRunner = queue.DequeueReadyRunner();
+        isGameOver = false;
+        CurrentRunner.InitializeWorld();
+    }
 
-        if (loadedNetworkServerData != null)
+    public static void RoundTick()
+    {
+        // конец игры
+        if (isGameOver && CurrentRunner != null)
         {
-            Func<IWorld> worldInitializer = () =>
-            {
-                loader.InstantiateWorld(loadedNetworkServerData);
-                var world = loadedNetworkServerData.World;
-                loadedNetworkServerData = null;
-                return world;
-            };
-            WorldPrepared(worldInitializer);
+            Debug.Log("game over. disposing");
+            CurrentRunner.Dispose();
+            CurrentRunner = null;
         }
+
+        if (CurrentRunner == null)
+        {
+            // очищение, или переход в начало
+            SwitchScene(queue.HasReadyRunner() ? "Round" : "Intro");
+            return;
+        }
+
+        // прерывание
+        if (queue.HasReadyRunner() && CurrentRunner.CanInterrupt)
+            SetGameOver();
     }
 
+    // самый ГЛОБАЛЬНЫЙ выход, из всей юнити. Вызывается из сцен.
     public static void OnDispose()
     {
-        if (!ExpectedExit)
+        if (switchingScenes)
         {
-            server.RequestExit();
-            Thread.Sleep(100);
-            KillThreads();
-            Debugger.Log(DebuggerMessageType.Unity,"GLOBAL exit");
+            switchingScenes = false;
+            return;
         }
-        else
-            ExpectedExit = false;
+
+        Debug.Log("GLOBAL EXIT");
+        server.RequestExit();
+        if (CurrentRunner != null)
+            CurrentRunner.Dispose();
+        queue.DisposeRunners();
     }
 
-    public static void SetExpectedExit()
+    public static void SetGameOver()
     {
-        ExpectedExit = true;
+        isGameOver = true;
     }
-
 }

@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using CVARC.V2;
 
+
 namespace Assets
 {
     public class PercistentTCPServer
@@ -44,6 +45,7 @@ namespace Assets
                         if (cvarcClient != null)
                             cvarcClient.Close();
                         listner.Stop();
+                        Print("Exited");
                         return;
                     }
                     Thread.Sleep(1);
