@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +49,24 @@
     <Compile Include="Robot\TBBRobot.cs" />
     <Compile Include="Robot\TBBCommand.cs" />
     <Compile Include="Robot\TBBRules.cs" />
+    <Compile Include="Robot\Units\BaseTBBGripper\BaseTBBRules.cs" />
+    <Compile Include="Robot\Units\DoorUnit\DoorUnit.cs" />
+    <Compile Include="Robot\Units\DoorUnit\TriggerUnit.cs" />
+    <Compile Include="Robot\Units\DoorUnit\IDoorUnitCommand.cs" />
+    <Compile Include="Robot\Units\DoorUnit\IDoorUnitRobot.cs" />
+    <Compile Include="Robot\Units\DoorUnit\IDoorOpeningRules.cs" />
+    <Compile Include="Robot\Units\DoorUnit\RulesExtensions.cs" />
+    <Compile Include="Robot\Units\BaseTBBGripper\BaseTBBGripper.cs" />
+    <Compile Include="Robot\Units\FishingRod\IFishingRobot.cs" />
+    <Compile Include="Robot\Units\FishingRod\IFishingCommand.cs" />
+    <Compile Include="Robot\Units\FishingRod\IFishingRules.cs" />
+    <Compile Include="Robot\Units\FishingRod\RulesExtensions.cs" />
+    <Compile Include="Robot\Units\FishingRod\FishingRod.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\SeashellGripper.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\ISeashellGripperRules.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\ISeashellGripperCommand.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\ISeachellRobot.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\RulesExtensions.cs" />
     <Compile Include="Sensors\TBBSensorsData.cs" />
     <Compile Include="Settings\TBBWorldSettings.cs" />
     <Compile Include="Tests\RMTestBase.cs" />
@@ -66,7 +85,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Robot\Units\" />
+    <Folder Include="Robot\Units\SandGripper\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,17 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CVARC.V2;
+using AIRLab.Mathematics;
 
 namespace TheBeachBots
 {
-    class TBBRobot : Robot<ITBBActorManager, TBBWorld, TBBSensorsData, TBBCommand, TBBRules>
+    class TBBRobot : Robot<ITBBActorManager, TBBWorld, TBBSensorsData, TBBCommand, TBBRules>, ITBBRobot
     {
         public SimpleMovementUnit SimpleMovementUnit { get; private set; }
+        public DoorUnit DoorUnit { get; private set; }
+        public SeashellGripper SeashellGripper { get; private set; }
+        public FishingRod FishingRod { get; private set; }
 
         public override IEnumerable<IUnit> Units
         {
             get
             {
+                yield return DoorUnit;
+                yield return FishingRod;
+                yield return SeashellGripper;
                 yield return SimpleMovementUnit;
             }
         }
@@ -24,6 +31,9 @@ namespace TheBeachBots
             base.AdditionalInitialization();
 
             SimpleMovementUnit = new SimpleMovementUnit(this);
-        }
+            DoorUnit = new DoorUnit(this, this.World, new Frame3D(15, 0, 5));
+            SeashellGripper = new SeashellGripper(this, this.World, new Frame3D(15, 0, 5));
+            FishingRod = new FishingRod(this, this.World, new Frame3D(20, 0, 10), 15);
+        }        
     }
 }

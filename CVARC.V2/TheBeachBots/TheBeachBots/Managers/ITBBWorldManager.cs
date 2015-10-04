@@ -25,5 +25,6 @@ namespace TheBeachBots
         void CreateBeachHut(string id, Point2D location, SideColor color);
 
         void CloseBeachHut(string id);
+        void OpenBeachHut(string id);
     }
 }

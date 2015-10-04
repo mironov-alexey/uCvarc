@@ -197,7 +197,13 @@ namespace TheBeachBots.KroR
 
         public void CloseBeachHut(string id)
         {
+            //Engine.GetBody(id).DefaultColor = Color.DarkRed;
             Root.Remove(Engine.GetBody(id));
+        }
+
+        public void OpenBeachHut(string id)
+        {
+            //Engine.GetBody(id).DefaultColor = Color.DarkGreen;
         }
 
         public void CreateRock(Point2D location)
