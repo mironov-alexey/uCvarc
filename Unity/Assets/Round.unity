@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePref: {fileID: 100000, guid: 468b5dc1c9562bf428fc4223d1703650, type: 2}
+  button: {fileID: 2800000, guid: 54988868e5334ba45bcbcee2c2194bb4, type: 3}
 --- !u!4 &1363255885
 Transform:
   m_ObjectHideFlags: 0
@@ -239,5 +240,4 @@ Prefab:
     m_RemovedComponents:
     - {fileID: 11400000, guid: 4eb7bb151304ca349b8cdb0831dba558, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4eb7bb151304ca349b8cdb0831dba558, type: 2}
-  m_RootGameObject: {fileID: 1363255883}
   m_IsPrefabParent: 0
