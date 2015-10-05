@@ -7,7 +7,7 @@ namespace Assets
 {
     public class TournamentRunner : IRunner
     {
-        readonly List<CvarcClient> players;
+        readonly List<TournamentPlayer> players;
         readonly int requiredCountOfPlayers;
         readonly Configuration configuration;
         readonly string[] controllerIds;
@@ -23,7 +23,7 @@ namespace Assets
         public TournamentRunner(LoadingData loadingData, IWorldState worldState)
         {
             this.worldState = worldState;
-            players = new List<CvarcClient>();
+            players = new List<TournamentPlayer>();
 
             var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
             var settings = competitions.Logic.CreateDefaultSettings();
@@ -33,7 +33,19 @@ namespace Assets
                 Settings = settings
             };
 
+            //я игнорирую конфиги. надо хотя бы имя сохранять в метод "add player"
+
             controllerIds = competitions.Logic.Actors.Keys.ToArray();
+
+            foreach (var controller in controllerIds
+                .Select(x => new ControllerSettings
+                {
+                    ControllerId = x,
+                    Type = ControllerType.Client,
+                    Name = settings.Name
+                }))
+                settings.Controllers.Add(controller);
+
             requiredCountOfPlayers = controllerIds.Length;
 
             Debugger.Log(DebuggerMessageType.Unity, "t.runner created. count: " + requiredCountOfPlayers);
@@ -45,11 +57,11 @@ namespace Assets
             CanStart = false;
         }
 
-        public bool AddPlayerAndCheck(CvarcClient client)
+        public bool AddPlayerAndCheck(TournamentPlayer player)
         {
             if (players.Count == requiredCountOfPlayers)
                 throw new Exception("already started");
-            players.Add(client);
+            players.Add(player);
             if (players.Count != requiredCountOfPlayers) 
                 return false;
             PrepareStart();
@@ -60,7 +72,7 @@ namespace Assets
         {
             var controllersMap = new Dictionary<string, IMessagingClient>();
             for (var i = 0; i < requiredCountOfPlayers; i++)
-                controllersMap.Add(controllerIds[i], players[i]);
+                controllersMap.Add(controllerIds[i], players[i].client);
             factory = new NetTournamentControllerFactory(controllersMap);
 
             CanStart = true;
@@ -75,7 +87,7 @@ namespace Assets
         public void Dispose()
         {
             foreach (var cvarcClient in players)
-                cvarcClient.Close();
+                cvarcClient.client.Close();
 
             if (World != null)
                 World.OnExit();

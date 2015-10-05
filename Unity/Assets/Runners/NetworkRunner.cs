@@ -34,6 +34,9 @@ namespace Assets
                 Settings = settings
             };
 
+            //configuration.Settings.EnableLog = true;
+            //configuration.Settings.LogFile = UnityConstants.LogFolderRoot + "cvarclog1";
+
             var worldSettingsType = competitions.Logic.WorldStateType;
             worldState = (IWorldState)client.Read(worldSettingsType);
 

@@ -31,7 +31,8 @@ namespace Assets
             else
                 this.configuration = configuration;
 
-            this.worldState = worldState ?? competitions.Logic.CreateWorldState("0"); // lol
+            this.worldState = worldState ?? competitions.Logic.CreateWorldState(competitions.Logic.PredefinedWorldStates[0]);
+            //this.worldState = worldState ?? competitions.Logic.CreateWorldState("0"); // lol
 
             Name = "Tutorial";
             CanStart = true;

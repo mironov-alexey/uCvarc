@@ -126,4 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuBackground: {fileID: 2800000, guid: 4e0717c92cfbb0d4bbe2b7ba6b2acded, type: 3}
   button: {fileID: 2800000, guid: 54988868e5334ba45bcbcee2c2194bb4, type: 3}
-  logFile: Enter name of log file
+  logFile: cvarclog1

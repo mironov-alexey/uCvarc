@@ -78,8 +78,8 @@ namespace Assets
         {
             var networkInfo = new NetworkData
             {
-                Port = UnityConstants.SoloNetworkPort, 
-                LoadingData = data, 
+                Port = UnityConstants.SoloNetworkPort,
+                LoadingData = data,
                 WaitWorld = WaitWorld
             };
             return networkInfo;
