@@ -33,7 +33,7 @@ namespace CVARC.V2
     public class Settings : SettingsOrSettingsProposal
     {
         [DataMember]
-        public Guid Guid { get; set; }
+        public string Name { get; set; }
 
         [DataMember] 
         public double TimeLimit { get; set; }

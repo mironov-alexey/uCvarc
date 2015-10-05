@@ -12,8 +12,8 @@ public static class Dispatcher
     public static bool UnityShutdown { get; private set; }
     static readonly RunnersQueue queue = new RunnersQueue();
     static bool isGameOver;
-    static PercistentTCPServer networkServer;
-    static PercistentTCPServer torunamentServer;
+    static UnityServer networkServer;
+    static UnityServer torunamentServer;
     static bool switchingScenes;
 
 
@@ -32,11 +32,11 @@ public static class Dispatcher
         Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
         Loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
 
-        networkServer = new PercistentTCPServer(UnityConstants.SoloNetworkPort, false);
+        networkServer = new SoloNetworkServer(UnityConstants.SoloNetworkPort);
         Action networkServerAction = () => networkServer.StartThread();
         networkServerAction.BeginInvoke(null, null);
 
-        torunamentServer = new PercistentTCPServer(UnityConstants.TournamentPort, true);
+        torunamentServer = new TournamentServer(UnityConstants.TournamentPort);
         Action tournamentServerAction = () => torunamentServer.StartThread();
         tournamentServerAction.BeginInvoke(null, null);
     }

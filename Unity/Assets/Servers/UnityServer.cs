@@ -6,21 +6,17 @@ using CVARC.V2;
 
 namespace Assets
 {
-    public class PercistentTCPServer
+    public abstract class UnityServer
     {
         readonly int port;
-        readonly bool tournamentMode;
         bool exitRequest;
 
-        public PercistentTCPServer(int port, bool tournamentMode)
+        protected abstract void HandleClient(CvarcClient client);
+        protected abstract void Print(string str);
+
+        protected UnityServer(int port)
         {
             this.port = port;
-            this.tournamentMode = tournamentMode;
-        }
-
-        void Print(string str)
-        {
-             Debugger.Log(DebuggerMessageType.Unity, (tournamentMode ? "tournament server: " : "network server: ") + str);
         }
 
         public void RequestExit()
@@ -48,10 +44,7 @@ namespace Assets
                 var client = listner.AcceptTcpClient();
                 Print("Client accepted");
                 var cvarcClient = new CvarcClient(client);
-                if (tournamentMode)
-                    TournamentPool.AddPlayerToPool(cvarcClient);
-                else
-                    Dispatcher.AddRunner(new NetworkRunner(cvarcClient));
+                HandleClient(cvarcClient);
             }
         }
     }

@@ -15,7 +15,8 @@ namespace Assets
             var loadingData = configProposal.LoadingData;
             var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
             var worldSettingsType = competitions.Logic.WorldStateType;
-            var worldState = (IWorldState)client.Read(worldSettingsType); // что с этим делать???
+            var worldState = (IWorldState)client.Read(worldSettingsType); 
+            
 
             lock (pool)
             {
@@ -24,7 +25,7 @@ namespace Assets
                     pool.Add(loadingData, new TournamentRunner(loadingData, worldState));
                     Dispatcher.AddRunner(pool[loadingData]);
                 }
-                if (pool[loadingData].AddPlayerAndCheck(client))
+                if (pool[loadingData].AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
                     pool.Remove(loadingData);
             }
         }

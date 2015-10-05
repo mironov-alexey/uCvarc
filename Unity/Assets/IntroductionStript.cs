@@ -9,6 +9,7 @@ using Assets;
 public class IntroductionStript : MonoBehaviour
 {
     const string ASSEMBLY_NAME = "RoboMovies";
+    //const string ASSEMBLY_NAME = "Demo";
     private bool openWindowTests = false;
     static bool serverIsRunned = false;
 
@@ -65,7 +66,7 @@ public class IntroductionStript : MonoBehaviour
                     kMenuWidth,
                     kMenuHeight),
                 TestsWindow,
-                "Tests");
+                "CVARC Alpha release");
     }
 
     const string HardcodedTest = "Movement_Round_Square";
@@ -143,11 +144,11 @@ public class IntroductionStript : MonoBehaviour
         GUILayout.BeginVertical();
         MenuButton(button, "Tests", Color.white, () => { isPressedTests = !isPressedTests; });
         GUILayout.Space(10);
-        MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
-        GUILayout.Space(10);
+        //MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
+        //GUILayout.Space(10);
         MenuButton(button, "TUTORIAL", Color.white, () => Dispatcher.AddRunner(new TutorialRunner(data)));
         GUILayout.Space(10);
-        logFile = TestField(logFile);
+        logFile = TextField(logFile);
         GUILayout.Space(10);
         MenuButton(button, "Log play", Color.white, () => Dispatcher.AddRunner(new LogRunner(logFile)));
 
@@ -195,6 +196,7 @@ public class IntroductionStript : MonoBehaviour
                 GUI.DrawTexture(rect, icon);
                 var col = GUI.color;
                 GUI.color = color;
+                rect.position = new Vector2(rect.position.x + 10, rect.position.y); // все нормально. это GUI, сынок.
                 GUI.Label(rect, text);
                 GUI.color = col;
                 break;
@@ -204,7 +206,7 @@ public class IntroductionStript : MonoBehaviour
        // GUILayout.EndHorizontal();
     }
 
-    public static string TestField(string startText)
+    public static string TextField(string startText)
     {
         Rect rect = GUILayoutUtility.GetRect(kButtonWidth, kButtonHeight, GUILayout.Width(kButtonWidth), GUILayout.Height(kButtonHeight));
 
