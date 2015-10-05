@@ -11,7 +11,7 @@ namespace Assets
 
         public static void RunOneTest(LoadingData data, string testName)
         {
-            Debugger.Log(DebuggerMessageType.Unity, "Starting test " + testName);
+            Debugger.Log(DebuggerMessageType.UnityTest, "Starting test " + testName);
             var test = Dispatcher.Loader.GetTest(data, testName);
             var asserter = new UnityAsserter(testName);
 
@@ -30,11 +30,16 @@ namespace Assets
 
         static void ExecuteTests(IEnumerable<string> testNames, LoadingData data)
         {
-            Debugger.Log(DebuggerMessageType.Unity, "staring tests");
+            Debugger.Log(DebuggerMessageType.UnityTest, "staring tests");
             foreach (var testName in testNames)
             {
+                if (Dispatcher.UnityShutdown)
+                {
+                    Debugger.Log(DebuggerMessageType.UnityTest, "unity shutdown! stop testing");
+                    break;
+                }
                 var asserter = new UnityAsserter(testName);
-                Debugger.Log(DebuggerMessageType.Unity, "Test is ready");
+                Debugger.Log(DebuggerMessageType.UnityTest, "Test is ready");
                 var test = Dispatcher.Loader.GetTest(data, testName);
                 ExecuteTest(testName, test, asserter, MakeServerInfo(data));
             }
@@ -71,8 +76,12 @@ namespace Assets
 
         static NetworkData MakeServerInfo(LoadingData data)
         {
-            var networkInfo = new NetworkData() { Port = 14000, LoadingData = data, WaitWorld = WaitWorld};
-            networkInfo.WaitWorld += WaitWorld;
+            var networkInfo = new NetworkData
+            {
+                Port = UnityConstants.SoloNetworkPort,
+                LoadingData = data,
+                WaitWorld = WaitWorld
+            };
             return networkInfo;
         }
     }

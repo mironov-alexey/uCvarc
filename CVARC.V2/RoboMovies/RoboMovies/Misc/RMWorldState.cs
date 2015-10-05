@@ -7,6 +7,7 @@ using CVARC.V2;
 
 namespace RoboMovies
 {
+    [Serializable]
     [DataContract]
     public class RMWorldState : IWorldState
     {

@@ -31,7 +31,8 @@ namespace Assets
             else
                 this.configuration = configuration;
 
-            this.worldState = worldState ?? competitions.Logic.CreateWorldState("0"); // lol
+            this.worldState = worldState ?? competitions.Logic.CreateWorldState(competitions.Logic.PredefinedWorldStates[0]);
+            //this.worldState = worldState ?? competitions.Logic.CreateWorldState("0"); // lol
 
             Name = "Tutorial";
             CanStart = true;
@@ -40,14 +41,14 @@ namespace Assets
 
         public void InitializeWorld()
         {
-            if (World != null)
-                return;
-            World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
+            if (World == null)
+                World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
         }
 
         public void Dispose()
         {
-            World.OnExit();
+            if (World != null)
+                World.OnExit();
         }
     }
 }

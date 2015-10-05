@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using System;
 using CVARC.V2;
 using RoboMovies;
 using UnityEngine;
@@ -8,45 +8,37 @@ using Assets;
 public static class Dispatcher
 {
     public static Loader Loader { get; private set; }
-    static readonly RunnersQueue queue = new RunnersQueue();
     public static IRunner CurrentRunner { get; private set; }
+    public static bool UnityShutdown { get; private set; }
+    static readonly RunnersQueue queue = new RunnersQueue();
     static bool isGameOver;
-    static PercistentTCPServer server;
+    static UnityServer networkServer;
+    static UnityServer torunamentServer;
     static bool switchingScenes;
+
 
     public static void Start()
     {
         Debugger.DisableByDefault = true;
         Debugger.EnabledTypes.Add(DebuggerMessageType.Unity);
         Debugger.EnabledTypes.Add(DebuggerMessageType.UnityTest);
-        Debugger.EnabledTypes.Add(RMDebugMessage.WorldCreation);
-        Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
-        Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
-        Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
+        //Debugger.EnabledTypes.Add(RMDebugMessage.WorldCreation);
+        //Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
+        //Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
+        //Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
         Debugger.Logger = Debug.Log;
 
         Loader = new Loader();
         Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
         Loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
 
-        server = new PercistentTCPServer(14000);
-        server.ClientConnected += ClientConnected;
-        server.Printer = str => Debugger.Log(DebuggerMessageType.Unity, "FROM SERVER: " + str);
-        new Thread(() => server.StartThread()).Start();
-    }
+        networkServer = new SoloNetworkServer(UnityConstants.SoloNetworkPort);
+        Action networkServerAction = () => networkServer.StartThread();
+        networkServerAction.BeginInvoke(null, null);
 
-    static void ClientConnected(CvarcClient client)
-    {
-        //временно. тут нужно бы определить, какой раннер создавать.
-        //или, если тсп сервер используется только для создания нетворкРаннера, 
-        //запихать это прямо тудa и отказаться от использования события.
-        queue.EnqueueRunner(new NetworkRunner(client));
-    }
-
-    static void SwitchScene(string sceneName)
-    {
-        switchingScenes = true;
-        Application.LoadLevel(sceneName);
+        torunamentServer = new TournamentServer(UnityConstants.TournamentPort);
+        Action tournamentServerAction = () => torunamentServer.StartThread();
+        tournamentServerAction.BeginInvoke(null, null);
     }
 
     public static void AddRunner(IRunner runner)
@@ -99,14 +91,23 @@ public static class Dispatcher
         }
 
         Debug.Log("GLOBAL EXIT");
-        server.RequestExit();
+        networkServer.RequestExit();
+        torunamentServer.RequestExit();
         if (CurrentRunner != null)
             CurrentRunner.Dispose();
         queue.DisposeRunners();
+
+        UnityShutdown = true;
     }
 
     public static void SetGameOver()
     {
         isGameOver = true;
+    }
+
+    static void SwitchScene(string sceneName)
+    {
+        switchingScenes = true;
+        Application.LoadLevel(sceneName);
     }
 }

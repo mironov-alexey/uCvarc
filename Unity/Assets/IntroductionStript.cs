@@ -9,6 +9,7 @@ using Assets;
 public class IntroductionStript : MonoBehaviour
 {
     const string ASSEMBLY_NAME = "RoboMovies";
+    //const string ASSEMBLY_NAME = "Demo";
     private bool openWindowTests = false;
     static bool serverIsRunned = false;
 
@@ -47,6 +48,7 @@ public class IntroductionStript : MonoBehaviour
     private Texture background; //то, что будет на заднем фоне
     private int competitionIndex;
     private bool isPressedTests = false;
+    public string logFile;
 
     private Vector2 scrollViewVector = Vector2.zero;
 
@@ -64,7 +66,7 @@ public class IntroductionStript : MonoBehaviour
                     kMenuWidth,
                     kMenuHeight),
                 TestsWindow,
-                "Tests");
+                "CVARC Alpha release");
     }
 
     const string HardcodedTest = "Movement_Round_Square";
@@ -101,7 +103,7 @@ public class IntroductionStript : MonoBehaviour
             kMenuHeight - 35
         );
 
-        //GUI.DrawTexture(menuRect, menuBackground);
+        GUI.DrawTexture(menuRect, menuBackground);
 
         var tests = Dispatcher.Loader.Levels[ASSEMBLY_NAME]["Test"]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
         LoadingData data = new LoadingData();
@@ -142,9 +144,14 @@ public class IntroductionStript : MonoBehaviour
         GUILayout.BeginVertical();
         MenuButton(button, "Tests", Color.white, () => { isPressedTests = !isPressedTests; });
         GUILayout.Space(10);
-        MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
+        //MenuButton(button, "Hardcoded: " + HardcodedTest, GetTestColor(HardcodedTest), () => TestDispatcher.RunOneTest(data, HardcodedTest));
+        //GUILayout.Space(10);
+        MenuButton(button, "TUTORIAL", Color.white, () => Dispatcher.AddRunner(new TutorialRunner(data)));
         GUILayout.Space(10);
-        MenuButton(button, "TUTORIAL", Color.blue, () => Dispatcher.AddRunner(new TutorialRunner(new LoadingData() { AssemblyName = "RoboMovies", Level = "Test" })));
+        logFile = TextField(logFile);
+        GUILayout.Space(10);
+        MenuButton(button, "Log play", Color.white, () => Dispatcher.AddRunner(new LogRunner(logFile)));
+
 
         GUI.color = preColor;
         GUILayout.EndVertical();
@@ -186,16 +193,24 @@ public class IntroductionStript : MonoBehaviour
                 }
                 break;
             case EventType.Repaint:
-                //                GUI.DrawTexture(rect, icon);
+                GUI.DrawTexture(rect, icon);
                 var col = GUI.color;
                 GUI.color = color;
-                GUI.TextField(rect, text);
+                rect.position = new Vector2(rect.position.x + 10, rect.position.y); // все нормально. это GUI, сынок.
+                GUI.Label(rect, text);
                 GUI.color = col;
                 break;
         }
 
         //GUILayout.FlexibleSpace();
        // GUILayout.EndHorizontal();
+    }
+
+    public static string TextField(string startText)
+    {
+        Rect rect = GUILayoutUtility.GetRect(kButtonWidth, kButtonHeight, GUILayout.Width(kButtonWidth), GUILayout.Height(kButtonHeight));
+
+        return GUI.TextField(rect, startText);
     }
 
     class Folder
