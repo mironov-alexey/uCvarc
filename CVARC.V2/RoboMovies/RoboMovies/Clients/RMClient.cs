@@ -13,7 +13,8 @@ namespace RoboMovies
         public abstract string LevelName { get; }
 
         public TSensorData Configurate(int port, bool isOnLeftSide, 
-            RoboMoviesBots bot = RoboMoviesBots.Stand, int seed = 0)
+            RoboMoviesBots bot = RoboMoviesBots.Stand, int seed = 0,
+            string ip = "127.0.0.1")
         {
             var configuration = new ConfigurationProposal();
             configuration.LoadingData.AssemblyName = "RoboMovies";
@@ -33,7 +34,7 @@ namespace RoboMovies
             });
 
 
-            return Configurate(port, configuration, new RMWorldState { Seed = seed } );
+            return Configurate(port, configuration, new RMWorldState { Seed = seed } , ip );
         }
 
         public TSensorData Move(double distance)
