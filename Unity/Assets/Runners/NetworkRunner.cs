@@ -9,14 +9,17 @@ namespace Assets
         readonly Configuration configuration;
         readonly ControllerFactory factory;
         readonly IWorldState worldState;
-        public string Name { get; private set; } //???
+
+        public string Name { get; private set; }
         public IWorld World { get; private set; }
+        public bool CanStart { get; private set; }
+        public bool CanInterrupt { get; private set; }
+
 
         public NetworkRunner(CvarcClient client)
         {
             this.client = client;
 
-            //code from Loader.RecieveConfiguration and Loader.InitializeWorld
             factory = new SoloNetworkControllerFactory(client);
 
             var configProposal = client.Read<ConfigurationProposal>();
@@ -31,6 +34,9 @@ namespace Assets
                 Settings = settings
             };
 
+            //configuration.Settings.EnableLog = true;
+            //configuration.Settings.LogFile = UnityConstants.LogFolderRoot + "CvarcTestLog";
+
             var worldSettingsType = competitions.Logic.WorldStateType;
             worldState = (IWorldState)client.Read(worldSettingsType);
 
@@ -41,14 +47,9 @@ namespace Assets
 
         public void InitializeWorld()
         {
-            if (World != null)
-                return;
-            World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
+            if (World == null)
+                World = Dispatcher.Loader.CreateWorld(configuration, factory, worldState);
         }
-
-        public bool CanStart {get; private set;}
-
-        public bool CanInterrupt {get; private set;}
 
         public void Dispose()
         {

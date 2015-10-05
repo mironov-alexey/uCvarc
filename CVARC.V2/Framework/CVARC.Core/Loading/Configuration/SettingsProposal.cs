@@ -14,6 +14,8 @@ namespace CVARC.V2
     public class SettingsProposal : SettingsOrSettingsProposal
     {
         [DataMember]
+        public string Name { get; set; }
+        [DataMember]
         public double? TimeLimit { get; set; }
         [DataMember]
         public bool? EnableLog { get; set; }

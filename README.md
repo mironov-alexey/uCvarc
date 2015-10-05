@@ -13,9 +13,12 @@
   ------------------
 Для запуска CVARC.Basic:
  1. Запустить CVARC.V2.sln. Вылезет уведомление о неподгрузившихся проектах. Это нормально.
- 2. Правой кнопкой на Solution в SolutionExplorer -> Enable NuGet Package Restore.
+ 2. Правой кнопкой на Solution в SolutionExplorer -> Enable NuGet Package Restore*.
  3. На неподгрузившиеся проекты правой кнопкой -> Load Project.
  4. Build.
+  * Для юнити 2015 может надобиться совершить вместо второго пункта вот это:
+  * Скачать c nuget.org все три файлика nuget.exe/nuget.config/nuget.targets и положить в папку %SolutionDir%\.nuget
+ 
 
 Для запуска Cvarc.Unity:
  1. Запустить CVARC.Unity.sln

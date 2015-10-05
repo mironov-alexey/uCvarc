@@ -22,6 +22,8 @@ namespace CVARC.V2
 
         public ICommand GetCommand()
         {
+            if (pointeer >= commands.Count)
+                return null;
             var command=commands[pointeer];
             pointeer++;
             return command;
