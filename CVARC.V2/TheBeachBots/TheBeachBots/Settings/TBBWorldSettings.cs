@@ -37,7 +37,7 @@ namespace TheBeachBots
             new Point2D(0, -85),
         };
 
-        static string[] configurations = new string[]
+        static string[] allPatterns = new string[]
         {
             "GGGWW---GVWW",
             "GWGGW---GGWW",
@@ -60,16 +60,16 @@ namespace TheBeachBots
             {'V', 'G'},
         };
 
-        static SideColor GetColor(int configurationIndex, int shellIndex)
+        static SideColor GetColor(int patternIndex, int shellIndex)
         {
-            var configuration = configurations[configurationIndex];
-            var color = configuration[shellIndex % configuration.Length];
-            return shellIndex >= configuration.Length ? converter[inverter[color]] : converter[color];
+            var pattern = allPatterns[patternIndex];
+            var color = pattern[shellIndex % pattern.Length];
+            return shellIndex >= pattern.Length ? converter[inverter[color]] : converter[color];
         }
 
         static bool IsEmpty(int configurationIndex, int shellIndex)
         {
-            var configuration = configurations[configurationIndex];
+            var configuration = allPatterns[configurationIndex];
             return !converter.ContainsKey(configuration[shellIndex % configuration.Length]);
         }
 
@@ -79,7 +79,7 @@ namespace TheBeachBots
                 .Union(seashells.Select(x => new Point2D(-x.X, x.Y)))
                 .Distinct();
             
-            int config = seed % configurations.Length;
+            int config = seed % allPatterns.Length;
 
             foreach (var ie in allShells.Enumerate())
                 if (!IsEmpty(config, ie.Index))
