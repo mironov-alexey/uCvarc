@@ -31,6 +31,7 @@ public static class Dispatcher
         Loader = new Loader();
         Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
         Loader.AddLevel("RoboMovies", "Test", () => new RMCompetitions.Level1());
+        Loader.AddLevel("RoboMovies", "Level1", () => new RMCompetitions.Level1());
 
         networkServer = new SoloNetworkServer(UnityConstants.SoloNetworkPort);
         Action networkServerAction = () => networkServer.StartThread();
