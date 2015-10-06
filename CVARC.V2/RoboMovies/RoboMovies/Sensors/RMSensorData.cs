@@ -8,8 +8,12 @@ using CVARC.V2;
 namespace RoboMovies
 {
     [DataContract]
-    public class CommonSensorData
+    public class RMSensorData
     {
+        [DataMember]
+        [FromSensor(typeof(MapSensor))]
+        public Map Map { get; set; }
+
         [DataMember]
         [FromSensor(typeof(SelfLocationSensor))]
         public RTSLocatorItem SelfLocation { get; set; }
@@ -25,7 +29,7 @@ namespace RoboMovies
         [DataMember]
         [FromSensor(typeof(TowerBuilderSensor))]
         public int CollectedDetailsCount { get; set; }
-        
+
         [DataMember]
         [FromSensor(typeof(ScoreSensor))]
         public int MyScores { get; set; }

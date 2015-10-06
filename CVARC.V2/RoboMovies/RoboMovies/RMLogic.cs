@@ -21,7 +21,7 @@ namespace RoboMovies
             logicPart.PredefinedWorldStates.AddRange(Enumerable.Range(0, 10).Select(z => z.ToString()));
             logicPart.WorldStateType = typeof(RMWorldState);
 
-            var actorFactory = ActorFactory.FromRobot(new RMRobot<FullMapSensorData>(), rules);
+            var actorFactory = ActorFactory.FromRobot(new RMRobot<RMSensorData>(), rules);
             logicPart.Actors[TwoPlayersId.Left] = actorFactory;
             logicPart.Actors[TwoPlayersId.Right] = actorFactory;
 
