@@ -96,10 +96,9 @@ namespace Assets
 
             light.AddComponent<Rigidbody>();
             
-            light.GetComponent<Rigidbody>().drag = light.GetComponent<Rigidbody>().angularDrag = 4;
+            light.GetComponent<Rigidbody>().drag = light.GetComponent<Rigidbody>().angularDrag = 4f;
             light.GetComponent<Rigidbody>().useGravity = true;
             light.GetComponent<Rigidbody>().mass = 0.2f;
-            light.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             light.name = lightId;
         }
 
@@ -116,7 +115,7 @@ namespace Assets
             popcorn.GetComponent<Rigidbody>().drag = popcorn.GetComponent<Rigidbody>().angularDrag = 4;
             popcorn.GetComponent<Rigidbody>().useGravity = true;
             popcorn.GetComponent<Rigidbody>().mass = 0.2f;
-            popcorn.GetComponent<Rigidbody>().centerOfMass = new Vector3(0, -3, 0);
+            popcorn.GetComponent<Rigidbody>().centerOfMass = new Vector3(0, -1.5f, 0);
             popcorn.name = popcornId;
         }
 
