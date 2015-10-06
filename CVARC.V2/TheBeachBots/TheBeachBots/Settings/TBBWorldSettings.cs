@@ -7,7 +7,7 @@ using AIRLab.Mathematics;
 
 namespace TheBeachBots
 {
-    struct Seashell
+    public struct Seashell
     {
         public readonly Point2D Position;
         public readonly SideColor Color;
@@ -19,7 +19,7 @@ namespace TheBeachBots
         }
     }
 
-    class TBBWorldSettings
+    public class TBBWorldSettings
     {
         static Point2D[] seashells = new Point2D[]
         {
@@ -73,7 +73,7 @@ namespace TheBeachBots
             return !converter.ContainsKey(configuration[shellIndex % configuration.Length]);
         }
 
-        public static IEnumerable<Seashell> GetSeashelsPositions(int seed)
+        public static IEnumerable<Seashell> GenerateSeashellsLayout(ushort seed)
         {
             var allShells = seashells
                 .Union(seashells.Select(x => new Point2D(-x.X, x.Y)))

@@ -86,9 +86,9 @@ namespace TheBeachBots
 
         void CreateSeashells()
         {
-            foreach (var seashell in TBBWorldSettings.GetSeashelsPositions(WorldState.Seed))
-                Manager.CreateSeashell(IdGenerator.CreateNewId(new TBBObject(seashell.Color, ObjectType.Seashell)),
-                    seashell.Position, seashell.Color);
+            foreach (var seashell in WorldState.Seashells)
+                Manager.CreateSeashell(IdGenerator.CreateNewId(new TBBObject(seashell.Value, ObjectType.Seashell)),
+                    seashell.Key, seashell.Value);
         }
 
         void CreateSandCastle(Point2D location, int layersCount)

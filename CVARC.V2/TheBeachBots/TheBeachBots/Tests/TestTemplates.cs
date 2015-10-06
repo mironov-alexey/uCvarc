@@ -56,7 +56,7 @@ namespace TheBeachBots
 
         void AddTest(LogicPart logic, string name, TBBTestEntry test)
         {
-            logic.Tests[name] = new RMTestBase(test, new TBBWorldState(42));
+            logic.Tests[name] = new RMTestBase(test, new TBBWorldState(0xdead));
         }
     }
 }

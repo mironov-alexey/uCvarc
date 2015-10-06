@@ -16,8 +16,8 @@ namespace TheBeachBots
             var logicPart = new LogicPart();
             logicPart.CreateWorld = () => new TBBWorld();
             logicPart.CreateDefaultSettings = () => new Settings { OperationalTimeLimit = 5, TimeLimit = 90 };
-            logicPart.CreateWorldState = stateName => new TBBWorldState(Int32.Parse(stateName));
-            logicPart.PredefinedWorldStates.AddRange(Enumerable.Range(0, 10).Select(z => z.ToString()));
+            logicPart.CreateWorldState = name => new TBBWorldState(UInt16.Parse(name));
+            logicPart.PredefinedWorldStates.AddRange(Enumerable.Range(0, 5).Select(z => z.ToString()));
             logicPart.WorldStateType = typeof(TBBWorldState);
 
             var actorFactory = ActorFactory.FromRobot(new TBBRobot(), rules);
