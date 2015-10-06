@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Assets;
 using CVARC.V2;
 using AIRLab;
@@ -17,6 +18,7 @@ public partial class RoundScript : MonoBehaviour
     float curWorldTime;
     float timeOnStartSession;
     private long lastStart;
+    private int timeLimit = 9999;
 
 
     void Start()
@@ -44,7 +46,7 @@ public partial class RoundScript : MonoBehaviour
     {
         Dispatcher.RoundTick();
 
-        if (curWorldTime > 30)
+        if (curWorldTime > timeLimit)
         {
             Debugger.Log(DebuggerMessageType.Unity,"Time is Up");
             Dispatcher.SetGameOver();
@@ -71,4 +73,25 @@ public partial class RoundScript : MonoBehaviour
     {
         Dispatcher.OnDispose();
     }
+
+    void OnGUI()
+    {
+        var rect = new Rect(new Vector2(10, 100), new Vector2(100, 30));
+        switch (Event.current.type)
+        {
+            case EventType.MouseUp:
+                if (rect.Contains(Event.current.mousePosition))
+                    Dispatcher.SetGameOver();
+                break;
+            case EventType.Repaint:
+                GUI.DrawTexture(rect, button);
+                var col = GUI.color;
+                GUI.color = Color.white;
+                GUI.Label(rect, "Back to menu");
+                GUI.color = col;
+                break;
+        }
+    }
+
+    public Texture button;
 }
