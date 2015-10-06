@@ -18,11 +18,13 @@
             // управляем роботом
             client.Move(65);
             client.Rotate(-90);
-            // коллект пока не работает((
-            client.Collect();
+            client.Stand(1);
+            client.GripPopCorn();
             client.Rotate(-90);
             client.Move(70);
-            
+            client.Stand(1);
+            client.ReleasePopCorn();
+
             //корректно завершаем работу
             client.Exit();
         }

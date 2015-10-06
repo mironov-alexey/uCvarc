@@ -17,7 +17,7 @@ namespace RoboMovies
             var logicPart = new LogicPart();
             logicPart.CreateWorld = () => new RMWorld();
             logicPart.CreateDefaultSettings = () => new Settings { OperationalTimeLimit = 5, TimeLimit = 90 };
-            logicPart.CreateWorldState = stateName => new RMWorldState() { Seed = int.Parse(stateName) };
+            logicPart.CreateWorldState = stateName => new RMWorldState();
             logicPart.PredefinedWorldStates.AddRange(Enumerable.Range(0, 10).Select(z => z.ToString()));
             logicPart.WorldStateType = typeof(RMWorldState);
 
