@@ -10,9 +10,6 @@ namespace RoboMovies
     public class Map
     {
         [DataMember]
-        public DetailMapData[] Details { get; set; }
-
-        [DataMember]
-        public WallMapData[] Walls { get; set; }
+        public RMObjectMapData[] Objects { get; set; }
     }
 }

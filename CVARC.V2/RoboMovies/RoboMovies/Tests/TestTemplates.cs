@@ -43,11 +43,11 @@ namespace RoboMovies
                 }, commands);
         }
         
-        RMTestEntry TestTemplate(Action<FullMapSensorData, IAsserter> assert, params RMCommand[] commands)
+        RMTestEntry TestTemplate(Action<RMSensorData, IAsserter> assert, params RMCommand[] commands)
         {
             return (client, world, asserter) =>
             {
-                var data = new FullMapSensorData();
+                var data = new RMSensorData();
                 foreach (var c in commands)
                     data = client.Act(c);
                 assert(data, asserter);
