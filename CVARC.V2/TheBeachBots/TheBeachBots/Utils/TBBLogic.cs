@@ -9,6 +9,9 @@ namespace TheBeachBots
 {
     public partial class TBBLogicPartHelper : LogicPartHelper 
     {
+        [AttributeUsage(AttributeTargets.Method)]
+        class TestLoaderMethod : Attribute { }
+
         public override LogicPart Create()
         {
             var rules = TBBRules.Current;
@@ -29,6 +32,11 @@ namespace TheBeachBots
             LoadTests(logicPart, rules);
 
             return logicPart;
+        }
+
+        void AddTest(LogicPart logic, string name, ICvarcTest test)
+        {
+            logic.Tests[name] = test;
         }
 
         private void LoadTests(LogicPart logic, TBBRules rules)

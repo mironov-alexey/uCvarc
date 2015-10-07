@@ -8,9 +8,6 @@ namespace TheBeachBots
 {
     public partial class TBBLogicPartHelper
     {
-        [AttributeUsage(AttributeTargets.Method)]
-        class TestLoaderMethod : Attribute { }
-
         //TBBTestEntry TowerBuilderTest(int count, params TBBCommand[] commands)
         //{
         //    return TestTemplate((data, asserter) => asserter.IsEqual(count, data.CollectedDetailsCount, 0), commands);
@@ -42,21 +39,7 @@ namespace TheBeachBots
         //            asserter.IsEqual(y, data.SelfLocation.Y, delta);
         //        }, commands);
         //}
-        
-        TBBTestEntry TestTemplate(Action<TBBSensorsData, IAsserter> assert, params TBBCommand[] commands)
-        {
-            return (client, world, asserter) =>
-            {
-                var data = new TBBSensorsData();
-                foreach (var c in commands)
-                    data = client.Act(c);
-                assert(data, asserter);
-            };
-        }
 
-        void AddTest(LogicPart logic, string name, TBBTestEntry test)
-        {
-            logic.Tests[name] = new RMTestBase(test, new TBBWorldState(0xdead));
-        }
+
     }
 }

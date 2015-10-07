@@ -7,7 +7,7 @@ using CVARC.V2;
 
 namespace TheBeachBots
 {
-    class TBBRules : IRules, ISimpleMovementRules<TBBCommand>, IDoorOpeningRules<TBBCommand>, 
+    public class TBBRules : IRules, ISimpleMovementRules<TBBCommand>, IDoorOpeningRules<TBBCommand>, 
         ISeashellGripperRules<TBBCommand>, IFishingRules<TBBCommand>
     {
         public static readonly TBBRules Current = new TBBRules();

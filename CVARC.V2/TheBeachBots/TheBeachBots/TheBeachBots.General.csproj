@@ -50,6 +50,10 @@
     <Compile Include="Sensors\Map\GameObjectMapData.cs" />
     <Compile Include="Sensors\ScoreSensor.cs" />
     <Compile Include="Sensors\SeashellSensor.cs" />
+    <Compile Include="Tests\TestBase\PositionTest.cs" />
+    <Compile Include="Tests\TestBase\ScoreTest.cs" />
+    <Compile Include="Tests\TestBase\SelfReflectingCvarcTest.cs" />
+    <Compile Include="Tests\TestExample.cs" />
     <Compile Include="Utils\TBBBots.cs" />
     <Compile Include="Utils\TBBLogic.cs" />
     <Compile Include="Managers\ITBBActorManager.cs" />
@@ -79,8 +83,8 @@
     <Compile Include="Robot\Units\SeashellsGripper\RulesExtensions.cs" />
     <Compile Include="Sensors\TBBSensorsData.cs" />
     <Compile Include="Settings\TBBWorldSettings.cs" />
-    <Compile Include="Tests\RMTestBase.cs" />
-    <Compile Include="Tests\TestTemplates.cs" />
+    <Compile Include="Tests\TestBase\TBBTestBase.cs" />
+    <Compile Include="Tests\TestBase\TestTemplates.cs" />
     <Compile Include="Utils\DataClasses.cs" />
     <Compile Include="Utils\IEnumerableExtensions.cs" />
     <Compile Include="World\TBBScoresTrigger.cs" />
