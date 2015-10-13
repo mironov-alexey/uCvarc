@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,8 +38,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\CVARC\libs\nunit.framework.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CVARC.V2\Demo\DemoCompetitions\Demo.General.csproj">
@@ -70,8 +73,10 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)bin\debug\CVARC.Core.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y
 xcopy "$(ProjectDir)bin\debug\Demo.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y
-xcopy "$(ProjectDir)bin\debug\RoboMovies.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y</PostBuildEvent>
+xcopy "$(ProjectDir)bin\debug\RoboMovies.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y
+xcopy "$(ProjectDir)bin\debug\Newtonsoft.Json.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
