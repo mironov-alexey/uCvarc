@@ -72,6 +72,9 @@ namespace CVARC.V2
 
         public void CreateClearData(string testName)
         {
+            // FIXME: все поля в дата передаются по ссылке, поэтому изменение
+            // параметров билдера ведет к изменению параметров всех тестов
+
             data = new TestData<TSensorData, TCommand, TWorld, TWorldState>()
             {
                 Settings = this.settings,
