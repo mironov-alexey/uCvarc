@@ -30,7 +30,7 @@ namespace CVARC.V2
             return new TCommand { FishingRodAction = FishingRodAction.GripFish };
         }
 
-        public static TCommand RelseaseFish<TCommand>(this IFishingRules<TCommand> factory)
+        public static TCommand ReleaseFish<TCommand>(this IFishingRules<TCommand> factory)
             where TCommand : IFishingCommand, new()
         {
             return new TCommand { FishingRodAction = FishingRodAction.ReleaseFish };

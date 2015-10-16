@@ -8,7 +8,7 @@ using CVARC.V2;
 
 namespace TheBeachBots
 {
-    public class TBBSensorsData
+    public class TBBSensorsData : ILocationSensorData
     {
         [DataMember]
         [FromSensor(typeof(MapSensor<TBBObject>))]
@@ -20,11 +20,11 @@ namespace TheBeachBots
 
         [DataMember]
         [FromSensor(typeof(SelfLocationSensor))]
-        public RTSLocatorItem SelfLocation { get; set; }
+        public LocatorItem SelfLocation { get; set; }
 
         [DataMember]
         [FromSensor(typeof(OpponentLocationSensor))]
-        public RTSLocatorItem OpponentLocation { get; set; }
+        public LocatorItem OpponentLocation { get; set; }
 
         [DataMember]
         [FromSensor(typeof(SelfScoreSensor))]

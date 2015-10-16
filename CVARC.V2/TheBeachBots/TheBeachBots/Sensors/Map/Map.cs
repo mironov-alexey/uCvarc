@@ -7,9 +7,9 @@ using System.Text;
 namespace TheBeachBots
 {
     [DataContract]
-    public class Map<Tobj>
+    public class Map<TObj>
     {
         [DataMember]
-        public GameObjectMapData<Tobj>[] Objects { get; set; }
+        public GameObjectMapData<TObj>[] Objects { get; set; }
     }
 }

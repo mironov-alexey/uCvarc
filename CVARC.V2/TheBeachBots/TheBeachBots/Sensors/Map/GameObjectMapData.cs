@@ -8,14 +8,14 @@ using System.Text;
 namespace TheBeachBots
 {
     [DataContract]
-    public struct GameObjectMapData<Tobj>
+    public struct GameObjectMapData<TObj>
     {
         [DataMember]
-        public readonly Tobj ObjectInfo;
+        public readonly TObj ObjectInfo;
         [DataMember]
         public readonly PointF Location;
 
-        public GameObjectMapData(Tobj objInfo, PointF location)
+        public GameObjectMapData(TObj objInfo, PointF location)
         {
             ObjectInfo = objInfo;
             Location = location;

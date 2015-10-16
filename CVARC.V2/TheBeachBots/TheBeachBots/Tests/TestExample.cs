@@ -13,15 +13,27 @@ namespace TheBeachBots
         [TestLoaderMethod]
         public void LoadTestExample(LogicPart logic, TBBRules rules)
         {
-            AddTest(logic, "TestExample", new ScoreTest(
-                0,
-                rules.Move(30),
-                rules.Rotate(-Angle.HalfPi),
-                rules.Move(30),
-                rules.Rotate(Angle.HalfPi),
-                rules.Move(90),
-                rules.Stand(1)
-            ) { Reflected = false });
+            var builder = new TBBTestBuilder(logic, rules, new TBBWorldState(42)) {                
+                TimeLimit = 90,
+                OperationalTimeLimit = 5,
+                SpeedUp = false,
+            };
+
+            builder.AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
+            builder.AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
+
+            //builder.Reflect();
+
+            builder.CreateTest("TestExample")
+                .Move(30)
+                .Rotate(-Angle.HalfPi)
+                .Move(15)
+                .Rotate(Angle.HalfPi)
+                .Move(80)
+                .Stand(1)
+                .AssertScores(0)
+                .AssertLocation(150 - 30, 30, 10)
+                .EndOfTest();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace CVARC.V2
             return new TCommand { SeashellGripperAction = SeashellGripperAction.Grip };
         }
 
-        public static TCommand RelseaseSeashell<TCommand>(this ISeashellGripperRules<TCommand> factory)
+        public static TCommand ReleaseSeashell<TCommand>(this ISeashellGripperRules<TCommand> factory)
             where TCommand : ISeashellGripperCommand, new()
         {
             return new TCommand { SeashellGripperAction = SeashellGripperAction.Release };
