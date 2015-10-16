@@ -22,7 +22,7 @@ namespace TheBeachBots
             builder.AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
             builder.AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
 
-            //builder.Reflect();
+            builder.Reflect();
 
             builder.CreateTest("TestExample")
                 .Move(30)

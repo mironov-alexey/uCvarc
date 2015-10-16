@@ -10,14 +10,6 @@ namespace TheBeachBots
 {
     public class TBBWorld : World<TBBWorldState, ITBBWorldManager>
     {
-
-        // TestData
-        // <summary>
-        //  -> World State
-        //  -> IEnumerable<TCommand>
-        //  -> IEnumerable<AssertAction>
-        // </summary>
-
         public TBBWorldHelper Helper { get; private set; }
 
         public override void AdditionalInitialization()

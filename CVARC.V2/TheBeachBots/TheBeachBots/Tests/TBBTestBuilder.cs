@@ -66,7 +66,7 @@ namespace TheBeachBots
             return this;
         }
 
-        public TBBTestBuilder RelseaseFish()
+        public TBBTestBuilder OpenDoor()
         {
             AddAction(Rules.OpenDoor());
             return this;
