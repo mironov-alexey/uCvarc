@@ -69,6 +69,9 @@ namespace CVARC.V2
                 Y = sensor.SelfLocation.Y,
                 Angle = sensor.SelfLocation.Angle,
             };
+
+            throw new NotImplementedException();
+
             return sensor;
         }
     }
