@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AIRLab.Mathematics;
 
 namespace CVARC.V2
 {
@@ -61,17 +62,13 @@ namespace CVARC.V2
 
         private TSensorData ReflectSensor(TSensorData sensor)
         {
-            // TODO: apply some math to reflect robot angle and location
             sensor.SelfLocation = new LocatorItem
             {
                 Id = sensor.SelfLocation.Id,              
-                X = sensor.SelfLocation.X,
+                X = -sensor.SelfLocation.X,
                 Y = sensor.SelfLocation.Y,
-                Angle = sensor.SelfLocation.Angle,
+                Angle = Angle.Pi.Grad - sensor.SelfLocation.Angle,
             };
-
-            throw new NotImplementedException();
-
             return sensor;
         }
     }
