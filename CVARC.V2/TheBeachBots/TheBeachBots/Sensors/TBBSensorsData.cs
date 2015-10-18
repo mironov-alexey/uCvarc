@@ -41,5 +41,9 @@ namespace TheBeachBots
         [DataMember]
         [FromSensor(typeof(SeashellSensor))]
         public bool SeashellAttached { get; set; }
+
+        [DataMember]
+        [FromSensor(typeof(SandGripperSensor))]
+        public int CollectedSandCount { get; set; }
     }
 }
