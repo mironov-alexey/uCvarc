@@ -8,14 +8,31 @@ using AIRLab.Mathematics;
 
 namespace TheBeachBots
 {
-    class TBBTestBuilder : ReflectableTestBuilder<TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld, TBBRules>
+    class TBBTestBuilder : ReflectableTestBuilder<TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld>
     {
+        TBBRules rules;
+
         public TBBTestBuilder(LogicPart logic, TBBRules rules, TBBWorldState worldState)
-            : base(logic, rules, worldState) { }
+            : base(logic, worldState)
+        {
+            this.rules = rules;
+        }
 
         public TBBTestBuilder CreateTest(string name)
         {
             CreateClearData(name);
+            return this;
+        }
+
+        public TBBTestBuilder AssertHasFish(bool expected)
+        {
+            AddAction((s, w, a) => a.IsEqual(expected, s.FishAttached));
+            return this;
+        }
+
+        public TBBTestBuilder AssertHasSeashell(bool expected)
+        {
+            AddAction((s, w, a) => a.IsEqual(expected, s.SeashellAttached));
             return this;
         }
 
@@ -50,55 +67,55 @@ namespace TheBeachBots
 
         public TBBTestBuilder Move(double length)
         {
-            AddAction(Rules.Move(length));
+            AddAction(rules.Move(length));
             return this;
         }
 
         public TBBTestBuilder Rotate(Angle angle)
         {
-            AddAction(Rules.Rotate(angle));
+            AddAction(rules.Rotate(angle));
             return this;
         }
 
         public TBBTestBuilder Stand(double time)
         {
-            AddAction(Rules.Stand(time));
+            AddAction(rules.Stand(time));
             return this;
         }
 
         public TBBTestBuilder OpenDoor()
         {
-            AddAction(Rules.OpenDoor());
+            AddAction(rules.OpenDoor());
             return this;
         }
 
         public TBBTestBuilder CloseDoor()
         {
-            AddAction(Rules.CloseDoor());
+            AddAction(rules.CloseDoor());
             return this;
         }
 
         public TBBTestBuilder GripFish()
         {
-            AddAction(Rules.GripFish());
+            AddAction(rules.GripFish());
             return this;
         }
 
         public TBBTestBuilder ReleaseFish()
         {
-            AddAction(Rules.ReleaseFish());
+            AddAction(rules.ReleaseFish());
             return this;
         }
 
         public TBBTestBuilder GripSeashell()
         {
-            AddAction(Rules.GripSeashell());
+            AddAction(rules.GripSeashell());
             return this;
         }
 
         public TBBTestBuilder ReleaseSeashell()
         {
-            AddAction(Rules.ReleaseSeashell());
+            AddAction(rules.ReleaseSeashell());
             return this;
         }
     }

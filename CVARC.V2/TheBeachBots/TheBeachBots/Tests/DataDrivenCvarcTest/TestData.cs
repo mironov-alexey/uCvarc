@@ -11,16 +11,19 @@ namespace CVARC.V2
         where TCommand : ICommand
         where TWorld : IWorld
     {
-        public string TestName { get; set; }
-        public TWorldState WorldState { get; set; }
-        public SettingsProposal Settings { get; set; }
+        public string TestName { get; private set; }
+        public TWorldState WorldState { get; private set; }
+        public SettingsProposal Settings { get; private set; }
 
         protected readonly List<TestAction<TSensorData, TCommand, TWorld>> actions;
 
         public IEnumerable<TestAction<TSensorData, TCommand, TWorld>> Actions { get { return this.actions; } }
 
-        public TestData()
+        public TestData(string testName, TWorldState worldState, SettingsProposal settings)
         {
+            TestName = testName;
+            WorldState = worldState;
+            Settings = settings;
             actions = new List<TestAction<TSensorData, TCommand, TWorld>>(); 
         }
 

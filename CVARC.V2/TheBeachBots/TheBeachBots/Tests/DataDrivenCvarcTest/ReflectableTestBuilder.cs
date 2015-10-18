@@ -7,39 +7,47 @@ using AIRLab.Mathematics;
 
 namespace CVARC.V2
 {
-    public abstract class ReflectableTestBuilder<TSensorData, TCommand, TWorldState, TWorld, TRules>
-        : BaseTestBuilder<TSensorData, TCommand, TWorldState, TWorld, TRules>
+    public abstract class ReflectableTestBuilder<TSensorData, TCommand, TWorldState, TWorld>
+        : BaseTestBuilder<TSensorData, TCommand, TWorldState, TWorld>
         where TWorld : IWorld
-        where TRules : IRules
         where TCommand : ISimpleMovementCommand
         where TWorldState : IWorldState
         where TSensorData : class, ILocationSensorData, new()
     {
-        public bool IsReflected { get; private set; }
-
-        public void Reflect()
-        {
-            IsReflected = !IsReflected;
-            ReflectControllerSetup();
+        private bool _reflected;
+        public bool Reflected {
+            get { return _reflected; }
+            set
+            {
+                if (_reflected != value)
+                    ReflectControllerSetup();
+                _reflected = value;
+            }
         }
-
-        public ReflectableTestBuilder(LogicPart logic, TRules rules, TWorldState worldState)
-            : base(logic, rules, worldState) { }
+        
+        public ReflectableTestBuilder(LogicPart logic, TWorldState worldState)
+            : base(logic, worldState) { }
 
         protected override void AddAction(TCommand command)
         {
-            base.AddAction(IsReflected ? ReflectCommand(command) : command);
+            base.AddAction(Reflected ? ReflectCommand(command) : command);
         }
 
         protected override void AddAction(Asserter<TSensorData, TWorld> assert)
         {
-            base.AddAction(IsReflected ? (s, w, a) => assert(ReflectSensor(s), w, a) : assert);
+            base.AddAction(Reflected ? (s, w, a) => assert(ReflectSensor(s), w, a) : assert);
         }
         
         private void ReflectControllerSetup()
         {
-            foreach (var controller in settings.Controllers)
-                controller.ControllerId = ReflectControllerId(controller.ControllerId);
+            Settings.Controllers = Settings.Controllers
+                .Select(x => new ControllerSettings()
+                {
+                    ControllerId = ReflectControllerId(x.ControllerId),
+                    Name = x.Name,
+                    Type = x.Type,
+                })
+                .ToList();
         }
 
         private string ReflectControllerId(string id)

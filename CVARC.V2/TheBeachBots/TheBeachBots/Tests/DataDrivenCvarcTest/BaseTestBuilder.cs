@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace CVARC.V2
 {
-    public abstract class BaseTestBuilder<TSensorData, TCommand, TWorldState, TWorld, TRules>
-        where TRules : IRules
+    public abstract class BaseTestBuilder<TSensorData, TCommand, TWorldState, TWorld>
         where TWorld : IWorld
         where TCommand : ICommand
         where TWorldState : IWorldState
@@ -15,54 +14,52 @@ namespace CVARC.V2
     {        
         LogicPart logic;
         TestData<TSensorData, TCommand, TWorld, TWorldState> data;
-
-        protected readonly TRules Rules;
-        protected readonly SettingsProposal settings;
+        
+        protected SettingsProposal Settings { get; private set; }
 
         public TWorldState WorldState { get; set; }
 
         public double? OperationalTimeLimit
         {
-            get { return settings.OperationalTimeLimit; }
-            set { settings.OperationalTimeLimit = value; }
+            get { return Settings.OperationalTimeLimit; }
+            set { Settings.OperationalTimeLimit = value; }
         }
 
         public double? TimeLimit
         {
-            get { return settings.TimeLimit; }
-            set { settings.TimeLimit = value; }
+            get { return Settings.TimeLimit; }
+            set { Settings.TimeLimit = value; }
         }
 
         public string LogFile
         {
-            get { return settings.LogFile; }
-            set { settings.LogFile = value; }
+            get { return Settings.LogFile; }
+            set { Settings.LogFile = value; }
         }
 
         public bool? EnableLog
         {
-            get { return settings.EnableLog; }
-            set { settings.EnableLog = value; }
+            get { return Settings.EnableLog; }
+            set { Settings.EnableLog = value; }
         }
 
         public bool? SpeedUp
         {
-            get { return settings.SpeedUp; }
-            set { settings.SpeedUp = value; }
+            get { return Settings.SpeedUp; }
+            set { Settings.SpeedUp = value; }
         }
 
-        public BaseTestBuilder(LogicPart logic, TRules rules, TWorldState worldState)
+        public BaseTestBuilder(LogicPart logic, TWorldState worldState)
         {
-            this.WorldState = worldState;
             this.logic = logic;
-            this.Rules = rules;
-            settings = new SettingsProposal();
-            settings.Controllers = new List<ControllerSettings>();
+            WorldState = worldState;            
+            Settings = new SettingsProposal();
+            Settings.Controllers = new List<ControllerSettings>();
         }
 
         public void AddControllerSettings(string controllerId, string name, ControllerType type)
         {
-            settings.Controllers.Add(new ControllerSettings
+            Settings.Controllers.Add(new ControllerSettings
             {
                 ControllerId = controllerId,
                 Name = name,
@@ -72,15 +69,8 @@ namespace CVARC.V2
 
         public void CreateClearData(string testName)
         {
-            // FIXME: все поля в дата передаются по ссылке, поэтому изменение
-            // параметров билдера ведет к изменению параметров всех тестов
-
-            data = new TestData<TSensorData, TCommand, TWorld, TWorldState>()
-            {
-                Settings = this.settings,
-                WorldState = this.WorldState,
-                TestName = testName,
-            };
+            data = new TestData<TSensorData, TCommand, TWorld, TWorldState>
+                (testName, WorldState, new SettingsProposal(Settings));
         }
 
         public void EndOfTest()

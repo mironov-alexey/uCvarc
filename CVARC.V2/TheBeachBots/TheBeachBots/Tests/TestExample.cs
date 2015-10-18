@@ -22,9 +22,37 @@ namespace TheBeachBots
             builder.AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
             builder.AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
 
-            builder.Reflect();
+            builder.Reflected = true;
 
-            builder.CreateTest("TestExample")
+            builder.CreateTest("TestExample0")
+                .Move(30)
+                .Rotate(-Angle.HalfPi)
+                .Move(15)
+                .Rotate(Angle.HalfPi)
+                .Move(80)
+                .Stand(1)
+                .AssertScores(0)
+                .AssertLocation(150 - 30, 30, 10)
+                .EndOfTest();
+
+            builder.SpeedUp = true;
+
+            builder.CreateTest("TestExample1")
+                .Move(30)
+                .Rotate(-Angle.HalfPi)
+                .Move(15)
+                .Rotate(Angle.HalfPi)
+                .Move(80)
+                .Stand(1)
+                .AssertScores(0)
+                .AssertLocation(150 - 30, 30, 10)
+                .EndOfTest();
+
+            builder.SpeedUp = false;
+            builder.Reflected = false;
+            builder.WorldState = new TBBWorldState(0);
+
+            builder.CreateTest("TestExample2")
                 .Move(30)
                 .Rotate(-Angle.HalfPi)
                 .Move(15)
