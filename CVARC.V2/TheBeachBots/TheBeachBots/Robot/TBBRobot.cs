@@ -14,6 +14,7 @@ namespace TheBeachBots
         public DoorUnit DoorUnit { get; private set; }
         public SeashellGripper SeashellGripper { get; private set; }
         public FishingRod FishingRod { get; private set; }
+        public SandGripper SandGripper { get; private set; }
 
         public override IEnumerable<IUnit> Units
         {
@@ -21,6 +22,7 @@ namespace TheBeachBots
             {
                 yield return DoorUnit;
                 yield return FishingRod;
+                yield return SandGripper;
                 yield return SeashellGripper;
                 yield return SimpleMovementUnit;
             }
@@ -31,9 +33,10 @@ namespace TheBeachBots
             base.AdditionalInitialization();
 
             SimpleMovementUnit = new SimpleMovementUnit(this);
-            DoorUnit = new DoorUnit(this, this.World, new Frame3D(15, 0, 5));
-            SeashellGripper = new SeashellGripper(this, this.World, new Frame3D(15, 0, 5));
-            FishingRod = new FishingRod(this, this.World, new Frame3D(20, 0, 10), 15);
-        }        
+            DoorUnit = new DoorUnit(this, World, new Frame3D(15, 0, 5));
+            FishingRod = new FishingRod(this, World, new Frame3D(20, 0, 10), 15);
+            SandGripper = new SandGripper(this, World, new Frame3D(-15, 0, 5), 5);
+            SeashellGripper = new SeashellGripper(this, World, new Frame3D(15, 0, 5));
+        }
     }
 }

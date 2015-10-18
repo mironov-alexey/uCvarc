@@ -8,7 +8,7 @@ namespace CVARC.V2
 {
     [DataContract]
     public class TBBCommand : ICommand, ISimpleMovementCommand, IDoorUnitCommand, 
-        ISeashellGripperCommand, IFishingCommand
+        ISeashellGripperCommand, IFishingCommand, ISandGripperCommand
     {
         [DataMember]
         public SimpleMovement SimpleMovement { get; set; }
@@ -21,5 +21,8 @@ namespace CVARC.V2
 
         [DataMember]
         public FishingRodAction FishingRodAction { get; set; }
+
+        [DataMember]
+        public SandGripperAction SandGripperAction { get; set; }
     }
 }

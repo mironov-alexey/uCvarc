@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Robot\Units\SandGripper\SandGripper.cs" />
+    <Compile Include="Robot\Units\SandGripper\ISandGripperCommand.cs" />
+    <Compile Include="Robot\Units\SandGripper\ISandGripperRobot.cs" />
+    <Compile Include="Robot\Units\SandGripper\ISandGripperRules.cs" />
+    <Compile Include="Robot\Units\SandGripper\RulesExtensions.cs" />
     <Compile Include="Sensors\FishingRodSensor.cs" />
     <Compile Include="Sensors\Map\Map.cs" />
     <Compile Include="Sensors\Map\MapSensor.cs" />
@@ -97,9 +102,7 @@
       <Name>CVARC.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Robot\Units\SandGripper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
