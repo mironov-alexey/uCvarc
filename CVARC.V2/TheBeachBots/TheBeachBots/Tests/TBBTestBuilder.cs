@@ -36,6 +36,12 @@ namespace TheBeachBots
             return this;
         }
 
+        public TBBTestBuilder AssertCollectedSandCount(int expected)
+        {
+            AddAction((s, w, a) => a.IsEqual(expected, s.CollectedSandCount, 0));
+            return this;
+        }
+
         public TBBTestBuilder AssertLocation(double x, double y, double angle, double delta)
         {
             AddAction((s, w, a) => 
@@ -116,6 +122,18 @@ namespace TheBeachBots
         public TBBTestBuilder ReleaseSeashell()
         {
             AddAction(rules.ReleaseSeashell());
+            return this;
+        }
+
+        public TBBTestBuilder CollectSandBlock()
+        {
+            AddAction(rules.CollectSandBlock());
+            return this;
+        }
+
+        public TBBTestBuilder ReleaseSandBlock()
+        {
+            AddAction(rules.ReleaseSandBlock());
             return this;
         }
     }

@@ -51,6 +51,7 @@
     <Compile Include="Sensors\Map\Map.cs" />
     <Compile Include="Sensors\Map\MapSensor.cs" />
     <Compile Include="Sensors\Map\GameObjectMapData.cs" />
+    <Compile Include="Sensors\SandGripperSensor.cs" />
     <Compile Include="Sensors\ScoreSensor.cs" />
     <Compile Include="Sensors\SeashellSensor.cs" />
     <Compile Include="Tests\DataDrivenCvarcTest\BaseTestBuilder.cs" />

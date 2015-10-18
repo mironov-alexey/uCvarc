@@ -24,13 +24,13 @@ namespace CVARC.V2
 			}
 		}
 
-        public static TCommand CollectSandCastleDetail<TCommand>(this ISandGripperRules<TCommand> factory)
+        public static TCommand CollectSandBlock<TCommand>(this ISandGripperRules<TCommand> factory)
            where TCommand : ISandGripperCommand, new()
         {
             return new TCommand { SandGripperAction = SandGripperAction.CollectDetail };
         }
 
-        public static TCommand ReleaseSandCastleDetail<TCommand>(this ISandGripperRules<TCommand> factory)
+        public static TCommand ReleaseSandBlock<TCommand>(this ISandGripperRules<TCommand> factory)
             where TCommand : ISandGripperCommand, new()
         {
             return new TCommand { SandGripperAction = SandGripperAction.ReleaseDetail };
