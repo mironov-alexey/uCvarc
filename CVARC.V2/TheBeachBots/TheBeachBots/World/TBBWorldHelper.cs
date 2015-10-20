@@ -12,14 +12,14 @@ namespace TheBeachBots
 
         public bool IsInsideStartingArea(Frame2D location, SideColor color)
         {
-            return Math.Abs(location.X) > 150 - 30 && location.X * Sign(color) > 0
+            return Math.Abs(location.X) > 150 - 30 && location.X * Sign(color) >= 0
                 && location.Y < 40 && location.Y > -10;
         }
 
         public bool IsInsideBuildingArea(Frame2D location, SideColor color)
         {
             return Distance(location, buildingAreaCenter) < 60
-                && location.Y < 25 && location.X * Sign(color) > 0;
+                && location.Y < 25 && location.X * Sign(color) >= 0;
         }
 
         public bool IsInsideWater(Frame2D location)
