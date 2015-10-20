@@ -219,5 +219,15 @@ namespace TheBeachBots.KroR
                 Location = new Frame3D(location.X, location.Y, floorLevel),                
             });
         }
+
+        public void OpenParasol(string actorId)
+        {
+            // Method stub
+        }
+
+        public void CloseParasol(string actorId)
+        {
+            // Method stub
+        }
     }
 }
