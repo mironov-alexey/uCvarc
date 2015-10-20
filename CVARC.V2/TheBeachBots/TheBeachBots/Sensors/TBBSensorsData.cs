@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 using CVARC.V2;
 
 namespace TheBeachBots
@@ -45,5 +40,9 @@ namespace TheBeachBots
         [DataMember]
         [FromSensor(typeof(SandGripperSensor))]
         public int CollectedSandCount { get; set; }
+
+        [DataMember]
+        [FromSensor(typeof(ParasolSensor))]
+        public bool ParasolActivated { get; set; }
     }
 }
