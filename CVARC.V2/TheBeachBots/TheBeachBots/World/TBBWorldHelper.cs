@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AIRLab.Mathematics;
+using CVARC.V2;
 
 namespace TheBeachBots
 {
@@ -35,6 +36,24 @@ namespace TheBeachBots
         double Distance(Frame3D first, Frame3D second)
         {
             return Math.Sqrt(Math.Pow(first.X - second.X, 2) + Math.Pow(first.Y - second.Y, 2));
+        }
+
+        public string ColorToControllerId(SideColor color)
+        {
+            if (color == SideColor.Green)
+                return TwoPlayersId.Right;
+            if (color == SideColor.Violet)
+                return TwoPlayersId.Left;
+            throw new ArgumentException("This color is not assigned to any side.");
+        }
+
+        public SideColor ControllerIdToColor(string id)
+        {
+            if (id == TwoPlayersId.Left)
+                return SideColor.Violet;
+            if (id == TwoPlayersId.Right)
+                return SideColor.Green;
+            throw new ArgumentException("Invalid controller id.");
         }
 
         int Sign(SideColor color)
