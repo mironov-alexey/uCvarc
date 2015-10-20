@@ -26,5 +26,8 @@ namespace TheBeachBots
 
         void CloseBeachHut(string id);
         void OpenBeachHut(string id);
+
+        void OpenParasol(string actorId);
+        void CloseParasol(string actorId);
     }
 }
