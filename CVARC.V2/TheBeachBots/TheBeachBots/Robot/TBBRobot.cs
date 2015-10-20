@@ -15,6 +15,7 @@ namespace TheBeachBots
         public SeashellGripper SeashellGripper { get; private set; }
         public FishingRod FishingRod { get; private set; }
         public SandGripper SandGripper { get; private set; }
+        public ParasolUnit ParasolUnit { get; private set; }
 
         public override IEnumerable<IUnit> Units
         {
@@ -22,6 +23,7 @@ namespace TheBeachBots
             {
                 yield return DoorUnit;
                 yield return FishingRod;
+                yield return ParasolUnit;
                 yield return SandGripper;
                 yield return SeashellGripper;
                 yield return SimpleMovementUnit;
@@ -37,6 +39,35 @@ namespace TheBeachBots
             FishingRod = new FishingRod(this, World, new Frame3D(20, 0, 10), 15);
             SandGripper = new SandGripper(this, World, new Frame3D(-15, 0, 5), 5);
             SeashellGripper = new SeashellGripper(this, World, new Frame3D(15, 0, 5));
+            ParasolUnit = new ParasolUnit(this, World);
+
+            FishingRod.OnGrip = SeashellGripper.OnGrip = DoorUnit.OnActivation = DoorUnit.OnDeactivation = id =>
+            {
+                if (!IsValidObject(id)) World.Scores.Add(ControllerId, -20, "Penalty");
+            };
+
+            ParasolUnit.OnActivation = _ => World.Scores.Add(ControllerId, 20, "Open parasol");
+            ParasolUnit.OnDeactivation = _ => World.Scores.Add(ControllerId, -20, "Close parasol");
+
+            DoorUnit.OnActivation += id =>
+            {
+                if (IsValidObject(id)) World.Scores.Add(ControllerId, 10, "Raise valid flag");
+            };
+
+            DoorUnit.OnDeactivation += id =>
+            {
+                if (IsValidObject(id)) World.Scores.Add(ControllerId, -10, "Release valid flag");
+            };
+        }
+
+        private bool IsValidObject(string id)
+        {
+            return World.IdGenerator.GetKey<TBBObject>(id).Color == RobotColor;
+        }
+
+        private SideColor RobotColor
+        {
+            get { return ControllerId == TwoPlayersId.Left ? SideColor.Violet : SideColor.Green; }
         }
     }
 }

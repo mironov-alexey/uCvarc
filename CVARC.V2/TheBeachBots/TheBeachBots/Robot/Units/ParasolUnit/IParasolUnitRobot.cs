@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheBeachBots;
 
 namespace CVARC.V2
 {
-    public interface IDoorUnitCommand : ICommand
+    public interface IParasolUnitRobot : IActor
     {
-        TriggerAction DoorUnitAction { get; set; }
+        ParasolUnit ParasolUnit { get; }
     }
 }

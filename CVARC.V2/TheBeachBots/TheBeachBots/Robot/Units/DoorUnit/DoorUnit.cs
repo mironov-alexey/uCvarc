@@ -29,14 +29,16 @@ namespace CVARC.V2
                 .FirstOrDefault();
         }
 
-        protected override void ActivateTrigger(string trigger)
+        protected override bool ActivateTrigger(string trigger)
         {
             world.Manager.CloseBeachHut(trigger);
+            return true;
         }
 
-        protected override void DeactivateTrigger(string trigger)
+        protected override bool DeactivateTrigger(string trigger)
         {
             world.Manager.OpenBeachHut(trigger);
+            return true;
         }
 
         protected override double GetActivationTime(IDoorOpeningRules rules)
@@ -49,17 +51,9 @@ namespace CVARC.V2
             return rules.DoorClosingTime;
         }
 
-        protected override TriggerAction GetAction(IDoorUnitCommand command)
+        protected override TriggerAction ExtractAction(IDoorUnitCommand command)
         {
-            switch(command.DoorUnitAction)
-            {
-                case DoorUnitAction.CloseDoor:
-                    return TriggerAction.Activate;
-                case DoorUnitAction.OpenDoor:
-                    return TriggerAction.Deactivate;
-                default:
-                    return TriggerAction.None;
-            }
+            return command.DoorUnitAction;
         }
     }
 }

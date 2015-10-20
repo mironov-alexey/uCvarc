@@ -8,7 +8,8 @@ using CVARC.V2;
 namespace TheBeachBots
 {
     public class TBBRules : IRules, ISimpleMovementRules<TBBCommand>, IDoorOpeningRules<TBBCommand>, 
-        ISeashellGripperRules<TBBCommand>, IFishingRules<TBBCommand>, ISandGripperRules<TBBCommand>
+        ISeashellGripperRules<TBBCommand>, IFishingRules<TBBCommand>, ISandGripperRules<TBBCommand>,
+        IParasolRules<TBBCommand>
     {
         public static readonly TBBRules Current = new TBBRules();
 
@@ -30,6 +31,9 @@ namespace TheBeachBots
         public double SandReleasingTime { get; set; }
         public int SandGripperCapacity { get; set; }
 
+        public double ParasolOpeningTime { get; set; }
+        public double ParasolClosingTime { get; set; }
+
         public TBBRules()
         {
             LinearVelocityLimit = 50;
@@ -45,6 +49,8 @@ namespace TheBeachBots
 
             SandCollectingTime = SandReleasingTime = 1;
             SandGripperCapacity = 5;
+
+            ParasolClosingTime = ParasolOpeningTime = 3;
         }
 
         public void DefineKeyboardControl(IKeyboardController _pool, string controllerId)
@@ -55,6 +61,7 @@ namespace TheBeachBots
             this.AddSeashellGripperKeys(pool, controllerId);
             this.AddFishingKeys(pool, controllerId);
             this.AddSandGripperKeys(pool, controllerId);
+            this.AddParasolUnitKeys(pool, controllerId);
             pool.StopCommand = () => new TBBCommand { SimpleMovement = SimpleMovement.Stand(0.1) };
         }
 

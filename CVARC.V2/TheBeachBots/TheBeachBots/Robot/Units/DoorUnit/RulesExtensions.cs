@@ -15,24 +15,24 @@ namespace CVARC.V2
 		{
 			if (controllerId == TwoPlayersId.Left)
 			{
-                pool.Add(Keys.Q, () => new TCommand { DoorUnitAction = DoorUnitAction.CloseDoor });
+                pool.Add(Keys.Q, () => new TCommand { DoorUnitAction = TriggerAction.Deactivate });
 			}
 			if (controllerId == TwoPlayersId.Right)
 			{
-                pool.Add(Keys.U, () => new TCommand { DoorUnitAction = DoorUnitAction.CloseDoor });
+                pool.Add(Keys.U, () => new TCommand { DoorUnitAction = TriggerAction.Activate });
 			}
 		}
 
         public static TCommand CloseDoor<TCommand>(this IDoorOpeningRules<TCommand> factory)
            where TCommand : IDoorUnitCommand, new()
         {
-            return new TCommand { DoorUnitAction = DoorUnitAction.CloseDoor };
+            return new TCommand { DoorUnitAction = TriggerAction.Activate };
         }
 
         public static TCommand OpenDoor<TCommand>(this IDoorOpeningRules<TCommand> factory)
             where TCommand : IDoorUnitCommand, new()
         {
-            return new TCommand { DoorUnitAction = DoorUnitAction.OpenDoor };
+            return new TCommand { DoorUnitAction = TriggerAction.Deactivate };
         }
 	}
 }
