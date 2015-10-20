@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Robot\Units\ParasolUnit\ParasolUnit.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\IParasolRules.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\IParasolCommand.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\IParasolUnitRobot.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\RulesExtensions.cs" />
     <Compile Include="Robot\Units\SandGripper\SandGripper.cs" />
     <Compile Include="Robot\Units\SandGripper\ISandGripperCommand.cs" />
     <Compile Include="Robot\Units\SandGripper\ISandGripperRobot.cs" />
@@ -51,6 +56,7 @@
     <Compile Include="Sensors\Map\Map.cs" />
     <Compile Include="Sensors\Map\MapSensor.cs" />
     <Compile Include="Sensors\Map\GameObjectMapData.cs" />
+    <Compile Include="Sensors\ParasolSensor.cs" />
     <Compile Include="Sensors\SandGripperSensor.cs" />
     <Compile Include="Sensors\ScoreSensor.cs" />
     <Compile Include="Sensors\SeashellSensor.cs" />
@@ -72,7 +78,7 @@
     <Compile Include="Robot\TBBRules.cs" />
     <Compile Include="Robot\Units\BaseTBBGripper\BaseTBBRules.cs" />
     <Compile Include="Robot\Units\DoorUnit\DoorUnit.cs" />
-    <Compile Include="Robot\Units\DoorUnit\TriggerUnit.cs" />
+    <Compile Include="Robot\Units\BaseTriggerUnit\TriggerUnit.cs" />
     <Compile Include="Robot\Units\DoorUnit\IDoorUnitCommand.cs" />
     <Compile Include="Robot\Units\DoorUnit\IDoorUnitRobot.cs" />
     <Compile Include="Robot\Units\DoorUnit\IDoorOpeningRules.cs" />
