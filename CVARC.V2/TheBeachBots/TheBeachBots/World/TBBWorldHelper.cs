@@ -25,7 +25,7 @@ namespace TheBeachBots
 
         public bool IsInsideWater(Frame3D location)
         {
-            return location.X < -100 && Math.Abs(location.X) > 57.2 && Math.Abs(location.X) < 100.2;
+            return location.Y < -100 && Math.Abs(location.X) > 57.2 && Math.Abs(location.X) < 100.2;
         }
 
         public bool IsInsideNet(Frame3D location)
