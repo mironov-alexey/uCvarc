@@ -66,6 +66,8 @@
     <Compile Include="Tests\DataDrivenCvarcTest\TestData.cs" />
     <Compile Include="Tests\DataDrivenCvarcTest\ReflectableTestBuilder.cs" />
     <Compile Include="Tests\DoorTest.cs" />
+    <Compile Include="Tests\FishingTest.cs" />
+    <Compile Include="Tests\ScoresTest.cs" />
     <Compile Include="Tests\TBBTestBuilder.cs" />
     <Compile Include="Tests\TestExample.cs" />
     <Compile Include="Utils\TBBBots.cs" />
