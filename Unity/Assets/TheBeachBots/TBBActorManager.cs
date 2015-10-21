@@ -1,11 +1,11 @@
 ﻿using CVARC.V2;
 using UnityEngine;
-using RoboMovies;
+using TheBeachBots;
 
 
 namespace Assets
 {
-    public class RMActorManager : ActorManager<IActor>, IRMActorManager
+    public class TBBActorManager : ActorManager<IActor>, ITBBActorManager
     {
         const float robotRadius = 12;
         const float robotHeight = 24;
@@ -13,13 +13,13 @@ namespace Assets
 
         public override void CreateActorBody()
         {
-            var location = new Vector3(-150 + 35, robotHeight / 2, 0);
+            var location = new Vector3(-150 + 15, robotHeight / 2, 15);
             var rotation = Quaternion.Euler(0, 0, 0);
             string topTexture = "RobotYellow";
 
             if (Actor.ControllerId == TwoPlayersId.Right)
             {
-                location = new Vector3(150 - 35, robotHeight / 2, 0);
+                location = new Vector3(150 - 15, robotHeight / 2, 15);
                 rotation = Quaternion.Euler(0, 180, 0);
                 topTexture = "RobotGreen";
             }
@@ -37,9 +37,9 @@ namespace Assets
             actorBody.GetComponent<Rigidbody>().angularDrag = 0;
             actorBody.GetComponent<Rigidbody>().useGravity = true;
             actorBody.GetComponent<Rigidbody>().mass = robotMass;
-            actorBody.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ |
-                                              RigidbodyConstraints.FreezePositionY;
-            
+            actorBody.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX |
+                                                              RigidbodyConstraints.FreezeRotationZ |
+                                                              RigidbodyConstraints.FreezePositionY;            
             actorBody.AddComponent<MeshCollider>();
             actorBody.GetComponent<MeshCollider>().convex = true;
 
