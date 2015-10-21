@@ -18,10 +18,7 @@ namespace TheBeachBots
                 OperationalTimeLimit = 5,
                 SpeedUp = false,
             };
-
-            builder.AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
-            builder.AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
-
+            
             builder.Reflected = true;
 
             builder.CreateTest("TestExample0")

@@ -16,6 +16,12 @@ namespace TheBeachBots
             : base(logic, worldState)
         {
             this.rules = rules;
+            OperationalTimeLimit = 5;
+            TimeLimit = 90;
+            Reflected = false;
+            SpeedUp = false;
+            AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
+            AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
         }
 
         public TBBTestBuilder CreateTest(string name)
