@@ -5,18 +5,13 @@ namespace TheBeachBots
 {
     partial class TBBLogicPartHelper
     {
-        [TestLoaderMethod]
         public void LoadTestExample(LogicPart logic, TBBRules rules)
         {
-            var builder = new TBBTestBuilder(logic, rules, new TBBWorldState(42)) {                
-                TimeLimit = 90,
-                OperationalTimeLimit = 5,
-                SpeedUp = false,
-            };
-            
-            builder.Reflected = true;
+            var builder = new TBBTestBuilder(rules, new TBBWorldState(42));            
 
-            builder.CreateTest("TestExample0")
+            builder.Reflect();
+
+            logic.Tests["TestExample0"] =  builder
                 .Move(30)
                 .Rotate(-Angle.HalfPi)
                 .Move(15)
@@ -25,11 +20,11 @@ namespace TheBeachBots
                 .Stand(1)
                 .AssertScores(0)
                 .AssertLocation(150 - 30, 30, 10)
-                .EndOfTest();
+                .CreateTest();
 
-            builder.SpeedUp = true;
+            builder.Settings.SpeedUp = true;
 
-            builder.CreateTest("TestExample1")
+            logic.Tests["TestExample1"] = builder
                 .Move(30)
                 .Rotate(-Angle.HalfPi)
                 .Move(15)
@@ -38,13 +33,13 @@ namespace TheBeachBots
                 .Stand(1)
                 .AssertScores(0)
                 .AssertLocation(150 - 30, 30, 10)
-                .EndOfTest();
+                .CreateTest();
 
-            builder.SpeedUp = false;
-            builder.Reflected = false;
+            builder.Settings.SpeedUp = false;
+            builder.Reflect();
             builder.WorldState = new TBBWorldState(0);
 
-            builder.CreateTest("TestExample2")
+            logic.Tests["TestExample2"] = builder
                 .Move(30)
                 .Rotate(-Angle.HalfPi)
                 .Move(15)
@@ -53,7 +48,7 @@ namespace TheBeachBots
                 .Stand(1)
                 .AssertScores(0)
                 .AssertLocation(150 - 30, 30, 10)
-                .EndOfTest();
+                .CreateTest();
         }
     }
 }

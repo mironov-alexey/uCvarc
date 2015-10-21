@@ -11,31 +11,30 @@ namespace CVARC.V2
         where TWorldState : IWorldState
         where TSensorData : class, ILocationSensorData, new()
     {
-        private bool _reflected;
-        public bool Reflected {
-            get { return _reflected; }
-            set
-            {
-                if (_reflected != value)
-                    ReflectControllerSetup();
-                _reflected = value;
-            }
-        }
-        
-        public ReflectableTestBuilder(LogicPart logic, TWorldState worldState)
-            : base(logic, worldState) { }
-
-        protected override void AddAction(TCommand command)
+        public bool Reflected { get; private set; }
+        public void Reflect()
         {
-            base.AddAction(Reflected ? ReflectCommand(command) : command);
+            Reflected = !Reflected;
+            ReflectControllerSettings();
         }
 
-        protected override void AddAction(Asserter<TSensorData, TWorld> assert)
+        public ReflectableTestBuilder(TWorldState worldState)
+            : base(worldState) { }
+
+        public ReflectableTestBuilder(TWorldState worldState, SettingsProposal settings)
+            : base(worldState, settings) { }
+
+        protected override void AddTestAction(TCommand command)
         {
-            base.AddAction(Reflected ? (s, w, a) => assert(ReflectSensor(s), w, a) : assert);
+            base.AddTestAction(Reflected ? ReflectCommand(command) : command);
+        }
+
+        protected override void AddTestAction(Asserter<TSensorData, TWorld> assert)
+        {
+            base.AddTestAction(Reflected ? (s, w, a) => assert(ReflectSensor(s), w, a) : assert);
         }
         
-        private void ReflectControllerSetup()
+        private void ReflectControllerSettings()
         {
             Settings.Controllers = Settings.Controllers
                 .Select(x => new ControllerSettings()

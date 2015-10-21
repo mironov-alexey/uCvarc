@@ -5,30 +5,29 @@ namespace TheBeachBots
 {
     partial class TBBLogicPartHelper
     {
-        [TestLoaderMethod]
         public void LoadDoorTest(LogicPart logic, TBBRules rules)
         {
-            var builder = new TBBTestBuilder(logic, rules, new TBBWorldState(0)) { Reflected = true };
+            var builder = new TBBTestBuilder(rules, new TBBWorldState(0));
 
-            builder.CreateTest("DoorClosing_Close-IfNearby")
+            logic.Tests["DoorClosing_Close-IfNearby"] = builder
                 .Move(10)
                 .Rotate(Angle.HalfPi)
                 .Move(70)
                 .Stand(1)
                 .CloseDoor()
                 .AssertScores(10)
-                .EndOfTest();
+                .CreateTest();
 
-            builder.CreateTest("DoorClosing_CloseFail-IfFar")
+            logic.Tests["DoorClosing_CloseFail-IfFar"] = builder
                 .Move(10)
                 .Rotate(Angle.HalfPi)
                 .Move(65)
                 .Stand(1)
                 .CloseDoor()
                 .AssertScores(0)
-                .EndOfTest();
+                .CreateTest();
 
-            builder.CreateTest("DoorClosing_CloseFail-IfWrongAngle")
+            logic.Tests["DoorClosing_CloseFail-IfWrongAngle"] = builder
                 .Move(10)
                 .Rotate(Angle.HalfPi)
                 .Move(70)
@@ -36,9 +35,9 @@ namespace TheBeachBots
                 .Stand(1)
                 .CloseDoor()
                 .AssertScores(0)
-                .EndOfTest();
+                .CreateTest();
 
-            builder.CreateTest("DoorClosing_CloseFail-IfBack")
+            logic.Tests["DoorClosing_CloseFail-IfBack"] = builder
                 .Move(10)
                 .Rotate(Angle.HalfPi)
                 .Move(70)
@@ -46,9 +45,9 @@ namespace TheBeachBots
                 .Stand(1)
                 .CloseDoor()
                 .AssertScores(0)
-                .EndOfTest();
+                .CreateTest();
 
-            builder.CreateTest("DoorClosing_Penalty-IfWrongColor")                
+            logic.Tests["DoorClosing_Penalty-IfWrongColor"] = builder                
                 .Rotate(Angle.HalfPi)
                 .Move(30)
                 .Rotate(-Angle.HalfPi)
@@ -58,7 +57,7 @@ namespace TheBeachBots
                 .Stand(1)
                 .CloseDoor()
                 .AssertScores(-20)
-                .EndOfTest();
+                .CreateTest();
         }
     }
 }

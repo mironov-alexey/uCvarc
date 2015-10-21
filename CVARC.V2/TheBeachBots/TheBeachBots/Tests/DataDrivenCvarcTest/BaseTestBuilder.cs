@@ -7,50 +7,21 @@ namespace CVARC.V2
         where TCommand : ICommand
         where TWorldState : IWorldState
         where TSensorData : class, new()
-    {        
-        LogicPart logic;
-        TestData<TSensorData, TCommand, TWorld, TWorldState> data;
-        
-        protected SettingsProposal Settings { get; private set; }
+    {
+        List<TestAction<TSensorData, TCommand, TWorld>> currentTest = 
+            new List<TestAction<TSensorData, TCommand, TWorld>>();        
 
+        public SettingsProposal Settings { get; private set; }
         public TWorldState WorldState { get; set; }
 
-        public double? OperationalTimeLimit
-        {
-            get { return Settings.OperationalTimeLimit; }
-            set { Settings.OperationalTimeLimit = value; }
-        }
+        public BaseTestBuilder(TWorldState worldState)
+            : this(worldState, new SettingsProposal() { Controllers = new List<ControllerSettings>() })
+        { }
 
-        public double? TimeLimit
+        public BaseTestBuilder(TWorldState worldState, SettingsProposal settings)
         {
-            get { return Settings.TimeLimit; }
-            set { Settings.TimeLimit = value; }
-        }
-
-        public string LogFile
-        {
-            get { return Settings.LogFile; }
-            set { Settings.LogFile = value; }
-        }
-
-        public bool? EnableLog
-        {
-            get { return Settings.EnableLog; }
-            set { Settings.EnableLog = value; }
-        }
-
-        public bool? SpeedUp
-        {
-            get { return Settings.SpeedUp; }
-            set { Settings.SpeedUp = value; }
-        }
-
-        public BaseTestBuilder(LogicPart logic, TWorldState worldState)
-        {
-            this.logic = logic;
             WorldState = worldState;            
-            Settings = new SettingsProposal();
-            Settings.Controllers = new List<ControllerSettings>();
+            Settings = settings;
         }
 
         public void AddControllerSettings(string controllerId, string name, ControllerType type)
@@ -63,25 +34,24 @@ namespace CVARC.V2
             });
         }
 
-        public void CreateClearData(string testName)
+        public CvarcTest<TSensorData, TCommand, TWorld, TWorldState> CreateTest()
         {
-            data = new TestData<TSensorData, TCommand, TWorld, TWorldState>
-                (testName, WorldState, new SettingsProposal(Settings));
+            var data = new TestData<TSensorData, TCommand, TWorld, TWorldState>
+                (WorldState, SettingsProposal.DeepCopy(Settings), currentTest);
+
+            currentTest = new List<TestAction<TSensorData, TCommand, TWorld>>();
+
+            return new DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>(data);
         }
 
-        public void EndOfTest()
+        protected virtual void AddTestAction(TCommand command)
         {
-            logic.Tests[data.TestName] = new DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>(data);
+            currentTest.Add(new TestAction<TSensorData, TCommand, TWorld> { Command = command });
         }
 
-        protected virtual void AddAction(TCommand command)
+        protected virtual void AddTestAction(Asserter<TSensorData, TWorld> assert)
         {
-            data.AddAction(command);
-        }
-
-        protected virtual void AddAction(Asserter<TSensorData, TWorld> assert)
-        {
-            data.AddAction(assert);
+            currentTest.Add(new TestAction<TSensorData, TCommand, TWorld> { Asserter = assert });
         }
     }
 }

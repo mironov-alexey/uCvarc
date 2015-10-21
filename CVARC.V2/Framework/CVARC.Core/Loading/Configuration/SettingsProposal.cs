@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -36,21 +37,13 @@ namespace CVARC.V2
         [DataMember]
         public List<ControllerSettings> Controllers { get; set; }
 
-        public SettingsProposal() { }
-
-        public SettingsProposal(SettingsProposal clone)
+        public static SettingsProposal DeepCopy(SettingsProposal copy)
         {
-            Name = clone.Name;
-            TimeLimit = clone.TimeLimit;
-            EnableLog = clone.EnableLog;
-            LogFile = clone.LogFile;
-            SpeedUp = clone.SpeedUp;
-            OperationalTimeLimit = clone.OperationalTimeLimit;
-            Port = clone.Port;
-            SolutionsFolder = clone.SolutionsFolder;
-            LegacyLogFile = clone.LegacyLogFile;
-            WorldState = clone.WorldState;
-            Controllers = clone.Controllers;
+            DataContractSerializer ds = new DataContractSerializer(typeof(SettingsProposal));
+            MemoryStream stream = new MemoryStream();
+            ds.WriteObject(stream, copy);
+            stream.Position = 0;
+            return (SettingsProposal)ds.ReadObject(stream);
         }
 
         class Parser

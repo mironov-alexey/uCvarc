@@ -6,8 +6,8 @@ namespace TheBeachBots
 {
     public partial class TBBLogicPartHelper : LogicPartHelper 
     {
-        [AttributeUsage(AttributeTargets.Method)]
-        class TestLoaderMethod : Attribute { }
+        //[AttributeUsage(AttributeTargets.Method)]
+        //class TestLoaderMethod : Attribute { }
 
         public override LogicPart Create()
         {
@@ -26,7 +26,10 @@ namespace TheBeachBots
 
             logicPart.Bots["Standing"] = () => rules.CreateStandingBot();
 
-            LoadTests(logicPart, rules);
+            LoadDoorTest(logicPart, rules);
+            LoadFishingTest(logicPart, rules);
+            LoadTestExample(logicPart, rules);
+            LoadScoresTest(logicPart, rules);
 
             return logicPart;
         }
@@ -36,15 +39,15 @@ namespace TheBeachBots
             logic.Tests[name] = test;
         }
 
-        private void LoadTests(LogicPart logic, TBBRules rules)
-        {
-            var testMethods = GetType()
-                .GetMethods()
-                .Where(m => m.GetCustomAttributes(true).Where(a => a is TestLoaderMethod).Count() != 0)
-                .Select(m => m.Name);
+        //private void LoadTests(LogicPart logic, TBBRules rules)
+        //{
+        //    var testMethods = GetType()
+        //        .GetMethods()
+        //        .Where(m => m.GetCustomAttributes(true).Where(a => a is TestLoaderMethod).Count() != 0)
+        //        .Select(m => m.Name);
 
-            foreach (var name in testMethods)
-                GetType().GetMethod(name).Invoke(this, new Object[] { logic, rules });
-        }
+        //    foreach (var name in testMethods)
+        //        GetType().GetMethod(name).Invoke(this, new Object[] { logic, rules });
+        //}
     }
 }
