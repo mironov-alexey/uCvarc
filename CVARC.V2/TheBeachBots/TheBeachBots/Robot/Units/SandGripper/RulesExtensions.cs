@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace CVARC.V2
 {
-	public static partial class RulesExtensions
+    public static partial class RulesExtensions
 	{
 		public static void AddSandGripperKeys<TCommand>(this ISandGripperRules<TCommand> rules, 
             KeyboardController<TCommand> pool, string controllerId)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using AIRLab.Mathematics;
 using CVARC.V2;
 

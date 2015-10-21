@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CVARC.V2
+﻿namespace CVARC.V2
 {
     public class DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>
         : CvarcTest<TSensorData, TCommand, TWorld, TWorldState>
