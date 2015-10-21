@@ -61,6 +61,7 @@ namespace CVARC.V2
 
         private TCommand ReflectCommand(TCommand command)
         {
+            if (command.SimpleMovement == null) return command;
             command.SimpleMovement = SimpleMovement.MoveAndRotate(
                 command.SimpleMovement.LinearVelocity,
                 -command.SimpleMovement.AngularVelocity,
@@ -70,6 +71,7 @@ namespace CVARC.V2
 
         private TSensorData ReflectSensor(TSensorData sensor)
         {
+            if (sensor.SelfLocation == null) return sensor;
             sensor.SelfLocation = new LocatorItem
             {
                 Id = sensor.SelfLocation.Id,              
