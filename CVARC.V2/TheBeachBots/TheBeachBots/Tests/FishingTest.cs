@@ -54,6 +54,7 @@ namespace TheBeachBots
                 .Stand(1)
                 .GripFish()
                 .Move(-50)
+                .Stand(1)
                 .ReleaseFish()
                 .AssertScores(5)
                 .EndOfTest();
@@ -69,6 +70,7 @@ namespace TheBeachBots
                 .Move(50)
                 .Rotate(-Angle.HalfPi)
                 .Move(20)
+                .Stand(1)
                 .ReleaseFish()
                 .AssertScores(10)
                 .EndOfTest();
