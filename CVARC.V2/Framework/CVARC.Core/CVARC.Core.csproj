@@ -172,6 +172,7 @@
     <Compile Include="Units\GripperUnit\IGrippableRobot.cs" />
     <Compile Include="Units\GripperUnit\IGripperCommand.cs" />
     <Compile Include="Units\GripperUnit\IGripperRules.cs" />
+    <Compile Include="Units\CommandBuilder.cs" />
     <Compile Include="Units\IRules.cs" />
     <Compile Include="Units\IUnit.cs" />
     <Compile Include="Units\MoveAndGrip\MoveAndGripCommand.cs" />

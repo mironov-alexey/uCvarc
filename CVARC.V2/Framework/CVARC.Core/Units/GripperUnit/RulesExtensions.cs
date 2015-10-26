@@ -14,11 +14,27 @@ namespace CVARC.V2
 			return new TCommand { GripperCommand = GripperAction.Grip };
 		}
 
+        public static CommandBuilder<TRules, TCommand> Grip<TRules, TCommand>(this  CommandBuilder<TRules, TCommand> builder)
+            where TCommand : IGripperCommand, new()
+            where TRules : IGripperRules<TCommand>
+        {
+            builder.Add(Grip(builder.Rules));
+            return builder;
+        }
+
 		public static TCommand Release<TCommand>(this IGripperRules<TCommand> factory)
 			where TCommand : IGripperCommand, new()
 		{
 			return new TCommand { GripperCommand = GripperAction.Release };
 		}
+
+        public static CommandBuilder<TRules, TCommand> Release<TRules, TCommand>(this  CommandBuilder<TRules, TCommand> builder)
+            where TCommand : IGripperCommand, new()
+            where TRules : IGripperRules<TCommand>       
+        {
+            builder.Add(Release(builder.Rules));
+            return builder;
+        }
 
 		public static void AddGripKeys<TCommand>(this IGripperRules<TCommand> rules, KeyboardController<TCommand> pool, string controllerId)
 			where TCommand : IGripperCommand, new()
