@@ -16,14 +16,11 @@ namespace CVARC.V2
         public SettingsProposal Settings { get; private set; }
         public TWorldState WorldState { get; set; }
         public readonly TRules Rules;
-        public readonly CommandBuilder<TRules, TCommand> Builder;
-        
+
 
         public TestBuilder(TRules rules, TWorldState worldState, SettingsProposal settings)
         {
             this.Rules = rules;
-            this.Builder = new CommandBuilder<TRules, TCommand>(Rules);
-            Builder.CommandAdded += z => AddTestAction(z);
             WorldState = worldState;            
             Settings = settings;
         }
@@ -48,7 +45,7 @@ namespace CVARC.V2
             return new DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>(data);
         }
 
-        void AddTestAction(TCommand command)
+        protected void AddTestAction(TCommand command)
         {
             currentTest.Add(new TestAction<TSensorData, TCommand> { Command = command });
         }
