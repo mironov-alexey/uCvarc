@@ -15,7 +15,11 @@ namespace Demo
             AddControllerSettings(TwoPlayersId.Right, "Stand", ControllerType.Bot);
         }
 
-        
+        public CameraTestBuilder Assert(Asserter<DemoSensorsData> assert)
+        {
+            base.AddTestAction(assert);
+            return this;
+        }
     }
 
     class SyntaxCheck
@@ -23,9 +27,8 @@ namespace Demo
         public static void Check()
         {
             var b = new CameraTestBuilder();
-            b.Builder.Grip().Release();
-            b.AddTestAction((sensors, asserter) => asserter.True(sensors.IsGripped));
-            b.CreateTest();
+            b.Builder.Grip().Release().To(() => b).Assert((a,v) => { }).CreateTest();
+
         }
     }
 }

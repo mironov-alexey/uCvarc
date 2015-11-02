@@ -17,6 +17,7 @@ namespace CVARC.V2
         {
             if (CommandAdded != null) CommandAdded(command);
         }
+        public TBack To<TBack>(Func<TBack> where) { return where(); }
     }
 
 }

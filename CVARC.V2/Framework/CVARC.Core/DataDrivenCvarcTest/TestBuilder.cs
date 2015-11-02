@@ -53,7 +53,7 @@ namespace CVARC.V2
             currentTest.Add(new TestAction<TSensorData, TCommand> { Command = command });
         }
 
-        public void AddTestAction(Asserter<TSensorData> assert)
+        protected void AddTestAction(Asserter<TSensorData> assert)
         {
             currentTest.Add(new TestAction<TSensorData, TCommand> { Asserter = assert });
         }
