@@ -84,6 +84,12 @@
     <Compile Include="Client\CvarcTest.cs" />
     <Compile Include="Client\ICvarcTest.cs" />
     <Compile Include="Controllers\Network\CvarcClient.cs" />
+    <Compile Include="DataDrivenCvarcTest\BaseTestBuilder.cs" />
+    <Compile Include="DataDrivenCvarcTest\TestBuilder.cs" />
+    <Compile Include="DataDrivenCvarcTest\DataDrivenCvarcTest.cs" />
+    <Compile Include="DataDrivenCvarcTest\ReflectableTestBuilder.cs" />
+    <Compile Include="DataDrivenCvarcTest\TestAction.cs" />
+    <Compile Include="DataDrivenCvarcTest\TestData.cs" />
     <Compile Include="Engine\IPassiveEngine.cs" />
     <Compile Include="Loading\Competitions\ActorFactory.cs" />
     <Compile Include="Loading\Competitions\LogicPartHelper.cs" />

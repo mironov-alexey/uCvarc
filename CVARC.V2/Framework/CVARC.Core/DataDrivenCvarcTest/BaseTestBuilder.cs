@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CVARC.V2
 {
+    [Obsolete]
     public abstract class BaseTestBuilder<TSensorData, TCommand, TWorldState, TWorld>
         where TWorld : IWorld
         where TCommand : ICommand
         where TWorldState : IWorldState
         where TSensorData : class, new()
     {
-        List<TestAction<TSensorData, TCommand, TWorld>> currentTest = 
-            new List<TestAction<TSensorData, TCommand, TWorld>>();        
+        List<TestAction<TSensorData, TCommand>> currentTest = 
+            new List<TestAction<TSensorData, TCommand>>();        
 
         public SettingsProposal Settings { get; private set; }
         public TWorldState WorldState { get; set; }
@@ -39,19 +41,19 @@ namespace CVARC.V2
             var data = new TestData<TSensorData, TCommand, TWorld, TWorldState>
                 (WorldState, SettingsProposal.DeepCopy(Settings), currentTest);
 
-            currentTest = new List<TestAction<TSensorData, TCommand, TWorld>>();
+            currentTest = new List<TestAction<TSensorData, TCommand>>();
 
             return new DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>(data);
         }
 
         protected virtual void AddTestAction(TCommand command)
         {
-            currentTest.Add(new TestAction<TSensorData, TCommand, TWorld> { Command = command });
+            currentTest.Add(new TestAction<TSensorData, TCommand> { Command = command });
         }
 
-        protected virtual void AddTestAction(Asserter<TSensorData, TWorld> assert)
+        protected virtual void AddTestAction(Asserter<TSensorData> assert)
         {
-            currentTest.Add(new TestAction<TSensorData, TCommand, TWorld> { Asserter = assert });
+            currentTest.Add(new TestAction<TSensorData, TCommand> { Asserter = assert });
         }
     }
 }

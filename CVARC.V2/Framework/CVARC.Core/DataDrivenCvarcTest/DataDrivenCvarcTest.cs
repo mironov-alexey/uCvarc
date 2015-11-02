@@ -26,7 +26,7 @@
                 if (action.Command != null)
                     sensorData = client.Act(action.Command);
                 if (action.Asserter != null)
-                    action.Asserter(sensorData, world, asserter);
+                    action.Asserter(sensorData, asserter);
             }
         }
     }
