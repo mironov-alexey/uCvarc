@@ -1,145 +1,53 @@
-﻿using CVARC.V2;
-using AIRLab.Mathematics;
+﻿using System;
+using CVARC.V2;
 using System.Collections.Generic;
 
 namespace TheBeachBots
 {
-    class TBBTestBuilder : ReflectableTestBuilder<TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld>
+    class TBBTestBuilder : ReflectableTestBuilder<TBBRules, TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld>
     {
-        TBBRules rules;
-
-        public TBBTestBuilder(TBBRules rules, TBBWorldState worldState, SettingsProposal settings)
-            : base(worldState, settings)
-        {
-            this.rules = rules;
-        }
+        public readonly CommandBuilder<TBBRules, TBBCommand, TBBTestBuilder> Commands; 
 
         public TBBTestBuilder(TBBRules rules, TBBWorldState worldState)
-            : this(rules, worldState, new SettingsProposal() { Controllers = new List<ControllerSettings>() })
+            : base(rules, worldState, new SettingsProposal())
         {
             Settings.OperationalTimeLimit = 5;
             Settings.TimeLimit = 90;
             Settings.SpeedUp = false;
+            Settings.Controllers = new List<ControllerSettings>();
             AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
             AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
+            Commands = new CommandBuilder<TBBRules, TBBCommand, TBBTestBuilder>(rules, this);
+            Commands.CommandAdded += AddCommand;
         }
 
-        public TBBTestBuilder Assert(Asserter<TBBSensorsData> assert)
+        public TBBTestBuilder Assert(Action<TBBSensorsData, IAsserter> assert)
         {
-            AddTestAction(assert);
+            AddAssert(assert);
             return this;
         }
 
         public TBBTestBuilder AssertHasFish(bool expected)
         {
-            AddTestAction((s,  a) => a.IsEqual(expected, s.FishAttached));
+            AddAssert((s,  a) => a.IsEqual(expected, s.FishAttached));
             return this;
         }
 
         public TBBTestBuilder AssertHasSeashell(bool expected)
         {
-            AddTestAction((s,  a) => a.IsEqual(expected, s.SeashellAttached));
+            AddAssert((s,  a) => a.IsEqual(expected, s.SeashellAttached));
             return this;
         }
 
         public TBBTestBuilder AssertCollectedSandCount(int expected)
         {
-            AddTestAction((s,  a) => a.IsEqual(expected, s.CollectedSandCount, 0));
-            return this;
-        }
-
-        public TBBTestBuilder AssertLocation(double x, double y, double angle, double delta)
-        {
-            AddTestAction((s, a) => 
-            {
-                a.IsEqual(x, s.SelfLocation.X, delta);
-                a.IsEqual(y, s.SelfLocation.Y, delta);
-                a.IsEqual(angle, s.SelfLocation.Angle, delta);
-            });
-
-            return this;
-        }
-
-        public TBBTestBuilder AssertLocation(double x, double y, double delta)
-        {
-            AddTestAction((s,  a) =>
-            {
-                a.IsEqual(x, s.SelfLocation.X, delta);
-                a.IsEqual(y, s.SelfLocation.Y, delta);
-            });
-
+            AddAssert((s,  a) => a.IsEqual(expected, s.CollectedSandCount, 0));
             return this;
         }
 
         public TBBTestBuilder AssertScores(int scores)
         {
-            AddTestAction((s,  a) => a.IsEqual(scores, s.SelfScores, 0));
-            return this;
-        }
-
-        public TBBTestBuilder Move(double length)
-        {
-            AddTestAction(rules.Move(length));
-            return this;
-        }
-
-        public TBBTestBuilder Rotate(Angle angle)
-        {
-            AddTestAction(rules.Rotate(angle));
-            return this;
-        }
-
-        public TBBTestBuilder Stand(double time)
-        {
-            AddTestAction(rules.Stand(time));
-            return this;
-        }
-
-        public TBBTestBuilder OpenDoor()
-        {
-            AddTestAction(rules.OpenDoor());
-            return this;
-        }
-
-        public TBBTestBuilder CloseDoor()
-        {
-            AddTestAction(rules.CloseDoor());
-            return this;
-        }
-
-        public TBBTestBuilder GripFish()
-        {
-            AddTestAction(rules.GripFish());
-            return this;
-        }
-
-        public TBBTestBuilder ReleaseFish()
-        {
-            AddTestAction(rules.ReleaseFish());
-            return this;
-        }
-
-        public TBBTestBuilder GripSeashell()
-        {
-            AddTestAction(rules.GripSeashell());
-            return this;
-        }
-
-        public TBBTestBuilder ReleaseSeashell()
-        {
-            AddTestAction(rules.ReleaseSeashell());
-            return this;
-        }
-
-        public TBBTestBuilder CollectSandBlock()
-        {
-            AddTestAction(rules.CollectSandBlock());
-            return this;
-        }
-
-        public TBBTestBuilder ReleaseSandBlock()
-        {
-            AddTestAction(rules.ReleaseSandBlock());
+            AddAssert((s,  a) => a.IsEqual(scores, s.SelfScores, 0));
             return this;
         }
     }

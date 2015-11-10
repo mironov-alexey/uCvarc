@@ -16,12 +16,12 @@ namespace Demo
             AddControllerSettings(TwoPlayersId.Left, "This", ControllerType.Client);
             AddControllerSettings(TwoPlayersId.Right, "Stand", ControllerType.Bot);
             Commands = new CommandBuilder<DemoRules, DemoCommand, CameraTestBuilder>(Rules, this);
-            Commands.CommandAdded += c => AddTestAction(c);
+            Commands.CommandAdded += AddCommand;
         }
 
-        public CameraTestBuilder Assert(Asserter<DemoSensorsData> assert)
+        public CameraTestBuilder Assert(Action<DemoSensorsData, IAsserter> assert)
         {
-            base.AddTestAction(assert);
+            AddAssert(assert);
             return this;
         }
     }

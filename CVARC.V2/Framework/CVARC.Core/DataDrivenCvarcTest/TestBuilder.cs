@@ -1,28 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CVARC.V2
-{
-   
+{   
     public class TestBuilder<TRules, TSensorData, TCommand, TWorldState, TWorld>
         where TRules : IRules
-        where TWorld : IWorld
-        where TCommand : ICommand
-        where TWorldState : IWorldState
         where TSensorData : class, new()
+        where TCommand : class, ICommand
+        where TWorldState : IWorldState
+        where TWorld : IWorld
     {
-        List<TestAction<TSensorData, TCommand>> currentTest = 
-            new List<TestAction<TSensorData, TCommand>>();        
-
-        public SettingsProposal Settings { get; private set; }
+        public SettingsProposal Settings { get; }
         public TWorldState WorldState { get; set; }
         public readonly TRules Rules;
 
+        List<ITestAction<TSensorData, TCommand>> currentTest;
 
         public TestBuilder(TRules rules, TWorldState worldState, SettingsProposal settings)
         {
-            this.Rules = rules;
+            Rules = rules;
             WorldState = worldState;            
             Settings = settings;
+            currentTest = new List<ITestAction<TSensorData, TCommand>>();
         }
 
         public void AddControllerSettings(string controllerId, string name, ControllerType type)
@@ -35,24 +34,29 @@ namespace CVARC.V2
             });
         }
 
-        public CvarcTest<TSensorData, TCommand, TWorld, TWorldState> CreateTest()
+        public virtual CvarcTest<TSensorData, TCommand, TWorld, TWorldState> CreateTest()
         {
-            var data = new TestData<TSensorData, TCommand, TWorld, TWorldState>
+            var data = new TestData<TSensorData, TCommand, TWorldState>
                 (WorldState, SettingsProposal.DeepCopy(Settings), currentTest);
 
-            currentTest = new List<TestAction<TSensorData, TCommand>>();
+            currentTest = new List<ITestAction<TSensorData, TCommand>>();
 
             return new DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>(data);
         }
 
-        protected void AddTestAction(TCommand command)
+        protected virtual void AddCommand(TCommand command)
         {
-            currentTest.Add(new TestAction<TSensorData, TCommand> { Command = command });
+            currentTest.Add(new TestAction<TSensorData, TCommand>(command));
         }
 
-        protected void AddTestAction(Asserter<TSensorData> assert)
+        protected virtual void AddAssert(ISensorAsserter<TSensorData> assert)
         {
-            currentTest.Add(new TestAction<TSensorData, TCommand> { Asserter = assert });
+            currentTest.Add(new TestAction<TSensorData, TCommand>(assert));
+        }
+       
+        protected virtual void AddAssert(Action<TSensorData, IAsserter> assert)
+        {
+            currentTest.Add(new TestAction<TSensorData, TCommand>(new DelegatedAsserter<TSensorData>(assert)));
         }
     }
 }

@@ -26,10 +26,28 @@ namespace CVARC.V2
             return new TCommand { FishingRodAction = FishingRodAction.GripFish };
         }
 
+        public static CommandBuilder<TRules, TCommand, TBack> GripFish<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : IFishingCommand, new()
+            where TRules : IFishingRules<TCommand>
+        {
+            builder.Add(GripFish(builder.Rules));
+            return builder;
+        }
+
         public static TCommand ReleaseFish<TCommand>(this IFishingRules<TCommand> factory)
             where TCommand : IFishingCommand, new()
         {
             return new TCommand { FishingRodAction = FishingRodAction.ReleaseFish };
         }
-	}
+
+        public static CommandBuilder<TRules, TCommand, TBack> ReleaseFish<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : IFishingCommand, new()
+            where TRules : IFishingRules<TCommand>
+        {
+            builder.Add(ReleaseFish(builder.Rules));
+            return builder;
+        }
+    }
 }

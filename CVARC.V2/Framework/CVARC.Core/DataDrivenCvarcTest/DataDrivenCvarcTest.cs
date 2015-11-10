@@ -7,9 +7,9 @@
         where TCommand : ICommand
         where TWorld : IWorld
     {
-        public TestData<TSensorData, TCommand, TWorld, TWorldState> Data { get; private set; }
+        public TestData<TSensorData, TCommand, TWorldState> Data { get; private set; }
 
-        public DataDrivenCvarcTest(TestData<TSensorData, TCommand, TWorld, TWorldState> data)
+        public DataDrivenCvarcTest(TestData<TSensorData, TCommand, TWorldState> data)
         {
             Data = data;
         }
@@ -26,7 +26,7 @@
                 if (action.Command != null)
                     sensorData = client.Act(action.Command);
                 if (action.Asserter != null)
-                    action.Asserter(sensorData, asserter);
+                    action.Asserter.Assert(sensorData, asserter);
             }
         }
     }

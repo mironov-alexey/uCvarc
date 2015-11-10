@@ -26,10 +26,28 @@ namespace CVARC.V2
             return new TCommand { SandGripperAction = SandGripperAction.CollectDetail };
         }
 
+        public static CommandBuilder<TRules, TCommand, TBack> CollectSandBlock<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : ISandGripperCommand, new()
+            where TRules : ISandGripperRules<TCommand>
+        {
+            builder.Add(CollectSandBlock(builder.Rules));
+            return builder;
+        }
+
         public static TCommand ReleaseSandBlock<TCommand>(this ISandGripperRules<TCommand> factory)
             where TCommand : ISandGripperCommand, new()
         {
             return new TCommand { SandGripperAction = SandGripperAction.ReleaseDetail };
         }
-	}
+
+        public static CommandBuilder<TRules, TCommand, TBack> ReleaseSandBlock<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : ISandGripperCommand, new()
+            where TRules : ISandGripperRules<TCommand>
+        {
+            builder.Add(ReleaseSandBlock(builder.Rules));
+            return builder;
+        }
+    }
 }

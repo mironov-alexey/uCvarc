@@ -26,10 +26,28 @@ namespace CVARC.V2
             return new TCommand { SeashellGripperAction = SeashellGripperAction.Grip };
         }
 
+        public static CommandBuilder<TRules, TCommand, TBack> GripSeashell<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : ISeashellGripperCommand, new()
+            where TRules : ISeashellGripperRules<TCommand>
+        {
+            builder.Add(GripSeashell(builder.Rules));
+            return builder;
+        }
+
         public static TCommand ReleaseSeashell<TCommand>(this ISeashellGripperRules<TCommand> factory)
             where TCommand : ISeashellGripperCommand, new()
         {
             return new TCommand { SeashellGripperAction = SeashellGripperAction.Release };
         }
-	}
+
+        public static CommandBuilder<TRules, TCommand, TBack> ReleaseSeashell<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : ISeashellGripperCommand, new()
+            where TRules : ISeashellGripperRules<TCommand>
+        {
+            builder.Add(ReleaseSeashell(builder.Rules));
+            return builder;
+        }
+    }
 }

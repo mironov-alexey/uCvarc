@@ -5,8 +5,8 @@ using System.Text;
 
 namespace CVARC.V2
 {
-    public interface ILocationSensorData
-    {
-        LocatorItem SelfLocation { get; set; }
-    }
+    //public interface ILocationSensorData
+    //{
+    //    LocatorItem SelfLocation { get; set; }
+    //}
 }

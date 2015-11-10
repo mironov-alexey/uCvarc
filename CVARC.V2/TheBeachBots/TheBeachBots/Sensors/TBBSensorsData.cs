@@ -3,7 +3,7 @@ using CVARC.V2;
 
 namespace TheBeachBots
 {
-    public class TBBSensorsData : ILocationSensorData
+    public class TBBSensorsData
     {
         [DataMember]
         [FromSensor(typeof(MapSensor<TBBObject>))]

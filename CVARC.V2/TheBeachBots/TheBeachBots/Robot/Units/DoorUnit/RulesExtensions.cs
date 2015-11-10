@@ -25,10 +25,28 @@ namespace CVARC.V2
             return new TCommand { DoorUnitAction = TriggerAction.Activate };
         }
 
+        public static CommandBuilder<TRules, TCommand, TBack> CloseDoor<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : IDoorUnitCommand, new()
+            where TRules : IDoorOpeningRules<TCommand>
+        {
+            builder.Add(CloseDoor(builder.Rules));
+            return builder;
+        }
+
         public static TCommand OpenDoor<TCommand>(this IDoorOpeningRules<TCommand> factory)
             where TCommand : IDoorUnitCommand, new()
         {
             return new TCommand { DoorUnitAction = TriggerAction.Deactivate };
         }
-	}
+
+        public static CommandBuilder<TRules, TCommand, TBack> OpenDoor<TRules, TCommand, TBack>
+            (this CommandBuilder<TRules, TCommand, TBack> builder)
+            where TCommand : IDoorUnitCommand, new()
+            where TRules : IDoorOpeningRules<TCommand>
+        {
+            builder.Add(OpenDoor(builder.Rules));
+            return builder;
+        }
+    }
 }
