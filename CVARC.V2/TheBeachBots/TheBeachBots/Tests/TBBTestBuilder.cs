@@ -24,7 +24,7 @@ namespace TheBeachBots
             AddControllerSettings(TwoPlayersId.Right, "Standing", ControllerType.Bot);
         }
 
-        public TBBTestBuilder Assert(Asserter<TBBSensorsData, TBBWorld> assert)
+        public TBBTestBuilder Assert(Asserter<TBBSensorsData> assert)
         {
             AddTestAction(assert);
             return this;
@@ -32,25 +32,25 @@ namespace TheBeachBots
 
         public TBBTestBuilder AssertHasFish(bool expected)
         {
-            AddTestAction((s, w, a) => a.IsEqual(expected, s.FishAttached));
+            AddTestAction((s,  a) => a.IsEqual(expected, s.FishAttached));
             return this;
         }
 
         public TBBTestBuilder AssertHasSeashell(bool expected)
         {
-            AddTestAction((s, w, a) => a.IsEqual(expected, s.SeashellAttached));
+            AddTestAction((s,  a) => a.IsEqual(expected, s.SeashellAttached));
             return this;
         }
 
         public TBBTestBuilder AssertCollectedSandCount(int expected)
         {
-            AddTestAction((s, w, a) => a.IsEqual(expected, s.CollectedSandCount, 0));
+            AddTestAction((s,  a) => a.IsEqual(expected, s.CollectedSandCount, 0));
             return this;
         }
 
         public TBBTestBuilder AssertLocation(double x, double y, double angle, double delta)
         {
-            AddTestAction((s, w, a) => 
+            AddTestAction((s, a) => 
             {
                 a.IsEqual(x, s.SelfLocation.X, delta);
                 a.IsEqual(y, s.SelfLocation.Y, delta);
@@ -62,7 +62,7 @@ namespace TheBeachBots
 
         public TBBTestBuilder AssertLocation(double x, double y, double delta)
         {
-            AddTestAction((s, w, a) =>
+            AddTestAction((s,  a) =>
             {
                 a.IsEqual(x, s.SelfLocation.X, delta);
                 a.IsEqual(y, s.SelfLocation.Y, delta);
@@ -73,7 +73,7 @@ namespace TheBeachBots
 
         public TBBTestBuilder AssertScores(int scores)
         {
-            AddTestAction((s, w, a) => a.IsEqual(scores, s.SelfScores, 0));
+            AddTestAction((s,  a) => a.IsEqual(scores, s.SelfScores, 0));
             return this;
         }
 

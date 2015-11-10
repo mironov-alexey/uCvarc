@@ -14,7 +14,7 @@ namespace CVARC.V2
 			return new TCommand { GripperCommand = GripperAction.Grip };
 		}
 
-        public static CommandBuilder<TRules, TCommand> Grip<TRules, TCommand>(this  CommandBuilder<TRules, TCommand> builder)
+        public static CommandBuilder<TRules, TCommand, TBack> Grip<TRules, TCommand, TBack>(this  CommandBuilder<TRules, TCommand, TBack> builder)
             where TCommand : IGripperCommand, new()
             where TRules : IGripperRules<TCommand>
         {
@@ -28,7 +28,7 @@ namespace CVARC.V2
 			return new TCommand { GripperCommand = GripperAction.Release };
 		}
 
-        public static CommandBuilder<TRules, TCommand> Release<TRules, TCommand>(this  CommandBuilder<TRules, TCommand> builder)
+        public static CommandBuilder<TRules, TCommand, TBack> Release<TRules, TCommand, TBack>(this  CommandBuilder<TRules, TCommand, TBack> builder)
             where TCommand : IGripperCommand, new()
             where TRules : IGripperRules<TCommand>       
         {

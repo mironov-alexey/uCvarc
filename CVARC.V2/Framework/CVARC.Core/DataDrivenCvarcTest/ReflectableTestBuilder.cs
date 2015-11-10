@@ -29,9 +29,9 @@ namespace CVARC.V2
             base.AddTestAction(Reflected ? ReflectCommand(command) : command);
         }
 
-        protected override void AddTestAction(Asserter<TSensorData, TWorld> assert)
+        protected override void AddTestAction(Asserter<TSensorData> assert)
         {
-            base.AddTestAction(Reflected ? (s, w, a) => assert(ReflectSensor(s), w, a) : assert);
+            base.AddTestAction(Reflected ? (s,  a) => assert(ReflectSensor(s),  a) : assert);
         }
         
         private void ReflectControllerSettings()
