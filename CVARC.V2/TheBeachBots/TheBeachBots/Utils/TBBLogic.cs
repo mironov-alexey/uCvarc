@@ -6,9 +6,6 @@ namespace TheBeachBots
 {
     public partial class TBBLogicPartHelper : LogicPartHelper 
     {
-        //[AttributeUsage(AttributeTargets.Method)]
-        //class TestLoaderMethod : Attribute { }
-
         public override LogicPart Create()
         {
             var rules = TBBRules.Current;
@@ -26,10 +23,12 @@ namespace TheBeachBots
 
             logicPart.Bots["Standing"] = () => rules.CreateStandingBot();
 
-            LoadDoorTest(logicPart, rules);
-            LoadFishingTest(logicPart, rules);
-            LoadTestExample(logicPart, rules);
-            LoadScoresTest(logicPart, rules);
+            //LoadDoorTest(logicPart, rules);
+            //LoadFishingTest(logicPart, rules);
+            //LoadTestExample(logicPart, rules);
+            //LoadScoresTest(logicPart, rules);
+
+            LoadTests(logicPart);
 
             return logicPart;
         }
@@ -38,16 +37,14 @@ namespace TheBeachBots
         {
             logic.Tests[name] = test;
         }
-
-        //private void LoadTests(LogicPart logic, TBBRules rules)
-        //{
-        //    var testMethods = GetType()
-        //        .GetMethods()
-        //        .Where(m => m.GetCustomAttributes(true).Where(a => a is TestLoaderMethod).Count() != 0)
-        //        .Select(m => m.Name);
-
-        //    foreach (var name in testMethods)
-        //        GetType().GetMethod(name).Invoke(this, new Object[] { logic, rules });
-        //}
+        
+        private void LoadTests(LogicPart logic)
+        {
+            GetType().Assembly.GetTypes()
+                .Where(type => type.GetCustomAttributes(true).Count(a => a is CvarcTestClass) != 0)
+                .Select(type => Activator.CreateInstance(type) as ICvarcUnitTest)
+                .SelectMany(instance => instance?.GetDefinedTests()).ToList()
+                .ForEach(test => AddTest(logic, test.Item1, test.Item2));
+        }
     }
 }

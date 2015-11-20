@@ -1,55 +1,63 @@
-﻿using CVARC.V2;
+﻿using System.Collections.Generic;
+using CVARC.V2;
 using AIRLab.Mathematics;
 
 namespace TheBeachBots
 {
-    partial class TBBLogicPartHelper
+    [CvarcTestClass]
+    public class TestExample : CvarcUnitTest<TBBRules, TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld>
     {
-        public void LoadTestExample(LogicPart logic, TBBRules rules)
+        public TestExample() : base(TBBRules.Current, new TBBWorldState(42), new SettingsProposal())
         {
-            var builder = new TBBTestBuilder(rules, new TBBWorldState(42)) { Reflected = true };
+            DefaultSettings.OperationalTimeLimit = 5;
+            DefaultSettings.TimeLimit = 90;
+            DefaultSettings.Controllers = new List<ControllerSettings>
+            {
+                new ControllerSettings {ControllerId = TwoPlayersId.Left, Name = "This", Type = ControllerType.Client},
+                new ControllerSettings {ControllerId = TwoPlayersId.Right, Name = "Standing", Type = ControllerType.Bot}
+            };
+        }
 
-            logic.Tests["TestExample0"] =  builder
-                .Commands
-                    .Move(30)
-                    .Rotate(-Angle.HalfPi)
-                    .Move(15)
-                    .Rotate(Angle.HalfPi)
-                    .Move(80)
-                    .Stand(1)
-                .Back
-                    .AssertScores(0)
-                    .CreateTest();
+        [CvarcTestMethod]
+        public void SimpleTest()
+        {
+            Robot
+                .Move(30)
+                .Rotate(-Angle.HalfPi)
+                .Move(15)
+                .Rotate(Angle.HalfPi)
+                .Move(80)
+                .Stand(1);
+            AssertEqual(s => s.SelfScores, 0, 0);
+        }
 
-            builder.Settings.SpeedUp = true;
+        [CvarcTestMethod]
+        [TestSettings.SetReflected(true)]
+        public void ReflectedTest()
+        {
+            Robot
+                .Move(30)
+                .Rotate(-Angle.HalfPi)
+                .Move(15)
+                .Rotate(Angle.HalfPi)
+                .Move(80)
+                .Stand(1);
+            AssertEqual(s => s.SelfScores, 0, 0);
+        }
 
-            logic.Tests["TestExample1"] = builder
-                .Commands
-                    .Move(30)
-                    .Rotate(-Angle.HalfPi)
-                    .Move(15)
-                    .Rotate(Angle.HalfPi)
-                    .Move(80)
-                    .Stand(1)
-                .Back
-                    .AssertScores(0)
-                    .CreateTest();
-
-            builder.Settings.SpeedUp = false;
-            builder.Reflected = false;
-            builder.WorldState = new TBBWorldState(0);
-
-            logic.Tests["TestExample2"] = builder
-                .Commands
-                    .Move(30)
-                    .Rotate(-Angle.HalfPi)
-                    .Move(15)
-                    .Rotate(Angle.HalfPi)
-                    .Move(80)
-                    .Stand(1)
-                .Back
-                    .AssertScores(0)
-                    .CreateTest();
+        [CvarcTestMethod]
+        [TestSettings.SpeedUp(true)]
+        [TestSettings.TimeLimit(90)]
+        public void SpeedUpTest()
+        {
+            Robot
+                .Move(30)
+                .Rotate(-Angle.HalfPi)
+                .Move(15)
+                .Rotate(Angle.HalfPi)
+                .Move(80)
+                .Stand(1);
+            AssertEqual(s => s.SelfScores, 0, 0);
         }
     }
 }

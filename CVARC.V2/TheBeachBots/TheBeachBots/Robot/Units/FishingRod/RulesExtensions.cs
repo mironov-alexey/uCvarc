@@ -26,8 +26,8 @@ namespace CVARC.V2
             return new TCommand { FishingRodAction = FishingRodAction.GripFish };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> GripFish<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> GripFish<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : IFishingCommand, new()
             where TRules : IFishingRules<TCommand>
         {
@@ -41,8 +41,8 @@ namespace CVARC.V2
             return new TCommand { FishingRodAction = FishingRodAction.ReleaseFish };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> ReleaseFish<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> ReleaseFish<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : IFishingCommand, new()
             where TRules : IFishingRules<TCommand>
         {

@@ -17,8 +17,8 @@ namespace CVARC.V2
 			return new TCommand { SimpleMovement = SimpleMovement.Stand(time) };
 		}
 
-        public static CommandBuilder<TRules, TCommand, TBack> Stand<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, double time)
+        public static CommandBuilder<TRules, TCommand> Stand<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, double time)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {
@@ -32,8 +32,8 @@ namespace CVARC.V2
 			return new TCommand { SimpleMovement = SimpleMovement.MoveWithVelocity(length, factory.LinearVelocityLimit) };
 		}
 
-        public static CommandBuilder<TRules, TCommand, TBack> Move<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, double length)
+        public static CommandBuilder<TRules, TCommand> Move<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, double length)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {
@@ -47,8 +47,8 @@ namespace CVARC.V2
             return new TCommand { SimpleMovement = SimpleMovement.Move(velocity, time) };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> MoveWithVelocityForTime<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, double velocity, double time)
+        public static CommandBuilder<TRules, TCommand> MoveWithVelocityForTime<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, double velocity, double time)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {
@@ -62,8 +62,8 @@ namespace CVARC.V2
             return new TCommand { SimpleMovement = SimpleMovement.MoveWithVelocity(path, velocity) };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> MovePathWithVelocity<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, double path, double velocity)
+        public static CommandBuilder<TRules, TCommand> MovePathWithVelocity<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, double path, double velocity)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {
@@ -77,8 +77,8 @@ namespace CVARC.V2
 			return new TCommand { SimpleMovement = SimpleMovement.RotateWithVelocity(angle, factory.AngularVelocityLimit) };
 		}
 
-        public static CommandBuilder<TRules, TCommand, TBack> Rotate<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, Angle angle)
+        public static CommandBuilder<TRules, TCommand> Rotate<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, Angle angle)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {
@@ -92,8 +92,8 @@ namespace CVARC.V2
             return new TCommand { SimpleMovement = SimpleMovement.Rotate(velocity, time) };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> RotateWithVelocityForTime<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, Angle angle, double time)
+        public static CommandBuilder<TRules, TCommand> RotateWithVelocityForTime<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, Angle angle, double time)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {
@@ -107,8 +107,8 @@ namespace CVARC.V2
             return new TCommand { SimpleMovement = SimpleMovement.RotateWithVelocity(angle, velocity) };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> RotateAngleWithVelocity<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder, Angle angle, Angle velocity)
+        public static CommandBuilder<TRules, TCommand> RotateAngleWithVelocity<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder, Angle angle, Angle velocity)
             where TCommand : ISimpleMovementCommand, new()
             where TRules : ISimpleMovementRules<TCommand>
         {

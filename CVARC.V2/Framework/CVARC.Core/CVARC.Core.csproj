@@ -87,7 +87,9 @@
     <Compile Include="DataDrivenCvarcTest\Asserters\DelegatedAsserter.cs" />
     <Compile Include="DataDrivenCvarcTest\Asserters\ISensorAsserter.cs" />
     <Compile Include="DataDrivenCvarcTest\Asserters\AbstractLocationAsserter.cs" />
-    <Compile Include="DataDrivenCvarcTest\BaseTestBuilder.cs" />
+    <Compile Include="DataDrivenCvarcTest\UnitTest\CvarcTestClass.cs" />
+    <Compile Include="DataDrivenCvarcTest\UnitTest\CvarcTestMethod.cs" />
+    <Compile Include="DataDrivenCvarcTest\UnitTest\CvarcUnitTest.cs" />
     <Compile Include="DataDrivenCvarcTest\ReflectableCvarcTest\IReflectableTestAction.cs" />
     <Compile Include="DataDrivenCvarcTest\ReflectableCvarcTest\ReflectableTestAction.cs" />
     <Compile Include="DataDrivenCvarcTest\TestAction.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="DataDrivenCvarcTest\ReflectableCvarcTest\ReflectableTestBuilder.cs" />
     <Compile Include="DataDrivenCvarcTest\ITestAction.cs" />
     <Compile Include="DataDrivenCvarcTest\TestData.cs" />
+    <Compile Include="DataDrivenCvarcTest\UnitTest\TestSettings.cs" />
     <Compile Include="Engine\IPassiveEngine.cs" />
     <Compile Include="Loading\Competitions\ActorFactory.cs" />
     <Compile Include="Loading\Competitions\LogicPartHelper.cs" />

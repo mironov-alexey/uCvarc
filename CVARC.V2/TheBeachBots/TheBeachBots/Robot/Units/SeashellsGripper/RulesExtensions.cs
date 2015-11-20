@@ -26,8 +26,8 @@ namespace CVARC.V2
             return new TCommand { SeashellGripperAction = SeashellGripperAction.Grip };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> GripSeashell<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> GripSeashell<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : ISeashellGripperCommand, new()
             where TRules : ISeashellGripperRules<TCommand>
         {
@@ -41,8 +41,8 @@ namespace CVARC.V2
             return new TCommand { SeashellGripperAction = SeashellGripperAction.Release };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> ReleaseSeashell<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> ReleaseSeashell<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : ISeashellGripperCommand, new()
             where TRules : ISeashellGripperRules<TCommand>
         {

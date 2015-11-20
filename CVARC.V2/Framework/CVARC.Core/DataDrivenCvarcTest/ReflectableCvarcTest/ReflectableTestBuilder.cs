@@ -4,55 +4,38 @@ using System.Linq;
 
 namespace CVARC.V2
 {
-    public abstract class ReflectableTestBuilder<TRules, TSensorData, TCommand, TWorldState, TWorld>
-        : TestBuilder<TRules, TSensorData, TCommand, TWorldState, TWorld>
+    class ReflectableTestBuilder<TSensorData, TCommand, TWorldState, TWorld>
+        : TestBuilder<TSensorData, TCommand, TWorldState, TWorld>
         where TWorld : IWorld
-        where TRules : IRules
         where TCommand : class, ISimpleMovementCommand
         where TWorldState : IWorldState
         where TSensorData : class, new()
     {
-        public bool Reflected { get; set; }
-
-        private List<ReflectableTestAction<TSensorData, TCommand>> currentTest; 
-
-        protected ReflectableTestBuilder(TRules rules, TWorldState worldState, SettingsProposal settings)
-            : base(rules, worldState, settings)
+        public override void AddCommand(TCommand command)
         {
-            currentTest = new List<ReflectableTestAction<TSensorData, TCommand>>();
+            CurrentTest.Add(new ReflectableTestAction<TSensorData, TCommand>(command));
         }
 
-        protected override void AddCommand(TCommand command)
+        public override void AddAssert(ISensorAsserter<TSensorData> assert)
         {
-            currentTest.Add(new ReflectableTestAction<TSensorData, TCommand>(command));
+            CurrentTest.Add(new ReflectableTestAction<TSensorData, TCommand>(assert));
         }
 
-        protected override void AddAssert(ISensorAsserter<TSensorData> assert)
+        public override void AddAssert(Action<TSensorData, IAsserter> assert)
         {
-            currentTest.Add(new ReflectableTestAction<TSensorData, TCommand>(assert));
+            CurrentTest.Add(new ReflectableTestAction<TSensorData, TCommand>(new DelegatedAsserter<TSensorData>(assert)));
         }
 
-        protected override void AddAssert(Action<TSensorData, IAsserter> assert)
+        public CvarcTest<TSensorData, TCommand, TWorld, TWorldState> CreateTest
+            (TWorldState worldState, SettingsProposal settings, bool reflected)
         {
-            currentTest.Add(new ReflectableTestAction<TSensorData, TCommand>(new DelegatedAsserter<TSensorData>(assert)));
-        }
-
-        public override CvarcTest<TSensorData, TCommand, TWorld, TWorldState> CreateTest()
-        {
-            var newSettings = SettingsProposal.DeepCopy(Settings);
-
-            if (Reflected)
+            if (reflected)
             {
-                currentTest.ForEach(act => act.Reflect());
-                newSettings.Controllers = Reflect(newSettings.Controllers);
+                CurrentTest.ForEach(act => (act as ReflectableTestAction<TSensorData, TCommand>)?.Reflect());
+                settings = SettingsProposal.DeepCopy(settings);
+                settings.Controllers = Reflect(settings.Controllers);
             }
-
-            var baseTest = currentTest.Select(x => x as ITestAction<TSensorData, TCommand>);           
-            var data = new TestData<TSensorData, TCommand, TWorldState>(WorldState, newSettings, baseTest);
-
-            currentTest = new List<ReflectableTestAction<TSensorData, TCommand>>();
-
-            return new DataDrivenCvarcTest<TSensorData, TCommand, TWorld, TWorldState>(data);
+            return base.CreateTest(worldState, settings);            
         }
         
         private List<ControllerSettings> Reflect(List<ControllerSettings> controllers)

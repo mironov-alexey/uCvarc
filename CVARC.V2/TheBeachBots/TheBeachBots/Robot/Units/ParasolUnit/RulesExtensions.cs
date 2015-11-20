@@ -25,8 +25,8 @@ namespace CVARC.V2
             return new TCommand { ParasolAction = TriggerAction.Deactivate };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> DeactivateParasol<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> DeactivateParasol<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : IParasolCommand, new()
             where TRules : IParasolRules<TCommand>
         {
@@ -40,8 +40,8 @@ namespace CVARC.V2
             return new TCommand { ParasolAction = TriggerAction.Activate };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> ActivateParasol<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> ActivateParasol<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : IParasolCommand, new()
             where TRules : IParasolRules<TCommand>
         {

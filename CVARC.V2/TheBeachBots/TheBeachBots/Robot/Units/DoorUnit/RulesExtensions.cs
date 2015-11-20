@@ -25,8 +25,8 @@ namespace CVARC.V2
             return new TCommand { DoorUnitAction = TriggerAction.Activate };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> CloseDoor<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> CloseDoor<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : IDoorUnitCommand, new()
             where TRules : IDoorOpeningRules<TCommand>
         {
@@ -40,8 +40,8 @@ namespace CVARC.V2
             return new TCommand { DoorUnitAction = TriggerAction.Deactivate };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> OpenDoor<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> OpenDoor<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : IDoorUnitCommand, new()
             where TRules : IDoorOpeningRules<TCommand>
         {

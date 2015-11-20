@@ -26,8 +26,8 @@ namespace CVARC.V2
             return new TCommand { SandGripperAction = SandGripperAction.CollectDetail };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> CollectSandBlock<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> CollectSandBlock<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : ISandGripperCommand, new()
             where TRules : ISandGripperRules<TCommand>
         {
@@ -41,8 +41,8 @@ namespace CVARC.V2
             return new TCommand { SandGripperAction = SandGripperAction.ReleaseDetail };
         }
 
-        public static CommandBuilder<TRules, TCommand, TBack> ReleaseSandBlock<TRules, TCommand, TBack>
-            (this CommandBuilder<TRules, TCommand, TBack> builder)
+        public static CommandBuilder<TRules, TCommand> ReleaseSandBlock<TRules, TCommand>
+            (this CommandBuilder<TRules, TCommand> builder)
             where TCommand : ISandGripperCommand, new()
             where TRules : ISandGripperRules<TCommand>
         {
