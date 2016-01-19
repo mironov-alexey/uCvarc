@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Tools;
 using CVARC.V2;
 
 namespace Assets
@@ -89,8 +90,29 @@ namespace Assets
             foreach (var cvarcClient in players)
                 cvarcClient.client.Close();
 
+            SendResultsToServer();
+
             if (World != null)
                 World.OnExit();
+        }
+
+        private void SendResultsToServer()
+        {
+            if (!UnityConstants.NeedToSendToWeb || World == null) 
+                return;
+            var leftTag = players[0].configProposal.SettingsProposal.CvarcTag; // не знаю, как определить который из них левый.
+            var rightTag = players[1].configProposal.SettingsProposal.CvarcTag;
+            var scores = World.Scores.GetAllScores();
+            var leftScore = -1;
+            var rightScore = -1;
+            foreach (var scoresInfo in scores)
+            {
+                if (scoresInfo.Item1 == "Left")
+                    leftScore = scoresInfo.Item2;
+                if (scoresInfo.Item1 == "Right")
+                    rightScore = scoresInfo.Item2;
+            }
+            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore);
         }
     }
 }
