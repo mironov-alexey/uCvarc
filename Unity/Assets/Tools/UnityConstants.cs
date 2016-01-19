@@ -9,6 +9,6 @@
         public const int WebPort = 50000;
         public const bool NeedToSendToWeb = true;
         public const string Method = "";
-
+        public const string PasswordToWeb = "somePassword"; // top defence ever.
     }
 }

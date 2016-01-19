@@ -14,9 +14,9 @@ namespace Assets.Tools
             if (!CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
                 return;
             var request = (HttpWebRequest) WebRequest.Create(string.Format(
-                "{0}:{1}/{2}?leftTag={3}&rightTag={4}&leftScore={5}&rightScore={6}",
+                "{0}:{1}/{2}?leftTag={3}&rightTag={4}&leftScore={5}&rightScore={6}&password={7}",
                 UnityConstants.WebIp, UnityConstants.WebPort, UnityConstants.Method, 
-                leftTag, rightScore, leftScore, rightScore));
+                leftTag, rightScore, leftScore, rightScore, UnityConstants.PasswordToWeb));
             var response = request.GetResponse();
             var responseString = response.GetResponseStream().ReadToEnd();
             Debugger.Log("Game result sent. answer: " + DebuggerMessageType.Unity, responseString);
