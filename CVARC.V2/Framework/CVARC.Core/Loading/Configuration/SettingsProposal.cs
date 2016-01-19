@@ -16,6 +16,8 @@ namespace CVARC.V2
         [DataMember]
         public string Name { get; set; }
         [DataMember]
+        public string CvarcTag { get; set; }
+        [DataMember]
         public double? TimeLimit { get; set; }
         [DataMember]
         public bool? EnableLog { get; set; }

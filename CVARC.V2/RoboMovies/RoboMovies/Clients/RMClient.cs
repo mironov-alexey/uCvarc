@@ -14,7 +14,7 @@ namespace RoboMovies
 
         public TSensorData Configurate(int port, bool isOnLeftSide, 
             RoboMoviesBots bot = RoboMoviesBots.Stand, int seed = 0,
-            string ip = "127.0.0.1")
+            string ip = "127.0.0.1", string cvarcTag = null)
         {
             var configuration = new ConfigurationProposal();
             configuration.LoadingData.AssemblyName = "RoboMovies";
@@ -33,6 +33,7 @@ namespace RoboMovies
                 Type = ControllerType.Bot
             });
 
+            configuration.SettingsProposal.CvarcTag = cvarcTag;
 
             return Configurate(port, configuration, new RMWorldState { Seed = seed } , ip );
         }
