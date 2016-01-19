@@ -9,7 +9,7 @@
             // назначаем обработчик сенсоров
             client.SensorDataReceived += HandleSensorData;
             // указываем настройки
-            client.Configurate(14000, true, RoboMoviesBots.Stand, ip:"127.0.0.1");
+            client.Configurate(14001, false, RoboMoviesBots.Stand, ip: "127.0.0.1", cvarcTag: "6808f2b8-e626-4d78-9ccb-fd2670689f96");
             Control(client);
         }
 

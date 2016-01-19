@@ -9,17 +9,20 @@ namespace Assets.Tools
 {
     public static class HttpWorker
     {
-        public static void SendGameResults(string leftTag, string rightTag, int leftScore, int rightScore)
+        public static void SendGameResults(string leftTag, string rightTag, int leftScore, int rightScore, string competitionName)
         {
             if (!CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
                 return;
+            Debugger.Log(DebuggerMessageType.Unity, "Http got...");
+            Debugger.Log(DebuggerMessageType.Unity, leftTag + leftScore + rightTag + rightScore + competitionName);
             var request = (HttpWebRequest) WebRequest.Create(string.Format(
-                "{0}:{1}/{2}?leftTag={3}&rightTag={4}&leftScore={5}&rightScore={6}&password={7}",
-                UnityConstants.WebIp, UnityConstants.WebPort, UnityConstants.Method, 
-                leftTag, rightScore, leftScore, rightScore, UnityConstants.PasswordToWeb));
+                "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&competitionName={8}",
+                UnityConstants.WebIp, UnityConstants.WebPort, UnityConstants.Method, UnityConstants.PasswordToWeb,
+                leftTag, rightTag, leftScore, rightScore, competitionName));
             var response = request.GetResponse();
-            var responseString = response.GetResponseStream().ReadToEnd();
-            Debugger.Log("Game result sent. answer: " + DebuggerMessageType.Unity, responseString);
+            Debugger.Log(DebuggerMessageType.Unity, "Sent");
+            var responseString = Encoding.Default.GetString(response.GetResponseStream().ReadToEnd());
+            Debugger.Log(DebuggerMessageType.Unity, "Game result sent. answer: " + responseString);
         }
 
         private static bool CheckForForbiddenSymbols(string value)

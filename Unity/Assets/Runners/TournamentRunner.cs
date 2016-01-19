@@ -87,6 +87,7 @@ namespace Assets
 
         public void Dispose()
         {
+            Debugger.Log(DebuggerMessageType.Unity, "dispose tournament...");
             foreach (var cvarcClient in players)
                 cvarcClient.client.Close();
 
@@ -100,6 +101,7 @@ namespace Assets
         {
             if (!UnityConstants.NeedToSendToWeb || World == null) 
                 return;
+            Debugger.Log(DebuggerMessageType.Unity, "Sending...");
             var leftTag = players[0].configProposal.SettingsProposal.CvarcTag; // не знаю, как определить который из них левый.
             var rightTag = players[1].configProposal.SettingsProposal.CvarcTag;
             var scores = World.Scores.GetAllScores();
@@ -112,7 +114,8 @@ namespace Assets
                 if (scoresInfo.Item1 == "Right")
                     rightScore = scoresInfo.Item2;
             }
-            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore);
+            var competitionName = configuration.LoadingData.AssemblyName + configuration.LoadingData.Level;
+            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore, competitionName);
         }
     }
 }
