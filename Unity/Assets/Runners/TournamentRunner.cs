@@ -13,6 +13,7 @@ namespace Assets
         readonly Configuration configuration;
         readonly string[] controllerIds;
         readonly IWorldState worldState;
+        readonly string logFileName;
         NetTournamentControllerFactory factory;
 
         public IWorld World { get; set; }
@@ -35,6 +36,13 @@ namespace Assets
             };
 
             //я игнорирую конфиги. надо хотя бы имя сохранять в метод "add player"
+            // wut?
+
+            //log section
+            logFileName = Guid.NewGuid() + ".log";
+            configuration.Settings.EnableLog = true;
+            configuration.Settings.LogFile = UnityConstants.LogFolderRoot + logFileName;
+            //log section end
 
             controllerIds = competitions.Logic.Actors.Keys.ToArray();
 
@@ -91,10 +99,10 @@ namespace Assets
             foreach (var cvarcClient in players)
                 cvarcClient.client.Close();
 
-            SendResultsToServer();
-
             if (World != null)
                 World.OnExit();
+
+            SendResultsToServer();
         }
 
         private void SendResultsToServer()
@@ -114,8 +122,7 @@ namespace Assets
                 if (scoresInfo.Item1 == "Right")
                     rightScore = scoresInfo.Item2;
             }
-            var competitionName = configuration.LoadingData.AssemblyName + configuration.LoadingData.Level;
-            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore);
+            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore, logFileName);
         }
     }
 }
