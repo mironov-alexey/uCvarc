@@ -28,11 +28,11 @@ namespace Assets.Tools
 
             var nvc = new NameValueCollection();
             nvc.Add("password", UnityConstants.PasswordToWeb);
-            var a = HttpUploadFile(string.Format(
+            var answer = HttpUploadFile(string.Format(
                 "http://{0}:{1}/{2}", UnityConstants.WebIp, UnityConstants.WebPort, "Rules/PushLog"), 
                 UnityConstants.LogFolderRoot + logGuid, "file", "multipart/form-data", nvc);
 
-            Debugger.Log(DebuggerMessageType.Unity, a);
+            Debugger.Log(DebuggerMessageType.Unity, "Game log sent. answer: " + answer);
 
         }
 
@@ -41,7 +41,8 @@ namespace Assets.Tools
             return value.All(ch => char.IsLetterOrDigit(ch) || ch == '-');
         }
 
-        public static string HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
+        // это я скопировал со стек овер флоу. код не мой. заработало -- и ладно. не трогать, желательно.
+        private static string HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
             byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");

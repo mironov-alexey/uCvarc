@@ -16,12 +16,12 @@
         static void Control(RMClient<FullMapSensorData> client)
         {
             // управляем роботом
-            client.Move(65);
-            client.Rotate(-90);
+            client.Move(50);
+            //client.Rotate(-90);
             // коллект пока не работает((
-            client.Collect();
-            client.Rotate(-90);
-            client.Move(70);
+            //client.Collect();
+            //client.Rotate(-90);
+            //client.Move(70);
             
             //корректно завершаем работу
             client.Exit();

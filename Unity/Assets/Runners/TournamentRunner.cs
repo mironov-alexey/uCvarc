@@ -109,9 +109,8 @@ namespace Assets
         {
             if (!UnityConstants.NeedToSendToWeb || World == null) 
                 return;
-            Debugger.Log(DebuggerMessageType.Unity, "Sending...");
-            var leftTag = players[0].configProposal.SettingsProposal.CvarcTag; // не знаю, как определить который из них левый.
-            var rightTag = players[1].configProposal.SettingsProposal.CvarcTag;
+            var leftTag = players[controllerIds.ToList().IndexOf("Left")].configProposal.SettingsProposal.CvarcTag; // не знаю, как определить который из них левый.
+            var rightTag = players[controllerIds.ToList().IndexOf("Right")].configProposal.SettingsProposal.CvarcTag; // вроде так.
             var scores = World.Scores.GetAllScores();
             var leftScore = -1;
             var rightScore = -1;
