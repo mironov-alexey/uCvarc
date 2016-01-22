@@ -8,7 +8,7 @@
         public const string WebIp = "localhost";
         public const int WebPort = 63895;
         public const bool NeedToSendToWeb = true;
-        public const string Method = "Competition/SendResult";
+        public const string Method = "Rules/PushResult";
         public const string PasswordToWeb = "somePassword"; // top defence ever.
     }
 }

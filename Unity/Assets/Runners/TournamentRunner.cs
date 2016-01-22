@@ -115,7 +115,7 @@ namespace Assets
                     rightScore = scoresInfo.Item2;
             }
             var competitionName = configuration.LoadingData.AssemblyName + configuration.LoadingData.Level;
-            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore, competitionName);
+            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore);
         }
     }
 }
