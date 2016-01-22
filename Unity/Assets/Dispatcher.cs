@@ -26,7 +26,7 @@ public static class Dispatcher
         Debugger.EnabledTypes.Add(DebuggerMessageType.UnityTest);
         //Debugger.EnabledTypes.Add(RMDebugMessage.WorldCreation);
         //Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
-        //Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
+        Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
         //Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
         Debugger.Logger = Debug.Log;
 

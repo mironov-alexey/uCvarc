@@ -19,8 +19,6 @@ namespace Assets.Tools
                 WebInfo.WebIp, WebInfo.WebPort, WebInfo.Method, WebInfo.PasswordToWeb,
                 leftTag, rightTag, leftScore, rightScore, logGuid));
 
-            // как-то запихнуть лог-файл.
-
             var response = request.GetResponse();
             var responseString = Encoding.Default.GetString(response.GetResponseStream().ReadToEnd());
             Debugger.Log(DebuggerMessageType.Unity, "Game result sent. answer: " + responseString);
@@ -40,7 +38,14 @@ namespace Assets.Tools
         {
             if (!WebInfo.NeedToSendToWeb)
                 return;
-
+            var requestUri = string.Format(
+                "http://{0}:{1}/{2}?password={3}&isOnline={4}",
+                WebInfo.WebIp, WebInfo.WebPort, WebInfo.StatusMethod, WebInfo.PasswordToWeb, isReady);
+            Debugger.Log(DebuggerMessageType.Unity, requestUri);
+            var request = (HttpWebRequest) WebRequest.Create(requestUri);
+            var response = request.GetResponse();
+            var responseString = Encoding.Default.GetString(response.GetResponseStream().ReadToEnd());
+            Debugger.Log(DebuggerMessageType.Workflow, "Status sent. answer: " + responseString);
         }
 
         private static bool CheckForForbiddenSymbols(string value)
@@ -48,7 +53,7 @@ namespace Assets.Tools
             return value.All(ch => char.IsLetterOrDigit(ch) || ch == '-');
         }
 
-        // это я скопировал со стек овер флоу. код не мой. заработало -- и ладно. не трогать, желательно.
+        // это я скопировал со стек овер флоу. код не мой. заработало -- и ладно. не трогать, желательно. Рефакторить не хочу.
         private static string HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
             string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");

@@ -4,4 +4,4 @@ web_ip_or_address: localhost
 web_port: 63895
 method: Rules/PushResult
 log_method: Rules/PushLog
-status_method: some
+status_method: Rules/SayStatus
