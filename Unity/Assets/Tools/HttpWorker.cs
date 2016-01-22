@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -11,13 +10,13 @@ namespace Assets.Tools
 {
     public static class HttpWorker
     {
-        public static void SendGameResults(string leftTag, string rightTag, int leftScore, int rightScore, string logGuid)
+        public static void SendGameResultsIfNeed(string leftTag, string rightTag, int leftScore, int rightScore, string logGuid)
         {
-            if (!CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
+            if (!WebInfo.NeedToSendToWeb || !CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
                 return;
             var request = (HttpWebRequest) WebRequest.Create(string.Format(
                 "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&logFileName={8}",
-                UnityConstants.WebIp, UnityConstants.WebPort, UnityConstants.Method, UnityConstants.PasswordToWeb,
+                WebInfo.WebIp, WebInfo.WebPort, WebInfo.Method, WebInfo.PasswordToWeb,
                 leftTag, rightTag, leftScore, rightScore, logGuid));
 
             // как-то запихнуть лог-файл.
@@ -27,12 +26,20 @@ namespace Assets.Tools
             Debugger.Log(DebuggerMessageType.Unity, "Game result sent. answer: " + responseString);
 
             var nvc = new NameValueCollection();
-            nvc.Add("password", UnityConstants.PasswordToWeb);
+            nvc.Add("password", WebInfo.PasswordToWeb);
             var answer = HttpUploadFile(string.Format(
-                "http://{0}:{1}/{2}", UnityConstants.WebIp, UnityConstants.WebPort, "Rules/PushLog"), 
+                "http://{0}:{1}/{2}", WebInfo.WebIp, WebInfo.WebPort, WebInfo.LogMethod), 
                 UnityConstants.LogFolderRoot + logGuid, "file", "multipart/form-data", nvc);
 
             Debugger.Log(DebuggerMessageType.Unity, "Game log sent. answer: " + answer);
+
+        }
+
+        // сообщаем веб серверу о своем состоянии.
+        public static void SayStatus(bool isReady)
+        {
+            if (!WebInfo.NeedToSendToWeb)
+                return;
 
         }
 
@@ -90,6 +97,39 @@ namespace Assets.Tools
             StreamReader reader2 = new StreamReader(stream2);
 
             return "keek";
+        }
+    }
+
+    public static class WebInfo
+    {
+        public static bool NeedToSendToWeb;
+        public static string WebIp;
+        public static int WebPort;
+        public static string Method;
+        public static string LogMethod;
+        public static string StatusMethod;
+        public static string PasswordToWeb; // top defence ever.
+
+        public static void InitWebConfigsFromFile(string pathToConfigFile)
+        {
+            try
+            {
+                var lines = File.ReadAllLines(pathToConfigFile);
+                var configDict = lines.ToDictionary(line => line.Split(':')[0].Trim(' '),
+                    line => line.Split(':')[1].Trim(' '));
+                WebIp = configDict["web_ip_or_address"];
+                WebPort = int.Parse(configDict["web_port"]);
+                Method = configDict["method"];
+                LogMethod = configDict["log_method"];
+                StatusMethod = configDict["status_method"];
+                PasswordToWeb = configDict["secret_to_web"];
+                NeedToSendToWeb = bool.Parse(configDict["need_to_communicate_with_web"]);
+            }
+            catch
+            {
+                Debugger.Log(DebuggerMessageType.Unity, "Unable to load web settings from file. Load default (off)");
+                NeedToSendToWeb = false;
+            }
         }
     }
 }

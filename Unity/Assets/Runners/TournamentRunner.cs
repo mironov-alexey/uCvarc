@@ -107,10 +107,10 @@ namespace Assets
 
         private void SendResultsToServer()
         {
-            if (!UnityConstants.NeedToSendToWeb || World == null) 
+            if (World == null) 
                 return;
             var leftTag = players[controllerIds.ToList().IndexOf("Left")].configProposal.SettingsProposal.CvarcTag; // не знаю, как определить который из них левый.
-            var rightTag = players[controllerIds.ToList().IndexOf("Right")].configProposal.SettingsProposal.CvarcTag; // вроде так.
+            var rightTag = players[controllerIds.ToList().IndexOf("Right")].configProposal.SettingsProposal.CvarcTag; // вроде так норм работает.
             var scores = World.Scores.GetAllScores();
             var leftScore = -1;
             var rightScore = -1;
@@ -121,7 +121,7 @@ namespace Assets
                 if (scoresInfo.Item1 == "Right")
                     rightScore = scoresInfo.Item2;
             }
-            HttpWorker.SendGameResults(leftTag, rightTag, leftScore, rightScore, logFileName);
+            HttpWorker.SendGameResultsIfNeed(leftTag, rightTag, leftScore, rightScore, logFileName);
         }
     }
 }
