@@ -16,7 +16,7 @@
         static void Control(RMClient<FullMapSensorData> client)
         {
             // управляем роботом
-            client.Move(50);
+            client.Move(150);
             //client.Rotate(-90);
             // коллект пока не работает((
             //client.Collect();

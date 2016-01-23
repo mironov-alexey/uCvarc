@@ -1,7 +1,7 @@
 need_to_communicate_with_web: true
 secret_to_web: somePassword
 web_ip_or_address: localhost
-web_port: 63895
+web_port: 50478
 method: Rules/PushResult
 log_method: Rules/PushLog
 status_method: Rules/SayStatus

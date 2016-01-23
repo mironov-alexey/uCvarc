@@ -24,10 +24,10 @@ public static class Dispatcher
         Debugger.DisableByDefault = true;
         Debugger.EnabledTypes.Add(DebuggerMessageType.Unity);
         Debugger.EnabledTypes.Add(DebuggerMessageType.UnityTest);
+        Debugger.EnabledTypes.Add(DebuggerMessageType.Error);
         //Debugger.EnabledTypes.Add(RMDebugMessage.WorldCreation);
         //Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
         Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
-        //Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
         Debugger.Logger = Debug.Log;
 
         WebInfo.InitWebConfigsFromFile(UnityConstants.PathToConfigFile);

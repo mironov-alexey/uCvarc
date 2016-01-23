@@ -14,22 +14,24 @@ namespace Assets.Tools
         {
             if (!WebInfo.NeedToSendToWeb || !CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
                 return;
-            var request = (HttpWebRequest) WebRequest.Create(string.Format(
+            var request = string.Format(
                 "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&logFileName={8}",
                 WebInfo.WebIp, WebInfo.WebPort, WebInfo.Method, WebInfo.PasswordToWeb,
-                leftTag, rightTag, leftScore, rightScore, logGuid));
+                leftTag, rightTag, leftScore, rightScore, logGuid);
 
-            var response = request.GetResponse();
-            var responseString = Encoding.Default.GetString(response.GetResponseStream().ReadToEnd());
-            Debugger.Log(DebuggerMessageType.Unity, "Game result sent. answer: " + responseString);
+            var responseString = SendDirectRequest(request);
+            if (responseString != null)
+                Debugger.Log(DebuggerMessageType.Unity, "Game result sent. answer: " + responseString);
 
-            var nvc = new NameValueCollection();
-            nvc.Add("password", WebInfo.PasswordToWeb);
+            if (!WebInfo.NeedToSendToWeb)
+                return;
+            var nvc = new NameValueCollection {{"password", WebInfo.PasswordToWeb}};
             var answer = HttpUploadFile(string.Format(
                 "http://{0}:{1}/{2}", WebInfo.WebIp, WebInfo.WebPort, WebInfo.LogMethod), 
                 UnityConstants.LogFolderRoot + logGuid, "file", "multipart/form-data", nvc);
 
-            Debugger.Log(DebuggerMessageType.Unity, "Game log sent. answer: " + answer);
+            if (answer != null)
+                Debugger.Log(DebuggerMessageType.Unity, "Game log sent. answer: " + answer);
 
         }
 
@@ -41,11 +43,27 @@ namespace Assets.Tools
             var requestUri = string.Format(
                 "http://{0}:{1}/{2}?password={3}&isOnline={4}",
                 WebInfo.WebIp, WebInfo.WebPort, WebInfo.StatusMethod, WebInfo.PasswordToWeb, isReady);
-            Debugger.Log(DebuggerMessageType.Unity, requestUri);
-            var request = (HttpWebRequest) WebRequest.Create(requestUri);
-            var response = request.GetResponse();
-            var responseString = Encoding.Default.GetString(response.GetResponseStream().ReadToEnd());
-            Debugger.Log(DebuggerMessageType.Workflow, "Status sent. answer: " + responseString);
+
+            var responseString = SendDirectRequest(requestUri);
+            if (responseString != null)
+                Debugger.Log(DebuggerMessageType.Workflow, "Status sent. answer: " + responseString);
+        }
+
+        private static string SendDirectRequest(string url)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            try
+            {
+                var response = request.GetResponse();
+                return Encoding.Default.GetString(response.GetResponseStream().ReadToEnd());
+            }
+            catch (Exception e)
+            {
+                WebInfo.NeedToSendToWeb = false;
+                Debugger.Log(DebuggerMessageType.Error, 
+                    "Web server error. Stop trying to send data... Error message: " + e.Message);
+                return null;
+            }
         }
 
         private static bool CheckForForbiddenSymbols(string value)
@@ -96,12 +114,18 @@ namespace Assets.Tools
             rs.Close();
 
             WebResponse wresp;
-            wresp = wr.GetResponse();
+            try
+            {
+                wresp = wr.GetResponse();
+            }
+            catch (Exception e)
+            {
+                WebInfo.NeedToSendToWeb = false;
+                Debugger.Log(DebuggerMessageType.Error, 
+                    "Web server error. Stop trying to send data... Error message: " + e.Message);
+                return null;
+            }
             return Encoding.Default.GetString(wresp.GetResponseStream().ReadToEnd());
-            Stream stream2 = wresp.GetResponseStream();
-            StreamReader reader2 = new StreamReader(stream2);
-
-            return "keek";
         }
     }
 
