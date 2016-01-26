@@ -18,7 +18,7 @@ public partial class RoundScript : MonoBehaviour
     float curWorldTime;
     float timeOnStartSession;
     private long lastStart;
-    private int timeLimit = 9999;
+    private int timeLimit = 5; // in seconds
 
 
     void Start()
