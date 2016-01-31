@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Tools;
 using CVARC.V2;
 
 namespace Assets
@@ -12,6 +13,7 @@ namespace Assets
         readonly Configuration configuration;
         readonly string[] controllerIds;
         readonly IWorldState worldState;
+        readonly string logFileName;
         NetTournamentControllerFactory factory;
 
         public IWorld World { get; set; }
@@ -34,6 +36,13 @@ namespace Assets
             };
 
             //я игнорирую конфиги. надо хотя бы имя сохранять в метод "add player"
+            // wut?
+
+            //log section
+            logFileName = Guid.NewGuid() + ".log";
+            configuration.Settings.EnableLog = true;
+            configuration.Settings.LogFile = UnityConstants.LogFolderRoot + logFileName;
+            //log section end
 
             controllerIds = competitions.Logic.Actors.Keys.ToArray();
 
@@ -86,11 +95,33 @@ namespace Assets
 
         public void Dispose()
         {
+            Debugger.Log(DebuggerMessageType.Unity, "dispose tournament...");
             foreach (var cvarcClient in players)
                 cvarcClient.client.Close();
 
             if (World != null)
                 World.OnExit();
+
+            SendResultsToServer();
+        }
+
+        private void SendResultsToServer()
+        {
+            if (World == null) 
+                return;
+            var leftTag = players[controllerIds.ToList().IndexOf("Left")].configProposal.SettingsProposal.CvarcTag; // не знаю, как определить который из них левый.
+            var rightTag = players[controllerIds.ToList().IndexOf("Right")].configProposal.SettingsProposal.CvarcTag; // вроде так норм работает.
+            var scores = World.Scores.GetAllScores();
+            var leftScore = -1;
+            var rightScore = -1;
+            foreach (var scoresInfo in scores)
+            {
+                if (scoresInfo.Item1 == "Left")
+                    leftScore = scoresInfo.Item2;
+                if (scoresInfo.Item1 == "Right")
+                    rightScore = scoresInfo.Item2;
+            }
+            HttpWorker.SendGameResultsIfNeed(leftTag, rightTag, leftScore, rightScore, logFileName);
         }
     }
 }

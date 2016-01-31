@@ -8,7 +8,6 @@ namespace Assets
 {
     public class TournamentPlayer
     {
-        // в данный момент отсюда используется только имя и кварк клиент. на всякий случай.
         public readonly ConfigurationProposal configProposal;
         public readonly IWorldState preferredWorldState;
         public readonly IMessagingClient client;

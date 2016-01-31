@@ -11,7 +11,7 @@ namespace RoboMovies.UnityClient
             // назначаем обработчик сенсоров
             client.SensorDataReceived += HandleSensorData;
             // указываем настройки
-            client.Configurate(14000, true, RoboMoviesBots.Stand, ip:"127.0.0.1");
+            client.Configurate(14001, false, RoboMoviesBots.Stand, ip: "127.0.0.1", cvarcTag: "00000000-0000-0000-0000-000000000000");
             Control(client);
         }
 
@@ -34,7 +34,7 @@ namespace RoboMovies.UnityClient
             //client.Rotate(90);
             //client.Move(10);
             //client.ReleasePopCorn();
-            
+
             client.Move(64);
             client.Rotate(-90);
             client.Stand(0.1);
@@ -45,17 +45,17 @@ namespace RoboMovies.UnityClient
             var firstPopCornCount = client.Move(-70).LoadedPopCornCount;
             client.Stand(0.1);
             var secondPopCornCount = client.ActivatePopCornDispenser().LoadedPopCornCount;
-            
+
             //проверяем, что количество попкорна увеличилось на 1
             System.Diagnostics.Debug.Assert(secondPopCornCount - firstPopCornCount == 1);
-            
+
             //корректно завершаем работу
             client.Exit();
         }
 
         static void HandleSensorData(RMSensorData sensorData)
         {
-            
+
         }
     }
 }

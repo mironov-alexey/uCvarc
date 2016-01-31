@@ -12,7 +12,7 @@ namespace Assets
         public static void AddPlayerToPool(CvarcClient client)
         {
             var configProposal = client.Read<ConfigurationProposal>();
-            var loadingData = configProposal.LoadingData;
+            var loadingData = configProposal.LoadingData; //RoboMoviesLevel1
             var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
             var worldSettingsType = competitions.Logic.WorldStateType;
             var worldState = (IWorldState)client.Read(worldSettingsType); 

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using CVARC.V2;
 using RoboMovies;
 using UnityEngine;
 using Assets;
+using Assets.Tools;
 
 
 public static class Dispatcher
@@ -22,11 +24,15 @@ public static class Dispatcher
         Debugger.DisableByDefault = true;
         Debugger.EnabledTypes.Add(DebuggerMessageType.Unity);
         Debugger.EnabledTypes.Add(DebuggerMessageType.UnityTest);
+        Debugger.EnabledTypes.Add(DebuggerMessageType.Error);
         //Debugger.EnabledTypes.Add(RMDebugMessage.WorldCreation);
         //Debugger.EnabledTypes.Add(RMDebugMessage.Logic);
-        //Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
-        //Debugger.EnabledTypes.Add(DebuggerMessageType.Workflow);
+        Debugger.EnabledTypes.Add(RMDebugMessage.Workflow);
         Debugger.Logger = Debug.Log;
+
+        WebInfo.InitWebConfigsFromFile(UnityConstants.PathToConfigFile);
+
+        HttpWorker.SayStatus(true);
 
         Loader = new Loader();
         Loader.AddLevel("Demo", "Test", () => new DemoCompetitions.Level1());
@@ -98,7 +104,7 @@ public static class Dispatcher
         if (CurrentRunner != null)
             CurrentRunner.Dispose();
         queue.DisposeRunners();
-
+        HttpWorker.SayStatus(false);
         UnityShutdown = true;
     }
 
