@@ -18,11 +18,11 @@ namespace CVARC.V2
         where TWorld : IWorld
         where TRules : IRules
     {
-        protected CommandBuilder<TRules, TCommand> Robot { get; }
+        protected CommandBuilder<TRules, TCommand> Robot { get; private set; }
 
         private readonly ReflectableTestBuilder<TSensorData, TCommand, TWorldState, TWorld> _testBuilder;
-        protected SettingsProposal DefaultSettings { get; }
-        protected TWorldState DefaultWorldState { get; }
+        protected SettingsProposal DefaultSettings { get; private set; }
+        protected TWorldState DefaultWorldState { get; private set; }
 
         protected CvarcTestCase(TRules rules, TWorldState worldState, SettingsProposal defaultSettings)
         {
@@ -56,7 +56,8 @@ namespace CVARC.V2
             return method
                 .GetCustomAttributes(true)
                 .Where(a => a is TestSettings.SetReflected)
-                .Any(a => (a as TestSettings.SetReflected)?.Reflected ?? false);
+                .Select(a => (TestSettings.SetReflected)a)
+                .Any(a => a.Reflected);
         }
 
         private static TWorldState MutateWorldState(MethodInfo method, TWorldState defaultWorldState)
@@ -64,7 +65,8 @@ namespace CVARC.V2
             return method
                 .GetCustomAttributes(true)
                 .Where(a => a is TestSettings.WorldState)
-                .Select(a => ((a as TestSettings.WorldState)?.State as TWorldState))
+                .Select(a => (TestSettings.WorldState)a)
+                .Select(a => (TWorldState)a.State)
                 .FirstOrDefault() ?? defaultWorldState;
         }
 
@@ -73,7 +75,8 @@ namespace CVARC.V2
             var newSettings = SettingsProposal.DeepCopy(source);
             return method.GetCustomAttributes(true)
                 .Where(attr => attr is SettingsProposalMutator)
-                .Aggregate(newSettings, (set, mut) => (mut as SettingsProposalMutator)?.Mutate(set));
+                .Select(attr => attr as SettingsProposalMutator)
+                .Aggregate(newSettings, (set, mut) => mut.Mutate(set));
         }
 
         protected void AssertEqual(Func<TSensorData, double> actual, double expected, double delta)

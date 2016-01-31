@@ -5,7 +5,11 @@ namespace CVARC.V2
 {
     public abstract class SettingsProposalMutator : Attribute
     {
-        public SettingsProposal Mutate(SettingsProposal settings) => MutateCopy(SettingsProposal.DeepCopy(settings));
+        public SettingsProposal Mutate(SettingsProposal settings)
+        {
+            return MutateCopy(SettingsProposal.DeepCopy(settings));
+        }
+
         protected abstract SettingsProposal MutateCopy(SettingsProposal settings);
     }
 

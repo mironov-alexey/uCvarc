@@ -11,6 +11,9 @@ namespace CVARC.V2
             _assert = assert;
         }
 
-        public void Assert(TSensorData data, IAsserter asserter) => _assert(data, asserter);
+        public void Assert(TSensorData data, IAsserter asserter)
+        {
+            _assert(data, asserter);
+        }
     }
 }

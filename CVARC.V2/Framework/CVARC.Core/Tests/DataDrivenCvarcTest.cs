@@ -7,7 +7,7 @@
         where TCommand : ICommand
         where TWorld : IWorld
     {
-        public TestData<TSensorData, TCommand, TWorldState> Data { get; }
+        public TestData<TSensorData, TCommand, TWorldState> Data { get; private set; }
 
         public DataDrivenCvarcTest(TestData<TSensorData, TCommand, TWorldState> data)
         {

@@ -31,7 +31,9 @@ namespace CVARC.V2
         {
             if (reflected)
             {
-                CurrentTest.ForEach(act => (act as ReflectableTestAction<TSensorData, TCommand>)?.Reflect());
+                foreach (var act in CurrentTest.Where(act => act is ReflectableTestAction<TSensorData, TCommand>))
+                    ((ReflectableTestAction<TSensorData, TCommand>)act).Reflect();
+
                 settings = SettingsProposal.DeepCopy(settings);
                 settings.Controllers = Reflect(settings.Controllers);
             }

@@ -26,7 +26,8 @@ namespace CVARC.V2
             GetType().Assembly.GetTypes()
                 .Where(type => IsGenericSubclass(type, typeof(CvarcTestCase<,,,,>)))
                 .Select(type => Activator.CreateInstance(type) as ICvarcTestCase)
-                .SelectMany(instance => instance?.GetDefinedTests()).ToList()
+                .Where(instance => instance != null)
+                .SelectMany(instance => instance.GetDefinedTests()).ToList()
                 .ForEach(test => AddTest(logic, test.Item1, test.Item2));
         }
 

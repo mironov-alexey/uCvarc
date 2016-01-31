@@ -14,7 +14,8 @@ namespace CVARC.V2
 
         public void Add(TCommand command)
         {
-            CommandAdded?.Invoke(command);
+            if (CommandAdded != null)
+                CommandAdded.Invoke(command);
         }
     }
 
