@@ -53,6 +53,12 @@ namespace Assets
             actorHead.GetComponent<Renderer>().material.mainTexture = Resources.Load<Texture2D>(topTexture);
             actorHead.transform.parent = actorBody.transform;
 
+            var parasol = GameObject.Instantiate<GameObject>(Resources.Load<GameObject>("Parasol"));
+           
+            parasol.transform.parent = actorBody.transform;
+            parasol.transform.localPosition = new Vector3(0, 2, 0);
+            parasol.transform.localScale = new Vector3(40, 40, 80);
+
             var floor = GameObject.Find("floor");
             foreach (var robotCollider in actorBody.GetComponents<Collider>())
                 Physics.IgnoreCollision(floor.GetComponent<MeshCollider>(), robotCollider);
