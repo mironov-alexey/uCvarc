@@ -100,6 +100,14 @@
       <Project>{4c00a5ba-5f04-4173-910d-e7813b313001}</Project>
       <Name>RoboMovies.General</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\TheBeachBots\TheBeachBots.KroR\TheBeachBots.KroR.csproj">
+      <Project>{63d6955c-7d95-46c0-ac3f-be69992476fa}</Project>
+      <Name>TheBeachBots.KroR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TheBeachBots\TheBeachBots\TheBeachBots.General.csproj">
+      <Project>{cbe94cf5-d6f5-4d7f-a7dd-f6eeedc5f9ca}</Project>
+      <Name>TheBeachBots.General</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CVARC.Core\CVARC.Core.csproj">
       <Project>{f7b5021f-09e8-4388-97a2-4b44b9770d03}</Project>
       <Name>CVARC.Core</Name>
@@ -114,7 +122,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- Import Project="$(SolutionDir)\.nuget\nuget.targets" / -->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

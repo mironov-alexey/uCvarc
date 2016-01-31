@@ -8,8 +8,10 @@ using Assets;
 
 public class IntroductionStript : MonoBehaviour
 {
-    const string ASSEMBLY_NAME = "RoboMovies";
+    const string ASSEMBLY_NAME = "TheBeachBots";
+    //const string ASSEMBLY_NAME = "RoboMovies";
     //const string ASSEMBLY_NAME = "Demo";
+
     private bool openWindowTests = false;
     static bool serverIsRunned = false;
 

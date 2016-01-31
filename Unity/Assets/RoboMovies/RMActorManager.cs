@@ -15,13 +15,13 @@ namespace Assets
         {
             var location = new Vector3(-150 + 35, robotHeight / 2, 0);
             var rotation = Quaternion.Euler(0, 0, 0);
-            string topTexture = "yellow";
+            string topTexture = "RobotYellow";
 
             if (Actor.ControllerId == TwoPlayersId.Right)
             {
                 location = new Vector3(150 - 35, robotHeight / 2, 0);
                 rotation = Quaternion.Euler(0, 180, 0);
-                topTexture = "green";
+                topTexture = "RobotGreen";
             }
 
             var actorBody = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
