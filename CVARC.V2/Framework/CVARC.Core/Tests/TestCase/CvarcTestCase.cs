@@ -6,12 +6,12 @@ using AIRLab;
 
 namespace CVARC.V2
 {
-    public interface ICvarcUnitTest
+    public interface ICvarcTestCase
     {
         IEnumerable<Tuple<string, ICvarcTest>> GetDefinedTests();
     }
 
-    public abstract class CvarcUnitTest<TRules, TSensorData, TCommand, TWorldState, TWorld> : ICvarcUnitTest
+    public abstract class CvarcTestCase<TRules, TSensorData, TCommand, TWorldState, TWorld> : ICvarcTestCase
         where TSensorData : class, new()
         where TWorldState : class, IWorldState
         where TCommand : class, ISimpleMovementCommand 
@@ -24,7 +24,7 @@ namespace CVARC.V2
         protected SettingsProposal DefaultSettings { get; }
         protected TWorldState DefaultWorldState { get; }
 
-        protected CvarcUnitTest(TRules rules, TWorldState worldState, SettingsProposal defaultSettings)
+        protected CvarcTestCase(TRules rules, TWorldState worldState, SettingsProposal defaultSettings)
         {
             _testBuilder = new ReflectableTestBuilder<TSensorData, TCommand, TWorldState, TWorld>();
             DefaultSettings = defaultSettings;

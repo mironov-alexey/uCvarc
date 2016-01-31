@@ -3,9 +3,8 @@ using CVARC.V2;
 using AIRLab.Mathematics;
 
 namespace TheBeachBots
-{
-    [CvarcTestClass]
-    public class TestExample : CvarcUnitTest<TBBRules, TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld>
+{    
+    public class TestExample : CvarcTestCase<TBBRules, TBBSensorsData, TBBCommand, TBBWorldState, TBBWorld>
     {
         public TestExample() : base(TBBRules.Current, new TBBWorldState(42), new SettingsProposal())
         {
