@@ -26,11 +26,11 @@ namespace Assets
 
             var actorBody = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             actorBody.AddComponent<Rigidbody>();
-            
+
             actorBody.transform.position = location;
             actorBody.transform.rotation = rotation;
             actorBody.transform.localScale = new Vector3(robotRadius * 2, robotHeight / 2, robotRadius * 2);
-            
+
             actorBody.GetComponent<Renderer>().material.color = Color.magenta;
 
             actorBody.GetComponent<Rigidbody>().drag = 0;
@@ -39,7 +39,7 @@ namespace Assets
             actorBody.GetComponent<Rigidbody>().mass = robotMass;
             actorBody.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX |
                                                               RigidbodyConstraints.FreezeRotationZ |
-                                                              RigidbodyConstraints.FreezePositionY;            
+                                                              RigidbodyConstraints.FreezePositionY;
             actorBody.AddComponent<MeshCollider>();
             actorBody.GetComponent<MeshCollider>().convex = true;
 

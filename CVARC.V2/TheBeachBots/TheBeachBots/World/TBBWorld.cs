@@ -47,12 +47,12 @@ namespace TheBeachBots
             CreateLineOf(ObjectType.Fish, (id, l, c) => Manager.CreateFish(id, l, c),
                 -105, 60, 70, 80, 90);
 
-            // Disabled for KroR due to physics incompatibility 
-            //CreateSandCastle(new Point2D(85, 10), 1);
-            //CreateSandCastle(new Point2D(-85, 10), 1);
-            //CreateSandCastle(new Point2D(62, 92), 2);
-            //CreateSandCastle(new Point2D(-62, 92), 2);
-            //CreateSandDune();
+            // FIXME: Disable for KroR due to physics incompatibility 
+            CreateSandCastle(new Point2D(85, 10), 1);
+            CreateSandCastle(new Point2D(-85, 10), 1);
+            CreateSandCastle(new Point2D(62, 92), 2);
+            CreateSandCastle(new Point2D(-62, 92), 2);
+            CreateSandDune();
 
             CreateSeashells();
         }

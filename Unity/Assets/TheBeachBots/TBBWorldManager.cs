@@ -32,6 +32,8 @@ namespace Assets
         public double FloorLevel { get { return floorLevel; } }
         public void CreateWorld(IdGenerator generator) { }
 
+        GameObject conePrefab = Resources.Load<GameObject>("Cone");
+
         public void Initialize(IWorld world)
         {
             this.world = (TBBWorld)world;
@@ -104,55 +106,33 @@ namespace Assets
 
         public void CreateSandCube(string id, Point3D location)
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-            cube.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
-            cube.transform.localScale = new Vector3(5.8f, 5.8f, 5.8f);
-
-            cube.GetComponent<Renderer>().material.color = Color.yellow;
-
-            cube.AddComponent<Rigidbody>();
-            cube.GetComponent<Rigidbody>().drag = cube.GetComponent<Rigidbody>().angularDrag = 4;
-            cube.GetComponent<Rigidbody>().useGravity = true;
-            cube.GetComponent<Rigidbody>().mass = 0.3f;
-            //cube.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            cube.name = id;
+            InitSandObject(GameObject.CreatePrimitive(PrimitiveType.Cube), id, location);
         }
 
         public void CreateSandCylinder(string id, Point3D location)
         {
-            var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-
-            cylinder.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
-            cylinder.transform.localScale = new Vector3(5.8f, 5.8f, 5.8f);
-
-            cylinder.GetComponent<Renderer>().material.color = Color.yellow;
-
-            cylinder.AddComponent<Rigidbody>();
-            cylinder.GetComponent<Rigidbody>().drag = cylinder.GetComponent<Rigidbody>().angularDrag = 4;
-            cylinder.GetComponent<Rigidbody>().useGravity = true;
-            cylinder.GetComponent<Rigidbody>().mass = 0.3f;
-            //cylinder.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            cylinder.name = id;
+            InitSandObject(GameObject.CreatePrimitive(PrimitiveType.Cylinder), id, location);            
         }
 
         public void CreateSandCone(string id, Point3D location)
         {
-            // FIXME: here should be a cone!
-            // TODO: create a cone .fbx model 
-            var cone = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            InitSandObject(GameObject.Instantiate(conePrefab), id, location);
+        }
 
-            cone.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
-            cone.transform.localScale = new Vector3(5.8f, 5.8f, 5.8f);
+        public void InitSandObject(GameObject obj, string id, Point3D location)
+        {
+            obj.name = id;
 
-            cone.GetComponent<Renderer>().material.color = Color.yellow;
+            obj.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
+            obj.transform.localScale = new Vector3(5.8f, 5.8f, 5.8f);
 
-            cone.AddComponent<Rigidbody>();
-            cone.GetComponent<Rigidbody>().drag = cone.GetComponent<Rigidbody>().angularDrag = 4;
-            cone.GetComponent<Rigidbody>().useGravity = true;
-            cone.GetComponent<Rigidbody>().mass = 0.3f;
-            //cone.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-            cone.name = id;
+            obj.GetComponent<Renderer>().material.color = Color.yellow;
+
+            obj.AddComponent<Rigidbody>();
+            obj.GetComponent<Rigidbody>().drag = obj.GetComponent<Rigidbody>().angularDrag = 4;
+            obj.GetComponent<Rigidbody>().useGravity = true;
+            obj.GetComponent<Rigidbody>().mass = 0.3f;
+            obj.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
 
         public void CreateSeashell(string id, Point2D location, SideColor color)
@@ -200,7 +180,6 @@ namespace Assets
             fish.GetComponent<Rigidbody>().drag = fish.GetComponent<Rigidbody>().angularDrag = 4;
             fish.GetComponent<Rigidbody>().useGravity = true;
             fish.GetComponent<Rigidbody>().mass = 0.3f;
-            //seashell.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             fish.name = id;
         }
 
