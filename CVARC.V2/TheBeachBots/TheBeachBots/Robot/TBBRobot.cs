@@ -13,6 +13,8 @@ namespace TheBeachBots
         public SandGripper SandGripper { get; private set; }
         public ParasolUnit ParasolUnit { get; private set; }
 
+        private HashSet<string> grippedFish = new HashSet<string>();
+
         public override IEnumerable<IUnit> Units
         {
             get
@@ -32,14 +34,23 @@ namespace TheBeachBots
 
             SimpleMovementUnit = new SimpleMovementUnit(this);
             DoorUnit = new DoorUnit(this, World, new Frame3D(15, 0, 5));
-            FishingRod = new FishingRod(this, World, new Frame3D(20, 0, 10), 15);
-            SandGripper = new SandGripper(this, World, new Frame3D(-15, 0, 5), 5);
+            FishingRod = new FishingRod(this, World, new Frame3D(20, 0, 10));
+            SandGripper = new SandGripper(this, World, new Frame3D(-15, 0, 5));
             SeashellGripper = new SeashellGripper(this, World, new Frame3D(15, 0, 5));
             ParasolUnit = new ParasolUnit(this, World);
 
             FishingRod.OnGrip = SeashellGripper.OnGrip = DoorUnit.OnActivation = DoorUnit.OnDeactivation = id =>
             {
                 if (!IsValidObject(id)) World.Scores.Add(ControllerId, -20, "Penalty");
+            };
+
+            FishingRod.OnGrip += id => 
+            {
+                if (IsValidObject(id) && !grippedFish.Contains(id))
+                {
+                    grippedFish.Add(id);
+                    World.Scores.Add(ControllerId, 10, "Grip fish of valid color");
+                }
             };
 
             ParasolUnit.OnActivation = _ => World.Scores.Add(ControllerId, 20, "Open parasol");

@@ -22,7 +22,7 @@ namespace TheBeachBots
         {
             new Point2D(140, -80),
             new Point2D(140, -90),
-            new Point2D(130, -80),
+            new Point2D(130, -90),
             new Point2D(130, -25),
             new Point2D(130, -55),
             new Point2D(80, -25),

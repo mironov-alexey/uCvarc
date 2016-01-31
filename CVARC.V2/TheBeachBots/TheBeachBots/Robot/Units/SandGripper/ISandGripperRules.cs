@@ -2,6 +2,7 @@
 {
     public interface ISandGripperRules : IRules
     {
+        double SandInteractionRange { get; }
         double SandCollectingTime { get; }
         double SandReleasingTime { get; }
         int SandGripperCapacity { get; }

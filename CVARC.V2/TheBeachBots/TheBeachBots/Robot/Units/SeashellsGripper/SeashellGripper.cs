@@ -14,8 +14,9 @@ namespace CVARC.V2
         {
             return World.IdGenerator.GetAllPairsOfType<TBBObject>()
                 .Where(x => x.Item1.Type == ObjectType.Seashell)
-                .Where(x => actor.World.Engine.ContainBody(x.Item2))
+                .Where(x => actor.World.Engine.ContainBody(x.Item2))                
                 .Where(x => GetAvailability(x.Item2).Distance < rules.SeashellInteractionRange)
+                .Where(x => !actor.World.Engine.IsAttached(x.Item2))
                 .Select(x => x.Item2)
                 .FirstOrDefault();
         }

@@ -7,20 +7,16 @@ namespace CVARC.V2
 {
     public class FishingRod : BaseTBBGripper<IFishingRules, IFishingCommand, TBBWorld>
     {
-        public double Range { get; set; }
-
-        public FishingRod(IActor actor, TBBWorld world, Frame3D grippingPoint, double range)
-            : base(actor, world, grippingPoint) 
-        {
-            Range = range;
-        }
+        public FishingRod(IActor actor, TBBWorld world, Frame3D grippingPoint)
+            : base(actor, world, grippingPoint) { }
 
         protected override string FindDetail()
         {
             return World.IdGenerator.GetAllPairsOfType<TBBObject>()
                 .Where(x => x.Item1.Type == ObjectType.Fish)
                 .Where(x => actor.World.Engine.ContainBody(x.Item2))
-                .Where(x => GetAvailability(x.Item2).Distance < Range)
+                .Where(x => GetAvailability(x.Item2).Distance < rules.FishInteractionRange)
+                .Where(x => !actor.World.Engine.IsAttached(x.Item2))
                 .Select(x => x.Item2)
                 .FirstOrDefault();
         }

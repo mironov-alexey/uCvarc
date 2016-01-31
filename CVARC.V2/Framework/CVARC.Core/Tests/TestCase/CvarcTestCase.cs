@@ -81,6 +81,11 @@ namespace CVARC.V2
             _testBuilder.AddAssert((s, a) => a.IsEqual(expected, actual(s), delta));
         }
 
+        protected void AssertEqual(Func<TSensorData, int> actual, int expected)
+        {
+            _testBuilder.AddAssert((s, a) => a.IsEqual(expected, actual(s), 0));
+        }
+
         protected void AssertTrue(Func<TSensorData, bool> condition)
         {
             AssertBool(condition, true);

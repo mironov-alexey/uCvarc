@@ -2,6 +2,7 @@
 {
     public interface IFishingRules : IRules
     {
+        double FishInteractionRange { get; }
         double FishGrippingTime { get; }
         double FishReleasingTime { get; }
     }

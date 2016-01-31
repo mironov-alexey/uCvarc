@@ -61,11 +61,10 @@
     <Compile Include="Sensors\SandGripperSensor.cs" />
     <Compile Include="Sensors\ScoreSensor.cs" />
     <Compile Include="Sensors\SeashellSensor.cs" />
+    <Compile Include="Tests\DefaultTBBTest.cs" />
     <Compile Include="Tests\DoorTest.cs" />
     <Compile Include="Tests\FishingTest.cs" />
-    <Compile Include="Tests\ScoresTest.cs" />
-    <Compile Include="Tests\TBBTestBuilder.cs" />
-    <Compile Include="Tests\TestExample.cs" />
+    <Compile Include="Tests\ParasolTest.cs" />
     <Compile Include="Utils\TBBBots.cs" />
     <Compile Include="Utils\TBBLogic.cs" />
     <Compile Include="Managers\ITBBActorManager.cs" />

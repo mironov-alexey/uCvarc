@@ -11,10 +11,10 @@ namespace Assets
         /* 
          * TODO: 
          * 
-         * 1. fix flying walls in dune
-         * 2. tweak robot units to not interact with gripped items
-         * 3. fix seashells layout at field edges
-         * 4. fix scoring and door closing
+         * + 1. fix flying walls in dune
+         * + 2. tweak robot units to not interact with gripped items
+         * + 3. fix seashells layout at field edges
+         * + 4. fix scoring and door closing
          * 5. create fish net and water
          * 6. moar tests
          * 7. create models for cones, rocks and beach huts
@@ -96,8 +96,9 @@ namespace Assets
         public void CreateWall(Point2D location, Point2D size)
         {
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            wall.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
-            wall.transform.localScale = new Vector3((float)size.X, floorLevel, (float)size.Y);
+            float sizeZ = floorLevel;
+            wall.transform.position = new Vector3((float)location.X, sizeZ / 2, (float)location.Y);
+            wall.transform.localScale = new Vector3((float)size.X, sizeZ, (float)size.Y);
             wall.GetComponent<Renderer>().material.color = Color.white;
         }
 
@@ -207,8 +208,10 @@ namespace Assets
         {
             var hut = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-            hut.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
-            hut.transform.localScale = new Vector3(12, 16, 12);
+            Point3D size = new Point3D(12, 12, 16);
+
+            hut.transform.position = new Vector3((float)location.X, (float)size.Z / 2, (float)location.Y);
+            hut.transform.localScale = new Vector3((float)size.X, (float)size.Z, (float)size.Y);
 
             hut.GetComponent<Renderer>().material.color = GetDrawingColor(color);
             hut.name = id;

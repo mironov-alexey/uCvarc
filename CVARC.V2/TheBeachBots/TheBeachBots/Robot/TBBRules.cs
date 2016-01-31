@@ -9,45 +9,28 @@ namespace TheBeachBots
     {
         public static readonly TBBRules Current = new TBBRules();
 
-        public double LinearVelocityLimit { get; set; }
-        public Angle AngularVelocityLimit { get; set; }
+        public double LinearVelocityLimit => 50;
+        public Angle AngularVelocityLimit => Angle.HalfPi;
 
-        public double DoorInteractionRange { get; set; }
-        public double DoorOpeningTime { get; set; }
-        public double DoorClosingTime { get; set; }
+        public double DoorInteractionRange => 12;
+        public double DoorOpeningTime => 1;
+        public double DoorClosingTime => 1;
 
-        public double SeashellInteractionRange { get; set; }
-        public double SeashellGrippingTime { get; set; }
-        public double SeashellReleasingTime { get; set; }
+        public double SeashellInteractionRange => 12;
+        public double SeashellGrippingTime => 1;
+        public double SeashellReleasingTime => 1;
 
-        public double FishGrippingTime { get; set; }
-        public double FishReleasingTime { get; set; }
+        public double FishInteractionRange => 12;
+        public double FishGrippingTime => 1;
+        public double FishReleasingTime => 1;
 
-        public double SandCollectingTime { get; set; }
-        public double SandReleasingTime { get; set; }
-        public int SandGripperCapacity { get; set; }
+        public double SandInteractionRange => 12;
+        public double SandCollectingTime => 1;
+        public double SandReleasingTime => 1;
+        public int SandGripperCapacity => 5;
 
-        public double ParasolOpeningTime { get; set; }
-        public double ParasolClosingTime { get; set; }
-
-        public TBBRules()
-        {
-            LinearVelocityLimit = 50;
-            AngularVelocityLimit = Angle.HalfPi;
-
-            DoorOpeningTime = DoorClosingTime = 1;
-
-            SeashellGrippingTime = SeashellReleasingTime = 1;
-
-            DoorInteractionRange = SeashellInteractionRange = 10;
-
-            FishGrippingTime = FishReleasingTime = 0.2;
-
-            SandCollectingTime = SandReleasingTime = 1;
-            SandGripperCapacity = 5;
-
-            ParasolClosingTime = ParasolOpeningTime = 3;
-        }
+        public double ParasolOpeningTime => 3;
+        public double ParasolClosingTime => 3;
 
         public void DefineKeyboardControl(IKeyboardController _pool, string controllerId)
         {

@@ -9,20 +9,18 @@ namespace CVARC.V2
     public class SandGripper : BaseGripperUnit<ISandGripperRules>
     {
         TBBWorld world;
-
-        public double Range { get; set; }
+        
         public Stack<string> CollectedDetails { get; private set; }
 
         public Action<string> OnGrip;
         public Action<string, Frame3D> OnRelease;
 
-        public SandGripper(IActor actor, TBBWorld world, Frame3D grippingPoint, double range)
+        public SandGripper(IActor actor, TBBWorld world, Frame3D grippingPoint)
             : base(actor)
         {
             this.world = world;
             CollectedDetails = new Stack<string>();
             GrippingPoint = grippingPoint;
-            Range = range;
         }
 
         protected string FindSandCastleDetail()
@@ -30,8 +28,9 @@ namespace CVARC.V2
             return world.IdGenerator.GetAllPairsOfType<TBBObject>()
                 .Where(x => x.Item1.Type == ObjectType.SandCone ||
                         x.Item1.Type == ObjectType.SandCube || x.Item1.Type == ObjectType.SandCylinder)
-                .Where(x => actor.World.Engine.ContainBody(x.Item2))
-                .Where(x => GetAvailability(x.Item2).Distance < Range)
+                .Where(x => actor.World.Engine.ContainBody(x.Item2))                
+                .Where(x => GetAvailability(x.Item2).Distance < rules.SandInteractionRange)
+                .Where(x => !actor.World.Engine.IsAttached(x.Item2))
                 .Select(x => x.Item2)
                 .FirstOrDefault();
         }
