@@ -207,12 +207,14 @@ namespace Assets
 
         public void OpenParasol(string actorId)
         {
-            // Method stub
+            var parasolAnimator = GameObject.Find(actorId + "Parasol").GetComponent<Animator>();
+            parasolAnimator.Play("Open");
         }
 
         public void CloseParasol(string actorId)
         {
-            // Method stub
+            var parasolAnimator = GameObject.Find(actorId + "Parasol").GetComponent<Animator>();
+            parasolAnimator.Play("Close");
         }
     }
 }
