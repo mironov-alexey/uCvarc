@@ -107,25 +107,33 @@ namespace Assets
 
         public void CreateSandCube(string id, Point3D location)
         {
-            InitSandObject(GameObject.CreatePrimitive(PrimitiveType.Cube), id, location);
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.localScale = new Vector3(5.8f, 5.8f, 5.8f);
+
+            InitSandObject(cube, id, location);
         }
 
         public void CreateSandCylinder(string id, Point3D location)
         {
-            InitSandObject(GameObject.CreatePrimitive(PrimitiveType.Cylinder), id, location);            
+            var cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            cylinder.transform.localScale = new Vector3(5.8f, 5.8f / 2, 5.8f);
+
+            InitSandObject(cylinder, id, location);
         }
 
         public void CreateSandCone(string id, Point3D location)
         {
-            InitSandObject(GameObject.Instantiate(conePrefab), id, location);
+            var cone = GameObject.Instantiate(conePrefab);
+            cone.transform.localScale = new Vector3(5.8f / 2, 5.8f / 2, 5.8f / 2);
+
+            InitSandObject(cone, id, location);
         }
 
         public void InitSandObject(GameObject obj, string id, Point3D location)
         {
             obj.name = id;
 
-            obj.transform.position = new Vector3((float)location.X, floorLevel, (float)location.Y);
-            obj.transform.localScale = new Vector3(5.8f, 5.8f, 5.8f);
+            obj.transform.position = new Vector3((float)location.X, (float)location.Z, (float)location.Y);
 
             obj.GetComponent<Renderer>().material.color = Color.yellow;
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define SANDCASTLES_ENABLED
+
+using System;
 using System.Linq;
 using AIRLab.Mathematics;
 using CVARC.V2;
@@ -47,13 +49,13 @@ namespace TheBeachBots
             CreateLineOf(ObjectType.Fish, (id, l, c) => Manager.CreateFish(id, l, c),
                 -105, 60, 70, 80, 90);
 
-            // FIXME: Disable for KroR due to physics incompatibility 
-            //CreateSandCastle(new Point2D(85, 10), 1);
-            //CreateSandCastle(new Point2D(-85, 10), 1);
-            //CreateSandCastle(new Point2D(62, 92), 2);
-            //CreateSandCastle(new Point2D(-62, 92), 2);
-            //CreateSandDune();
-
+#if SANDCASTLES_ENABLED
+            CreateSandCastle(new Point2D(85, 10), 1);
+            CreateSandCastle(new Point2D(-85, 10), 1);
+            CreateSandCastle(new Point2D(62, 92), 2);
+            CreateSandCastle(new Point2D(-62, 92), 2);
+            CreateSandDune();
+#endif
             CreateSeashells();
         }
 
