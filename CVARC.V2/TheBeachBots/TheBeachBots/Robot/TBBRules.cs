@@ -16,7 +16,7 @@ namespace TheBeachBots
         public double DoorOpeningTime { get { return 1; } }
         public double DoorClosingTime { get { return 1; } }
 
-        public double SeashellInteractionRange { get { return 12; } }
+        public double SeashellInteractionRange { get { return 10; } }
         public double SeashellGrippingTime { get { return 1; } }
         public double SeashellReleasingTime { get { return 1; } }
 

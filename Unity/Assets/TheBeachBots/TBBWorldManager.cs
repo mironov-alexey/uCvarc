@@ -16,8 +16,9 @@ namespace Assets
          * + 3. fix seashells layout at field edges
          * + 4. fix scoring and door closing
          * 5. create fish net and water
-         * 6. moar tests
-         * 7. create models for cones, rocks and beach huts
+         * + 6. moar tests
+         * + 7a. create models for cones
+         * 7b. create models for rocks and beach huts
          *
          */
 
@@ -139,7 +140,7 @@ namespace Assets
         {
             var seashell = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
-            var locationZ = Math.Abs(location.X) > 120 && location.Y < -70 ? 100 : floorLevel;
+            var locationZ = Math.Abs(location.X) > 120 && location.Y < -70 ? floorLevel + 6 : floorLevel;
             seashell.transform.position = new Vector3((float)location.X, locationZ, (float)location.Y);
             seashell.transform.localScale = new Vector3(7.62f, 2.5f, 7.62f);
 

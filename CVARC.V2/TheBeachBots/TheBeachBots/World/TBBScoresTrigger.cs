@@ -45,11 +45,11 @@ namespace TheBeachBots
                 .Where(x => x.Item1.Type == ObjectType.Seashell)
                 .Where(x => x.Item1.Color == SideColor.Any || x.Item1.Color == color)
                 .Where(x => world.Engine.FindParent(x.Item2) == null)
-                .Where(x => world.Helper.IsInsideBuildingArea(world.Engine.GetAbsoluteLocation(x.Item2), color));
+                .Where(x => world.Helper.IsInsideStartingArea(world.Engine.GetAbsoluteLocation(x.Item2), color));
 
             foreach (var seashell in seashells)
                 world.Scores.Add(world.Helper.ColorToControllerId(color), 2,
-                    "Valid seashell in the starting area", RecordType.Temporary);                
+                    "Valid seashell in the starting area", RecordType.Temporary);
         }
 
         private void CheckFishInsideNet()

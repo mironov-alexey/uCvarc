@@ -43,7 +43,7 @@ namespace TheBeachBots
         }
 
         [CvarcTestMethod]
-        public void Fishing_GotScoresIfFishGripped()
+        public void Fishing_GotZeroScoresIfFishGripped()
         {
             Robot
                 .Move(50)
@@ -51,11 +51,11 @@ namespace TheBeachBots
                 .Move(100)
                 .Stand(1)
                 .GripFish();
-            AssertEqual(s => s.SelfScores, 10);
+            AssertEqual(s => s.SelfScores, 0);
         }
 
         [CvarcTestMethod]
-        public void Fishing_GotScoresIfFishOutsideWater()
+        public void Fishing_GotFiveScoresIfFishOutsideWater()
         {
             Robot
                 .Move(50)
@@ -66,11 +66,11 @@ namespace TheBeachBots
                 .Move(-50)
                 .Stand(1)
                 .ReleaseFish();
-            AssertEqual(s => s.SelfScores, 15);
+            AssertEqual(s => s.SelfScores, 5);
         }
 
         [CvarcTestMethod]
-        public void Fishing_GotScoresIfFishInNet()
+        public void Fishing_GotTenScoresIfFishInNet()
         {
             Robot
                 .Move(50)
@@ -85,7 +85,7 @@ namespace TheBeachBots
                 .Move(20)
                 .Stand(1)
                 .ReleaseFish();
-            AssertEqual(s => s.SelfScores, 20);
+            AssertEqual(s => s.SelfScores, 10);
         }
     }
 }

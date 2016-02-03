@@ -66,6 +66,7 @@
     <Compile Include="Tests\DoorTest.cs" />
     <Compile Include="Tests\FishingTest.cs" />
     <Compile Include="Tests\ParasolTest.cs" />
+    <Compile Include="Tests\SeashellsTest.cs" />
     <Compile Include="Utils\TBBBots.cs" />
     <Compile Include="Utils\TBBLogic.cs" />
     <Compile Include="Managers\ITBBActorManager.cs" />

@@ -39,18 +39,16 @@ namespace TheBeachBots
             SeashellGripper = new SeashellGripper(this, World, new Frame3D(15, 0, 5));
             ParasolUnit = new ParasolUnit(this, World);
 
-            FishingRod.OnGrip = SeashellGripper.OnGrip = DoorUnit.OnActivation = DoorUnit.OnDeactivation = id =>
+            FishingRod.OnGrip = DoorUnit.OnActivation = DoorUnit.OnDeactivation = id =>
             {
                 if (!IsValidObject(id)) World.Scores.Add(ControllerId, -20, "Penalty");
             };
 
-            FishingRod.OnGrip += id => 
+            SeashellGripper.OnGrip = id =>
             {
-                if (IsValidObject(id) && !grippedFish.Contains(id))
-                {
-                    grippedFish.Add(id);
-                    World.Scores.Add(ControllerId, 10, "Grip fish of valid color");
-                }
+                var seashellColor = World.IdGenerator.GetKey<TBBObject>(id).Color;
+                if (seashellColor != RobotColor && seashellColor != SideColor.Any)
+                    World.Scores.Add(ControllerId, -20, "Penalty");
             };
 
             ParasolUnit.OnActivation = _ => World.Scores.Add(ControllerId, 20, "Open parasol");
