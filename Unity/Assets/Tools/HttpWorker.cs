@@ -15,7 +15,7 @@ namespace Assets.Tools
             if (!WebInfo.NeedToSendToWeb || !CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
                 return;
             var request = string.Format(
-                "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&logFileName={8}",
+                "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&logFileName={8}&type=training",
                 WebInfo.WebIp, WebInfo.WebPort, WebInfo.Method, WebInfo.PasswordToWeb,
                 leftTag, rightTag, leftScore, rightScore, logGuid);
 
@@ -59,9 +59,8 @@ namespace Assets.Tools
             }
             catch (Exception e)
             {
-                WebInfo.NeedToSendToWeb = false;
                 Debugger.Log(DebuggerMessageType.Error, 
-                    "Web server error. Stop trying to send data... Error message: " + e.Message);
+                    "Web server error. Error message: " + e.Message);
                 return null;
             }
         }
@@ -120,9 +119,8 @@ namespace Assets.Tools
             }
             catch (Exception e)
             {
-                WebInfo.NeedToSendToWeb = false;
                 Debugger.Log(DebuggerMessageType.Error, 
-                    "Web server error. Stop trying to send data... Error message: " + e.Message);
+                    "Web server error. Error message: " + e.Message);
                 return null;
             }
             return Encoding.Default.GetString(wresp.GetResponseStream().ReadToEnd());
