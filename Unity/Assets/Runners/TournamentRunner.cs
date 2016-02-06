@@ -23,7 +23,7 @@ namespace Assets
         public bool Disposed { get; set; }
 
 
-        public TournamentRunner(LoadingData loadingData, IWorldState worldState, Configuration configuration)
+        public TournamentRunner(IWorldState worldState, Configuration configuration)
         {
             this.worldState = worldState;
             this.configuration = configuration;
@@ -35,7 +35,7 @@ namespace Assets
             configuration.Settings.LogFile = UnityConstants.LogFolderRoot + logFileName;
             //log section end
 
-            var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
+            var competitions = Dispatcher.Loader.GetCompetitions(configuration.LoadingData);
             controllerIds = competitions.Logic.Actors.Keys.ToArray();
 
             foreach (var controller in controllerIds
@@ -53,7 +53,7 @@ namespace Assets
             if (requiredCountOfPlayers == 0)
                 throw new Exception("requiered count of players cant be 0");
 
-            Name = loadingData.AssemblyName + loadingData.Level;//"Tournament";
+            Name = configuration.LoadingData.AssemblyName + configuration.LoadingData.Level;//"Tournament";
             CanInterrupt = false;
             CanStart = false;
         }

@@ -12,7 +12,7 @@ namespace Assets
         static TournamentRunner forceRunner;
 
 
-        public static void AddPlayerToPool(CvarcClient client, LoadingData loadingData, Configuration configuration, IWorldState worldState, ConfigurationProposal configProposal)
+        public static void AddPlayerToPool(CvarcClient client, Configuration configuration, IWorldState worldState, ConfigurationProposal configProposal)
         {
             if (haveForceGame)
             {
@@ -22,17 +22,17 @@ namespace Assets
             }
             lock (pool)
             {
-                if (!pool.ContainsKey(loadingData))
+                if (!pool.ContainsKey(configuration.LoadingData))
                 {
-                    pool.Add(loadingData, new TournamentRunner(loadingData, worldState, configuration));
-                    Dispatcher.AddRunner(pool[loadingData]);
+                    pool.Add(configuration.LoadingData, new TournamentRunner(worldState, configuration));
+                    Dispatcher.AddRunner(pool[configuration.LoadingData]);
                 }
-                if (pool[loadingData].AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
-                    pool.Remove(loadingData);
+                if (pool[configuration.LoadingData].AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
+                    pool.Remove(configuration.LoadingData);
             }
         }
 
-        public static void AddForceGame(LoadingData loadingData, IWorldState worldState, Configuration config)
+        public static void AddForceGame(IWorldState worldState, Configuration config)
         {
             if (forceRunner != null)
                 while (!forceRunner.Disposed)
@@ -40,7 +40,8 @@ namespace Assets
             haveForceGame = true;
             lock (pool)
                 pool.Clear();
-            forceRunner = new TournamentRunner(loadingData, worldState, config);
+            forceRunner = new TournamentRunner(worldState, config);
+            Dispatcher.AddRunner(forceRunner);
         }
     }
 }
