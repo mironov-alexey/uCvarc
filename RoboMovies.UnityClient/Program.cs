@@ -1,4 +1,5 @@
 ﻿using System;
+using AIRLab.Mathematics;
 
 namespace RoboMovies.UnityClient
 {
@@ -11,26 +12,31 @@ namespace RoboMovies.UnityClient
             // назначаем обработчик сенсоров
             client.SensorDataReceived += HandleSensorData;
             // указываем настройки
-            client.Configurate(14001, false, RoboMoviesBots.Stand, ip: "127.0.0.1", cvarcTag: "00000000-0000-0000-0000-000000000000");
+            client.Configurate(14000, true, RoboMoviesBots.Stand, ip: "127.0.0.1", cvarcTag: "00000000-0000-0000-0000-000000000000");
             Control(client);
         }
 
-        static void Control(RMClient<FullMapSensorData> client)
+        static void Control(RMClient<FullMapSensorData> rules)
         {
             try
             {
-                for (var i = 0; i < 10; i++)
-                {
-                    client.Move(20);
-                    client.Rotate(180);
-                }
+                rules.Move(115);
+                rules.Rotate(90);
+                rules.Move(-58);
+                rules.Stand(0.1);
+                rules.Grip();
+                rules.Move(60);
+                rules.Rotate(-90);
+                rules.Move(-115);
+                rules.Stand(0.1);
+                rules.Release();
             }
             catch (Exception e)
             {
                 Console.WriteLine("maybe erorr on client side: " + e.Message);
             }
             //корректно завершаем работу
-            client.Exit();
+            rules.Exit();
         }
 
         static void HandleSensorData(FullMapSensorData sensorData)
