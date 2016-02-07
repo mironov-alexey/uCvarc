@@ -81,9 +81,18 @@ namespace Assets.Tools
             wr.Method = "POST";
             wr.KeepAlive = true;
             wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
+            Stream rs;
+            try
+            {
+                 rs = wr.GetRequestStream();
+            }
+            catch (Exception e)
+            {
 
-            Stream rs = wr.GetRequestStream();
-
+                Debugger.Log(DebuggerMessageType.Error,
+                    "Web server error. Error message: " + e.Message);
+                return null;
+            }
             string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
             foreach (string key in nvc.Keys)
             {
