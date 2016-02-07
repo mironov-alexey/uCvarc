@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using CVARC.V2;
 using RoboMovies;
 
@@ -16,35 +14,54 @@ namespace TournamentTool
     {
         static void Main(string[] args)
         {
-            var results = new List<string>();
             var lines = File.ReadAllLines(ToolConstants.FileWithPlan);
             var games = lines.Select(x => x.Split(':'));
-            var listener = StartTcpListener();
-            foreach (var game in games)
-            {
-                RunGame(game[0], game[1]);
-                var res = AcceptResultString(listener);
-                results.Add(string.IsNullOrEmpty(res) ? 
-                    "Cant play game " + game[0] + " vs " + game[1] : res + ":" + game[2] + ":" + game[3]);
-            }
+            listener = StartTcpListener();
+            var results = games
+                .Select(game => RunGame(game[0], game[1], game[2], game.Length > 3 ? game[3] : null))
+                .ToList();
             File.WriteAllLines("Results.txt", results);
         }
 
-        static void RunGame(string player1, string player2)
+        static TcpListener listener;
+
+        static string RunGame(string player1, string player2, string tag, string subtag = null)
         {
             InitConnection();
             var player1Process = RunPlayer(player1);
-            var player2Process = RunPlayer(player2);
-            var sleeped = 0;
-            while (sleeped < 100 && (!player1Process.HasExited || !player2Process.HasExited))
+            if (!IsPlayerConnected())
             {
-                Thread.Sleep(100);
-                sleeped++;
+                if (!player1Process.HasExited)
+                    player1Process.Kill();
+                return "Cant play game, " + player1 + " is not connected";
             }
+            Console.WriteLine("Unity accepted client " + player1);
+            var player2Process = RunPlayer(player2);
+            if (!IsPlayerConnected())
+            {
+                if (!player1Process.HasExited)
+                    player1Process.Kill();
+                if (!player2Process.HasExited)
+                    player2Process.Kill();
+                return "Cant play game, " + player2 + " is not connected";
+            }
+            Console.WriteLine("Unity accepted client " + player2);
+
+            var answer = AcceptResultString(int.MaxValue); // т.к. мы доверяем юнити, ждем ДОЛГО.
             if (!player1Process.HasExited)
                 player1Process.Kill();
             if (!player2Process.HasExited)
                 player2Process.Kill();
+            Console.WriteLine("Game played. results saved");
+            return string.IsNullOrEmpty(answer)
+                ? "Cant play game " + player1 + " vs " + player2
+                : answer + ":" + tag + ":" + subtag;
+        }
+
+        static bool IsPlayerConnected()
+        {
+            // если юнити "что-то" нам отправила -- значит игрок подключился.
+            return !string.IsNullOrEmpty(AcceptResultString(1000 * 1000)); // даем одну секунду на то, чтоб юнити прислала нам "что-то"
         }
 
         static TcpListener StartTcpListener()
@@ -55,9 +72,9 @@ namespace TournamentTool
             return listener;
         }
 
-        static string AcceptResultString(TcpListener listener)
+        static string AcceptResultString(int timeoutInMicroseconds)
         {
-            if (!listener.Server.Poll(1000*1000*2, SelectMode.SelectRead)) // сколько ждать в микросекундах?
+            if (!listener.Server.Poll(timeoutInMicroseconds, SelectMode.SelectRead)) // сколько ждать в микросекундах?
                 return null;
             using (var client = listener.AcceptTcpClient())
             {
@@ -82,7 +99,7 @@ namespace TournamentTool
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("maybe error while sending settings: " + e.Message);
             }
             client.Exit();
         }
@@ -97,7 +114,7 @@ namespace TournamentTool
                            ToolConstants.NameOfExe,
                 Arguments = ToolConstants.Ip + " " + ToolConstants.PlayPort
             };
-            Console.WriteLine(startInfo.FileName);
+            Console.WriteLine("player started: " + startInfo.FileName);
             return Process.Start(startInfo);
         }
     }

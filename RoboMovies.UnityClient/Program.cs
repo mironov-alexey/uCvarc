@@ -1,4 +1,6 @@
-﻿namespace RoboMovies.UnityClient
+﻿using System;
+
+namespace RoboMovies.UnityClient
 {
     class Program
     {
@@ -15,10 +17,17 @@
 
         static void Control(RMClient<FullMapSensorData> client)
         {
-            for (var i = 0; i < 10; i++)
+            try
             {
-                client.Move(20);
-                client.Rotate(180);
+                for (var i = 0; i < 10; i++)
+                {
+                    client.Move(20);
+                    client.Rotate(180);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("maybe erorr on client side: " + e.Message);
             }
             //корректно завершаем работу
             client.Exit();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using Assets;
+using Assets.Tools;
 using CVARC.V2;
 
 namespace Assets
@@ -16,6 +17,8 @@ namespace Assets
         {
             if (haveForceGame)
             {
+                if (UnityConstants.OnlyGamesThroughServicePort)
+                    HttpWorker.SendInfoToLocal(configProposal.SettingsProposal.CvarcTag);
                 if (forceRunner.AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
                     haveForceGame = false;
                 return;
