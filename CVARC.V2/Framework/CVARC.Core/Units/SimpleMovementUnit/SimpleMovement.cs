@@ -38,6 +38,11 @@ namespace CVARC.V2
 			return Rotate(Math.Sign(angle.Grad) * angularVelocity, Math.Abs(angle.Grad / angularVelocity.Grad));
 		}
 
+        public static SimpleMovement MoveAndRotate(double linearVelocity, Angle angle, double duration)
+        {
+            return new SimpleMovement { AngularVelocity = angle, LinearVelocity = linearVelocity, Duration = duration };
+        }
+
 		public static SimpleMovement Stand(double time)
 		{
 			return new SimpleMovement { LinearVelocity = 0, AngularVelocity = Angle.Zero, Duration = time };

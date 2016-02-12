@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,6 +59,7 @@
     <Compile Include="DWMDemo\DWMSensorsData.cs" />
     <Compile Include="DWMDemo\TestBases\DWMWorldState.cs" />
     <Compile Include="DWMDemo\LogicParts.cs" />
+    <Compile Include="SyntaxCheck.cs" />
     <Compile Include="UniversalDemo\CollisionSensor.cs" />
     <Compile Include="UniversalDemo\DemoCamera.cs" />
     <Compile Include="UniversalDemo\DemoCommand.cs" />

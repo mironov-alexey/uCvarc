@@ -12,7 +12,7 @@ namespace PudgeWars.General.World
     {
         public override void CreateWorld()
         {
-            Manager
+//            Manager
         }
     }
 }

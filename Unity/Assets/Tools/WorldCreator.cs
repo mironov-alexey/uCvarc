@@ -4,39 +4,6 @@ using UnityEngine;
 
 public partial class RoundScript : MonoBehaviour
 {
-    IWorld CreateWorld(params string[] args)
-    {
-        var loader = new Loader();
-        loader.AddLevel("Demo", "Level1", () => new DemoCompetitions.Level1());
-        loader.AddLevel("RoboMovies", "Level1", () => new RMCompetitions.Level1());
-        return loader.Load(args);
-    }
-
-    IWorld CreateDemoWorld()
-    {
-        return CreateWorld("Demo", "Level1", "BotDemo", "-TimeLimit", "10", "-EnableLog", "-Controller.Left", "Bot.Square", "-Controller.Right", "Bot.Square");
-    }
-
-    IWorld CreateRTSWorld()
-    {
-        return CreateWorld("RepairTheStarship", "Level1", "BotDemo", "-Controller.Left", "Bot.Azura", "-Controller.Right", "Bot.Sanguine");
-    }
-
-    IWorld CreateTutorialWorld()
-    {
-        return CreateWorld("RepairTheStarship", "Level1", "Tutorial");
-    }
-
-    IWorld CreateRMWorld()
-    {
-        return CreateWorld("RoboMovies", "Level1", "Tutorial");
-    }
-
-    IWorld CreateCameraDemo()
-    {
-        return CreateWorld("");
-    }
-
     void CameraCreator()
     {
         myCamera = new GameObject("myCamera");

@@ -11,7 +11,5 @@ namespace RoboMovies
     [DataContract]
     public class RMWorldState : IWorldState
     {
-        [DataMember]
-        public int Seed { get; set; }
     }
 }

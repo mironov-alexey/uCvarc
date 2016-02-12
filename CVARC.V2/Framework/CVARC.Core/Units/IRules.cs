@@ -8,6 +8,5 @@ namespace CVARC.V2
 	public interface IRules 
 	{
 		void DefineKeyboardControl(IKeyboardController keyboardController, string controllerId);
-       
 	}
 }
