@@ -8,8 +8,9 @@ using Assets;
 
 public class IntroductionStript : MonoBehaviour
 {
-    const string ASSEMBLY_NAME = "TheBeachBots";
-    //const string ASSEMBLY_NAME = "RoboMovies";
+    //const string ASSEMBLY_NAME = "TheBeachBots";
+    const string ASSEMBLY_NAME = "RoboMovies";
+    const string Level = "Test";
     //const string ASSEMBLY_NAME = "Demo";
 
     private bool openWindowTests = false;
@@ -107,10 +108,10 @@ public class IntroductionStript : MonoBehaviour
 
         GUI.DrawTexture(menuRect, menuBackground);
 
-        var tests = Dispatcher.Loader.Levels[ASSEMBLY_NAME]["Test"]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
+        var tests = Dispatcher.Loader.Levels[ASSEMBLY_NAME][Level]().Logic.Tests.Keys.OrderBy(x => x).ToArray();
         LoadingData data = new LoadingData();
         data.AssemblyName = ASSEMBLY_NAME;
-        data.Level = "Test";
+        data.Level = Level;
 
         if (!folderIsLoad)
         {
