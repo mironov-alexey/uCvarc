@@ -24,6 +24,6 @@ namespace TournamentTool
         public const int ServicePort = 14002;
         public const int MyPort = 14500;
         public static readonly SettingsProposal Settings = new SettingsProposal {OperationalTimeLimit = 5, TimeLimit = 90};
-        public static readonly IWorldState WorldState = new RMWorldState {Seed = 0};
+        public static readonly IWorldState WorldState = new RMWorldState();
     }
 }

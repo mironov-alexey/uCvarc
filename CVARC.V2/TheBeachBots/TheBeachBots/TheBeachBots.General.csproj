@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CBE94CF5-D6F5-4D7F-A7DD-F6EEEDC5F9CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TheBeachBots.General</RootNamespace>
+    <AssemblyName>TheBeachBots.General</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Robot\Units\ParasolUnit\ParasolUnit.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\IParasolRules.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\IParasolCommand.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\IParasolUnitRobot.cs" />
+    <Compile Include="Robot\Units\ParasolUnit\RulesExtensions.cs" />
+    <Compile Include="Robot\Units\SandGripper\SandGripper.cs" />
+    <Compile Include="Robot\Units\SandGripper\ISandGripperCommand.cs" />
+    <Compile Include="Robot\Units\SandGripper\ISandGripperRobot.cs" />
+    <Compile Include="Robot\Units\SandGripper\ISandGripperRules.cs" />
+    <Compile Include="Robot\Units\SandGripper\RulesExtensions.cs" />
+    <Compile Include="Sensors\FishingRodSensor.cs" />
+    <Compile Include="Sensors\Map\Map.cs" />
+    <Compile Include="Sensors\Map\MapSensor.cs" />
+    <Compile Include="Sensors\Map\GameObjectMapData.cs" />
+    <Compile Include="Sensors\ParasolSensor.cs" />
+    <Compile Include="Sensors\SandGripperSensor.cs" />
+    <Compile Include="Sensors\ScoreSensor.cs" />
+    <Compile Include="Sensors\SeashellSensor.cs" />
+    <Compile Include="Tests\DefaultTBBTest.cs" />
+    <Compile Include="Tests\DoorTest.cs" />
+    <Compile Include="Tests\FishingTest.cs" />
+    <Compile Include="Tests\ParasolTest.cs" />
+    <Compile Include="Tests\SeashellsTest.cs" />
+    <Compile Include="Utils\TBBBots.cs" />
+    <Compile Include="Utils\TBBLogic.cs" />
+    <Compile Include="Managers\ITBBActorManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Managers\ITBBWorldManager.cs" />
+    <Compile Include="Robot\ITBBRobot.cs" />
+    <Compile Include="Robot\TBBRobot.cs" />
+    <Compile Include="Robot\TBBCommand.cs" />
+    <Compile Include="Robot\TBBRules.cs" />
+    <Compile Include="Robot\Units\BaseTBBGripper\BaseTBBRules.cs" />
+    <Compile Include="Robot\Units\DoorUnit\DoorUnit.cs" />
+    <Compile Include="Robot\Units\BaseTriggerUnit\TriggerUnit.cs" />
+    <Compile Include="Robot\Units\DoorUnit\IDoorUnitCommand.cs" />
+    <Compile Include="Robot\Units\DoorUnit\IDoorUnitRobot.cs" />
+    <Compile Include="Robot\Units\DoorUnit\IDoorOpeningRules.cs" />
+    <Compile Include="Robot\Units\DoorUnit\RulesExtensions.cs" />
+    <Compile Include="Robot\Units\BaseTBBGripper\BaseTBBGripper.cs" />
+    <Compile Include="Robot\Units\FishingRod\IFishingRobot.cs" />
+    <Compile Include="Robot\Units\FishingRod\IFishingCommand.cs" />
+    <Compile Include="Robot\Units\FishingRod\IFishingRules.cs" />
+    <Compile Include="Robot\Units\FishingRod\RulesExtensions.cs" />
+    <Compile Include="Robot\Units\FishingRod\FishingRod.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\SeashellGripper.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\ISeashellGripperRules.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\ISeashellGripperCommand.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\ISeachellRobot.cs" />
+    <Compile Include="Robot\Units\SeashellsGripper\RulesExtensions.cs" />
+    <Compile Include="Sensors\TBBSensorsData.cs" />
+    <Compile Include="Settings\TBBWorldSettings.cs" />
+    <Compile Include="Utils\DataClasses.cs" />
+    <Compile Include="Utils\IEnumerableExtensions.cs" />
+    <Compile Include="World\TBBScoresTrigger.cs" />
+    <Compile Include="World\TBBWorld.cs" />
+    <Compile Include="World\TBBWorldHelper.cs" />
+    <Compile Include="Settings\TBBWorldState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\CVARC.Core\CVARC.Core.csproj">
+      <Project>{f7b5021f-09e8-4388-97a2-4b44b9770d03}</Project>
+      <Name>CVARC.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

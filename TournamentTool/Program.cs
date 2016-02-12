@@ -87,7 +87,7 @@ namespace TournamentTool
 
         static void InitConnection()
         {
-            var client = new Level1Client();
+            var client = new TestingClient();
             var configs = new ConfigurationProposal
             {
                 LoadingData = new LoadingData { AssemblyName = ToolConstants.AssemblyName, Level = ToolConstants.Level },

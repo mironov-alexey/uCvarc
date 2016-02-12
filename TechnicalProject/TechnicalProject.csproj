@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>5</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -65,12 +66,17 @@
       <Project>{4c00a5ba-5f04-4173-910d-e7813b313001}</Project>
       <Name>RoboMovies.General</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CVARC.V2\TheBeachBots\TheBeachBots\TheBeachBots.General.csproj">
+      <Project>{cbe94cf5-d6f5-4d7f-a7dd-f6eeedc5f9ca}</Project>
+      <Name>TheBeachBots.General</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)bin\debug\CVARC.Core.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y
 xcopy "$(ProjectDir)bin\debug\Demo.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y
-xcopy "$(ProjectDir)bin\debug\RoboMovies.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y</PostBuildEvent>
+xcopy "$(ProjectDir)bin\debug\RoboMovies.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y
+xcopy "$(ProjectDir)bin\debug\TheBeachBots.General.dll" "$(SolutionDir)Unity\Assets\CVARC Assets\" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

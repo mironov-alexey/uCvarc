@@ -6,9 +6,9 @@ using CVARC.V2;
 
 namespace RoboMovies
 {
-    public delegate void RMTestEntry(CvarcClient<FullMapSensorData, RMCommand> client, RMWorld world, IAsserter asserter);
+    public delegate void RMTestEntry(CvarcClient<RMSensorData, RMCommand> client, RMWorld world, IAsserter asserter);
 
-    public class RMTestBase : DelegatedCvarcTest<FullMapSensorData, RMCommand, RMWorld, RMWorldState>
+    public class RMTestBase : DelegatedCvarcTest<RMSensorData, RMCommand, RMWorld, RMWorldState>
     {
         public override SettingsProposal GetSettings()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using RoboMovies;
 using AIRLab.Mathematics;
 
 namespace RoboMovies.UnityClient
@@ -8,7 +9,7 @@ namespace RoboMovies.UnityClient
         static void Main(string[] args)
         {
             // создаем клиента
-            var client = new Level1Client();
+            var client = new TestingClient();
             // назначаем обработчик сенсоров
             client.SensorDataReceived += HandleSensorData;
             // указываем настройки
@@ -18,10 +19,10 @@ namespace RoboMovies.UnityClient
                 client.Configurate(14000, false, RoboMoviesBots.Stand, ip: "127.0.0.1", cvarcTag: "00000000-0000-0000-0000-000000000008");
             Control(client);
         }
-
+        
         static int pos = 0;
 
-        static void Control(RMClient<FullMapSensorData> rules)
+        static void Control(RMClient<RMSensorData> rules)
         {
             try
             {
@@ -66,7 +67,7 @@ namespace RoboMovies.UnityClient
             rules.Exit();
         }
 
-        static void HandleSensorData(FullMapSensorData sensorData)
+        static void HandleSensorData(RMSensorData sensorData)
         {
             if (pos == 0)
                 pos = sensorData.SelfLocation.X > 10 ? 1 : 2;

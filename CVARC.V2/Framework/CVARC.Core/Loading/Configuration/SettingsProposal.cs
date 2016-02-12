@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -37,6 +38,15 @@ namespace CVARC.V2
         public string WorldState { get; set; }
         [DataMember]
         public List<ControllerSettings> Controllers { get; set; }
+
+        public static SettingsProposal DeepCopy(SettingsProposal copy)
+        {
+            DataContractSerializer ds = new DataContractSerializer(typeof(SettingsProposal));
+            MemoryStream stream = new MemoryStream();
+            ds.WriteObject(stream, copy);
+            stream.Position = 0;
+            return (SettingsProposal)ds.ReadObject(stream);
+        }
 
         class Parser
         {

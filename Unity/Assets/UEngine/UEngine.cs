@@ -53,17 +53,17 @@ namespace Assets
         public byte[] GetImageFromCamera(string cameraName)
         {
             return new byte[0];
-            Camera[] allCameras = Resources.FindObjectsOfTypeAll(typeof(Camera)) as Camera[];
-            var camera = allCameras
-                .Where(x => cameraName.Equals(x.name))
-                .First();
-            camera.Render();
-            Texture2D image = new Texture2D(Screen.width, Screen.height);
-            image.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
-            image.Apply();
-            byte[] bytes = image.EncodeToPNG();
-            //Debugger.Log(DebuggerMessageType.Unity,string.Format("Took screenshot to {0}", cameraName));
-            return bytes;
+            //Camera[] allCameras = Resources.FindObjectsOfTypeAll(typeof(Camera)) as Camera[];
+            //var camera = allCameras
+            //    .Where(x => cameraName.Equals(x.name))
+            //    .First();
+            //camera.Render();
+            //Texture2D image = new Texture2D(Screen.width, Screen.height);
+            //image.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+            //image.Apply();
+            //byte[] bytes = image.EncodeToPNG();
+            ////Debugger.Log(DebuggerMessageType.Unity,string.Format("Took screenshot to {0}", cameraName));
+            //return bytes;
         }
 
    
@@ -84,18 +84,18 @@ namespace Assets
         public void DefineCamera(string cameraName, string host, CVARC.V2.RobotCameraSettings settings)
         {
             return;
-            var cam = new GameObject(cameraName).AddComponent<Camera>();
-            var robot = GameObject.Find(host);
-            cam.transform.parent = robot.transform;
-            var camPos = settings.Location;
-            var camRot = settings.ViewAngle;
-            cam.transform.localPosition = new Vector3((float)camPos.X, (float)camPos.Z / 20, (float)camPos.Y); // ???????
-            cam.transform.localRotation = Quaternion.Euler(-(float)camPos.Pitch.Grad, 90 + (float)camPos.Yaw.Grad, (float)camPos.Roll.Grad);
-            cam.fieldOfView = (float)camRot.Grad;
-            if (robot.GetComponent<Renderer>().material.color == Color.green)
-                cam.rect = new Rect(0, 0.7f, 0.3f, 0.3f);
-            else
-                cam.rect = new Rect(0.7f, 0.7f, 0.3f, 0.3f);
+            //var cam = new GameObject(cameraName).AddComponent<Camera>();
+            //var robot = GameObject.Find(host);
+            //cam.transform.parent = robot.transform;
+            //var camPos = settings.Location;
+            //var camRot = settings.ViewAngle;
+            //cam.transform.localPosition = new Vector3((float)camPos.X, (float)camPos.Z / 20, (float)camPos.Y); // ???????
+            //cam.transform.localRotation = Quaternion.Euler(-(float)camPos.Pitch.Grad, 90 + (float)camPos.Yaw.Grad, (float)camPos.Roll.Grad);
+            //cam.fieldOfView = (float)camRot.Grad;
+            //if (robot.GetComponent<Renderer>().material.color == Color.green)
+            //    cam.rect = new Rect(0, 0.7f, 0.3f, 0.3f);
+            //else
+            //    cam.rect = new Rect(0.7f, 0.7f, 0.3f, 0.3f);
         }
 
         public void DefineKinect(string kinectName, string host)

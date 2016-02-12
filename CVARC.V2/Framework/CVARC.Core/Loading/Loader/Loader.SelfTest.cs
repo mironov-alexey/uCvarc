@@ -33,7 +33,7 @@ namespace CVARC.V2
 			{
 				competitions = GetCompetitions(assemblyName, level);
 			}
-			catch
+			catch (KeyNotFoundException)
 			{
 				throw new Exception(string.Format("The competition '{0}'.'{1}' were not found", assemblyName, level));
 			}
@@ -42,7 +42,7 @@ namespace CVARC.V2
 			{
 				test = competitions.Logic.Tests[testName];
 			}
-			catch
+            catch (KeyNotFoundException)
 			{
 				throw new Exception(string.Format("The test with name '{0}' was not found in competitions {1}.{2}", testName, assemblyName, level));
 			}

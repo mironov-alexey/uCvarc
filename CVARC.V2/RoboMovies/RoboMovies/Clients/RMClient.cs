@@ -35,7 +35,7 @@ namespace RoboMovies
 
             configuration.SettingsProposal.CvarcTag = cvarcTag;
 
-            return Configurate(port, configuration, new RMWorldState { Seed = seed } , ip );
+            return Configurate(port, configuration, new RMWorldState(), ip );
         }
 
         public TSensorData Move(double distance)
@@ -48,7 +48,7 @@ namespace RoboMovies
             return Act(RMRules.Current.Rotate(Angle.FromGrad(angleInGrad)));
         }
 
-        public TSensorData Collect()
+        public TSensorData CollectDetail()
         {
             return Act(RMRules.Current.Collect());
         }
@@ -57,6 +57,36 @@ namespace RoboMovies
 		{
 			return Act(RMRules.Current.BuildTower());
 		}
+
+        public TSensorData GripPopCorn()
+        {
+            return Act(RMRules.Current.Grip());
+        }
+
+        public TSensorData CloseClapperBoardLeft()
+        {
+            return Act(RMRules.Current.UseLeftDeployer());
+        }
+
+        public TSensorData CloseClapperBoardRight()
+        {
+            return Act(RMRules.Current.UseRightDeployer());
+        }
+
+        public TSensorData WalkUpstairs()
+        {
+            return Act(RMRules.Current.UpLadder());
+        }
+
+        public TSensorData ReleasePopCorn()
+        {
+            return Act(RMRules.Current.Release());
+        }
+
+        public TSensorData ActivatePopCornDispenser()
+        {
+            return Act(RMRules.Current.GetPopCorn());
+        }
 
         public void Stand(double time)
         {
