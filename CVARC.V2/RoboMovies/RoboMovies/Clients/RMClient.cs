@@ -93,6 +93,15 @@ namespace RoboMovies
             Act(RMRules.Current.Stand(time));
         }
 
+        public void Grip()
+        {
+            Act(RMRules.Current.Grip());
+        }
+
+        public void Release()
+        {
+            Act(RMRules.Current.Release());
+        }
     }
 
 }

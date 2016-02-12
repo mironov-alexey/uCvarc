@@ -33,7 +33,7 @@ namespace CVARC.V2
 
         bool SocketConnected(Socket s)
         {
-            bool part1 = s.Poll(1000, SelectMode.SelectRead);
+            bool part1 = s.Poll(0, SelectMode.SelectRead);
             bool part2 = (s.Available == 0);
             if (part1 & part2)
             {//connection is closed
@@ -49,8 +49,12 @@ namespace CVARC.V2
             while (true)
             {
                 while (client.Available == 0)
+                {
                     Thread.Sleep(1);
-				if (externallyClosed)
+                    if (!SocketConnected(client.Client))
+                        throw new Exception("The connection was terminated"); ; // не уверен, можно ли передать null пользователю в метод Handle sensor data, если соединение закрыто.
+                }
+                if (externallyClosed)
 					throw new Exception("The connection was terminated");
                 var length = client.Client.Receive(buffer);
                 if (length == 0)
