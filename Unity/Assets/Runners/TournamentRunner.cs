@@ -20,23 +20,14 @@ namespace Assets
         public string Name { get; set; }
         public bool CanStart { get; set; }
         public bool CanInterrupt { get; set; }
+        public bool Disposed { get; set; }
 
 
-        public TournamentRunner(LoadingData loadingData, IWorldState worldState)
+        public TournamentRunner(IWorldState worldState, Configuration configuration)
         {
             this.worldState = worldState;
+            this.configuration = configuration;
             players = new List<TournamentPlayer>();
-
-            var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
-            var settings = competitions.Logic.CreateDefaultSettings();
-            configuration = new Configuration
-            {
-                LoadingData = loadingData,
-                Settings = settings
-            };
-
-            //я игнорирую конфиги. надо хотя бы имя сохранять в метод "add player"
-            // wut?
 
             //log section
             logFileName = Guid.NewGuid() + ".log";
@@ -44,6 +35,7 @@ namespace Assets
             configuration.Settings.LogFile = UnityConstants.LogFolderRoot + logFileName;
             //log section end
 
+            var competitions = Dispatcher.Loader.GetCompetitions(configuration.LoadingData);
             controllerIds = competitions.Logic.Actors.Keys.ToArray();
 
             foreach (var controller in controllerIds
@@ -51,9 +43,9 @@ namespace Assets
                 {
                     ControllerId = x,
                     Type = ControllerType.Client,
-                    Name = settings.Name
+                    Name = configuration.Settings.Name
                 }))
-                settings.Controllers.Add(controller);
+                configuration.Settings.Controllers.Add(controller);
 
             requiredCountOfPlayers = controllerIds.Length;
 
@@ -61,7 +53,7 @@ namespace Assets
             if (requiredCountOfPlayers == 0)
                 throw new Exception("requiered count of players cant be 0");
 
-            Name = loadingData.AssemblyName + loadingData.Level;//"Tournament";
+            Name = configuration.LoadingData.AssemblyName + configuration.LoadingData.Level;//"Tournament";
             CanInterrupt = false;
             CanStart = false;
         }
@@ -103,6 +95,8 @@ namespace Assets
                 World.OnExit();
 
             SendResultsToServer();
+
+            Disposed = true;
         }
 
         private void SendResultsToServer()

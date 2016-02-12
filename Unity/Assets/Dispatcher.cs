@@ -4,6 +4,7 @@ using CVARC.V2;
 using RoboMovies;
 using UnityEngine;
 using Assets;
+using Assets.Servers;
 using Assets.Tools;
 
 
@@ -16,6 +17,7 @@ public static class Dispatcher
     static bool isGameOver;
     static UnityServer networkServer;
     static UnityServer torunamentServer;
+    static UnityServer serviceServer;
     static bool switchingScenes;
 
 
@@ -47,6 +49,13 @@ public static class Dispatcher
         torunamentServer = new TournamentServer(UnityConstants.TournamentPort);
         Action tournamentServerAction = () => torunamentServer.StartThread();
         tournamentServerAction.BeginInvoke(null, null);
+
+        if (UnityConstants.NeedToOpenServicePort)
+        {
+            serviceServer = new ServiceServer(UnityConstants.ServicePort);
+            Action startServer = () => serviceServer.StartThread();
+            startServer.BeginInvoke(null, null);
+        }
     }
 
     public static void AddRunner(IRunner runner)
@@ -101,6 +110,8 @@ public static class Dispatcher
         Debug.Log("GLOBAL EXIT");
         networkServer.RequestExit();
         torunamentServer.RequestExit();
+        if (serviceServer != null)
+            serviceServer.RequestExit();
         if (CurrentRunner != null)
             CurrentRunner.Dispose();
         queue.DisposeRunners();

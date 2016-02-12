@@ -17,9 +17,8 @@ public partial class RoundScript : MonoBehaviour
     bool worldPrepearedToExit;
     float curWorldTime;
     float timeOnStartSession;
-    private long lastStart;
-//    private int timeLimit = 5; // in seconds
-
+    private long lastStart;    
+    private int timeLimit = 15; // in seconds
 
     void Start()
     {
@@ -46,13 +45,13 @@ public partial class RoundScript : MonoBehaviour
     {
         Dispatcher.RoundTick();
 
-        //if (curWorldTime > timeLimit)
-        //{
-        //    Debugger.Log(DebuggerMessageType.Unity,"Time is Up");
-        //    Dispatcher.SetGameOver();
-        //    return;
-        //}
-        
+        if (curWorldTime > timeLimit)
+        {
+            Debugger.Log(DebuggerMessageType.Unity, "Time is Up");
+            Dispatcher.SetGameOver();
+            return;
+        }
+
         if (CollisionInfo.Item3 == 2)
         {
             ((UEngine)world.Engine).CollisionSender(CollisionInfo.Item1, CollisionInfo.Item2);

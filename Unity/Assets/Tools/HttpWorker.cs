@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Net.Sockets;
 using CVARC.V2;
 
 namespace Assets.Tools
@@ -12,10 +13,17 @@ namespace Assets.Tools
     {
         public static void SendGameResultsIfNeed(string leftTag, string rightTag, int leftScore, int rightScore, string logGuid)
         {
+            if (UnityConstants.OnlyGamesThroughServicePort)
+            {
+                var results = leftTag + ":" + rightTag + ":" + leftScore + ":" + rightScore + ":" + logGuid;
+                SendInfoToLocal(results);
+                return;
+            }
+
             if (!WebInfo.NeedToSendToWeb || !CheckForForbiddenSymbols(leftTag) || !CheckForForbiddenSymbols(rightTag))
                 return;
             var request = string.Format(
-                "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&logFileName={8}",
+                "http://{0}:{1}/{2}?password={3}&leftTag={4}&rightTag={5}&leftScore={6}&rightScore={7}&logFileName={8}&type=training",
                 WebInfo.WebIp, WebInfo.WebPort, WebInfo.Method, WebInfo.PasswordToWeb,
                 leftTag, rightTag, leftScore, rightScore, logGuid);
 
@@ -33,6 +41,23 @@ namespace Assets.Tools
             if (answer != null)
                 Debugger.Log(DebuggerMessageType.Unity, "Game log sent. answer: " + answer);
 
+        }
+
+        public static void SendInfoToLocal(string value)
+        {
+            try
+            {
+                var tcpClient = new TcpClient("127.0.0.1", UnityConstants.PortToSendTcpResults);
+                
+                var stream = tcpClient.GetStream();
+                var bytesToSend = ASCIIEncoding.ASCII.GetBytes(value);
+                stream.Write(bytesToSend, 0, bytesToSend.Length);
+            }
+            catch (Exception e)
+            {
+                Debugger.Log(DebuggerMessageType.Error,
+                "LOCAL server error. Error message: " + e.Message);
+            }
         }
 
         // сообщаем веб серверу о своем состоянии.
@@ -59,9 +84,8 @@ namespace Assets.Tools
             }
             catch (Exception e)
             {
-                WebInfo.NeedToSendToWeb = false;
                 Debugger.Log(DebuggerMessageType.Error, 
-                    "Web server error. Stop trying to send data... Error message: " + e.Message);
+                    "Web server error. Error message: " + e.Message);
                 return null;
             }
         }
@@ -82,9 +106,18 @@ namespace Assets.Tools
             wr.Method = "POST";
             wr.KeepAlive = true;
             wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
+            Stream rs;
+            try
+            {
+                 rs = wr.GetRequestStream();
+            }
+            catch (Exception e)
+            {
 
-            Stream rs = wr.GetRequestStream();
-
+                Debugger.Log(DebuggerMessageType.Error,
+                    "Web server error. Error message: " + e.Message);
+                return null;
+            }
             string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
             foreach (string key in nvc.Keys)
             {
@@ -120,9 +153,8 @@ namespace Assets.Tools
             }
             catch (Exception e)
             {
-                WebInfo.NeedToSendToWeb = false;
                 Debugger.Log(DebuggerMessageType.Error, 
-                    "Web server error. Stop trying to send data... Error message: " + e.Message);
+                    "Web server error. Error message: " + e.Message);
                 return null;
             }
             return Encoding.Default.GetString(wresp.GetResponseStream().ReadToEnd());

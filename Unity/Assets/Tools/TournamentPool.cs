@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Assets;
+using Assets.Tools;
 using CVARC.V2;
 
 namespace Assets
@@ -7,27 +9,42 @@ namespace Assets
     public static class TournamentPool
     {
         static readonly Dictionary<LoadingData, TournamentRunner> pool = new Dictionary<LoadingData, TournamentRunner>();
+        static bool haveForceGame;
+        static TournamentRunner forceRunner;
 
 
-        public static void AddPlayerToPool(CvarcClient client)
+        public static void AddPlayerToPool(CvarcClient client, Configuration configuration, IWorldState worldState, ConfigurationProposal configProposal)
         {
-            var configProposal = client.Read<ConfigurationProposal>();
-            var loadingData = configProposal.LoadingData; //RoboMoviesLevel1
-            var competitions = Dispatcher.Loader.GetCompetitions(loadingData);
-            var worldSettingsType = competitions.Logic.WorldStateType;
-            var worldState = (IWorldState)client.Read(worldSettingsType); 
-            
-
+            if (haveForceGame)
+            {
+                if (UnityConstants.OnlyGamesThroughServicePort)
+                    HttpWorker.SendInfoToLocal(configProposal.SettingsProposal.CvarcTag);
+                if (forceRunner.AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
+                    haveForceGame = false;
+                return;
+            }
             lock (pool)
             {
-                if (!pool.ContainsKey(loadingData))
+                if (!pool.ContainsKey(configuration.LoadingData))
                 {
-                    pool.Add(loadingData, new TournamentRunner(loadingData, worldState));
-                    Dispatcher.AddRunner(pool[loadingData]);
+                    pool.Add(configuration.LoadingData, new TournamentRunner(worldState, configuration));
+                    Dispatcher.AddRunner(pool[configuration.LoadingData]);
                 }
-                if (pool[loadingData].AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
-                    pool.Remove(loadingData);
+                if (pool[configuration.LoadingData].AddPlayerAndCheck(new TournamentPlayer(client, configProposal, worldState)))
+                    pool.Remove(configuration.LoadingData);
             }
+        }
+
+        public static void AddForceGame(IWorldState worldState, Configuration config)
+        {
+            if (forceRunner != null)
+                while (!forceRunner.Disposed)
+                    Thread.Sleep(100);
+            haveForceGame = true;
+            lock (pool)
+                pool.Clear();
+            forceRunner = new TournamentRunner(worldState, config);
+            Dispatcher.AddRunner(forceRunner);
         }
     }
 }
