@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using CVARC.V2;
 
-namespace RepairTheStarship
+namespace CVARC.Core.Units.PWUnit
 {
-    public interface IRTSActorManager : IActorManager
+    interface IPWManager : IActorManager
     {
-       
+
     }
 }

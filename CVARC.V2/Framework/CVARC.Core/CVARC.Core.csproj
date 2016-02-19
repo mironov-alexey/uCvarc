@@ -194,6 +194,11 @@
     <Compile Include="Units\MoveAndGrip\MoveAndGripCommand.cs" />
     <Compile Include="Units\MoveAndGrip\MoveAndGripRobot.cs" />
     <Compile Include="Units\MoveAndGrip\MoveAndGripRules.cs" />
+    <Compile Include="Units\PWUnit\IPWCommand.cs" />
+    <Compile Include="Units\PWUnit\IPWManager.cs" />
+    <Compile Include="Units\PWUnit\IPWRobot.cs" />
+    <Compile Include="Units\PWUnit\IPWRules.cs" />
+    <Compile Include="Units\PWUnit\PWUnit.cs" />
     <Compile Include="Units\SimpleMovementUnit\RulesExtensions.cs" />
     <Compile Include="Units\SimpleMovementUnit\ISimpleMovementCommand.cs" />
     <Compile Include="Units\SimpleMovementUnit\SimpleMovement.cs" />
@@ -220,9 +225,7 @@
     <Compile Include="__other\ISensorData.cs" />
     <Compile Include="Sensors\Implementation\RobotCamera.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Units\PudgeUnit\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
